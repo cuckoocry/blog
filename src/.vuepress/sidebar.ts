@@ -4,13 +4,15 @@ import { sidebar } from "vuepress-theme-hope";
 import { aboutTheBlogs } from "./sidebar/about-the-blogs";
 // @ts-ignore
 import {interviewRelated} from "./sidebar/interview-related";
+// @ts-ignore
+import { learnNote } from "./sidebar/learn-note";
 
 
 //  侧边栏
 export default sidebar({
 
   // 导航栏每一项对应自己的目录
-  //"/study-notes/": learnNote,
+  "/study-notes/": learnNote,
   "/about-the-blogs/":aboutTheBlogs,
 
   "/post/":"structure",
