@@ -1,0 +1,54 @@
+---
+title: Java学习&面试指南
+category: 面试
+
+---
+
+
+::: tip
+
+Be a better version of yourself
+
+:::
+
+
+## 概述
+
+该篇章主要是收集的面试题，然后通过学习去完善结果。
+
+
+1、mysql索引。分库分表，in，exist的区别
+2、Redis
+3、RocketMQ
+4、基础再过
+
+
+1、JVM
+2、数据库
+3、spring
+4、RocketMQ
+5、IO
+
+
+
+
+
+
+
+### 1、MySQL中exists和in的区别
+https://blog.csdn.net/taomeechildren/article/details/128922688#:~:text=exists%E5%8F%AA%E6%9C%89%E5%86%85%E8%A1%A8%E5%8F%AF%E4%BB%A5%E7%94%A8%E4%B8%8A%E7%B4%A2%E5%BC%95%20%EF%BC%8C%E5%A4%96%E5%B1%82%E5%BE%AA%E7%8E%AF%E5%BF%85%E9%A1%BB%E8%A6%81%E8%B5%B0%E4%B8%80%E4%B8%AA%E9%81%8D%E5%8E%86%E8%BF%87%E7%A8%8B%EF%BC%9B%20%E8%80%8Cin%E5%86%85%E8%A1%A8%E5%92%8C%E5%A4%96%E8%A1%A8%E9%83%BD%E5%8F%AF%E4%BB%A5%E7%94%A8%E4%B8%8A%E7%B4%A2%E5%BC%95%20%EF%BC%8C%E5%9B%A0%E4%B8%BAin%E6%9C%AC%E8%B4%A8%E4%B8%8A%E5%B1%9E%E4%BA%8E%E5%A4%9A%E4%B8%AA%20%E6%9D%A1%E4%BB%B6%E6%9F%A5%E8%AF%A2%20%E7%9A%84%E5%B9%B6%E9%9B%86%20%28or%29%E3%80%82%20%E5%A6%82%E4%BD%95%E9%80%89%E7%94%A8,%EF%BC%9F%20%E5%BD%93%E4%B8%A4%E4%B8%AA%E8%A1%A8%E7%9A%84%E5%A4%A7%E5%B0%8F%E7%9B%B8%E5%BD%93%E6%97%B6%EF%BC%8C%E7%94%A8exists%E5%92%8Cin%E7%9A%84%E6%95%88%E7%8E%87%E5%B7%AE%E5%88%AB%E4%B8%8D%E5%A4%A7%E3%80%82%20%E5%A6%82%E6%9E%9C%E4%B8%A4%E4%B8%AA%E8%A1%A8%E4%B8%80%E4%B8%AA%E5%A4%A7%E4%B8%80%E4%B8%AA%E5%B0%8F%EF%BC%8C%E5%88%99%20%E5%AD%90%E6%9F%A5%E8%AF%A2%E8%A1%A8%20%28%E5%8D%B3%E5%86%85%E8%A1%A8%29%E5%A4%A7%E7%9A%84%E7%94%A8exists%EF%BC%8C%E5%AD%90%E6%9F%A5%E8%AF%A2%E8%A1%A8%20%28%E5%8D%B3%E5%86%85%E8%A1%A8%29%E5%B0%8F%E7%9A%84%E7%94%A8in%20%E3%80%82%20%E5%85%B6%E5%AE%9E%E5%B0%B1%E6%98%AF%E2%80%9D%E5%B0%8F%E8%A1%A8%E9%A9%B1%E5%8A%A8%E5%A4%A7%E8%A1%A8%E2%80%9C%E7%9A%84%E6%80%9D%E6%83%B3%EF%BC%9A%E7%94%A8exist%E6%97%B6%E5%A4%96%E8%A1%A8%E6%98%AF%E9%A9%B1%E5%8A%A8%E8%A1%A8%EF%BC%8C%E7%94%A8in%E6%97%B6%E5%86%85%E8%A1%A8%E6%98%AF%E9%A9%B1%E5%8A%A8%E8%A1%A8%E3%80%82
+
+结论：
+- 子查询表小的用in，子查询表大的用exists。
+
+
+
+ 
+
+
+### 2、left join   inner join  的区别
+https://blog.csdn.net/mfysss/article/details/135486067
+
+
+接口和抽象类有什么共同点和区别？
+https://javaguide.cn/java/basis/java-basic-questions-02.html#%E6%8E%A5%E5%8F%A3%E5%92%8C%E6%8A%BD%E8%B1%A1%E7%B1%BB%E6%9C%89%E4%BB%80%E4%B9%88%E5%85%B1%E5%90%8C%E7%82%B9%E5%92%8C%E5%8C%BA%E5%88%AB
