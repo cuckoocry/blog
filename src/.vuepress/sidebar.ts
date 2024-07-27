@@ -6,6 +6,7 @@ import { aboutTheBlogs } from "./sidebar/about-the-blogs";
 import {interviewRelated} from "./sidebar/interview-related";
 // @ts-ignore
 import { learnNote } from "./sidebar/learn-note";
+import {noteRecord} from "./sidebar/note-record.js";
 
 
 //  侧边栏
@@ -26,6 +27,8 @@ export default sidebar({
   // "/posts/": posts,
   // "/other/": other,
   "/problem-record/": "structure",
+  "/note-record/": noteRecord,
+
   // "/learning-practice/": learningPractice,
   // "/knowledge-accumulation/": knowledgeAccumulation,
   // // 一个文件夹下面全为md文件
