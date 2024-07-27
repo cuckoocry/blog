@@ -268,7 +268,7 @@ export const learnNote = [
 
   {
     text: "黑马Java八股",
-    prefix: "黑马Java八股/",
+    prefix: "heima-java-bagu/",
     collapsible: true,
     children:[
       "",
@@ -279,7 +279,7 @@ export const learnNote = [
         collapsible: true,
         children:[
           "",
-          "Redis相关面试题"
+          "more"
         ]
       },
       {
@@ -289,61 +289,61 @@ export const learnNote = [
         collapsible: true,
         children:[
           "",
-          "MySQL面试题-参考回答"
+          "more"
         ]
       },
       {
         text: "框架",
         // icon: "spring",
-        prefix: "框架/",
+        prefix: "frame/",
         collapsible: true,
         children:[
           "",
-          "spring",
-          "mybatis"
+          "spring/",
+          "mybatis/"
         ]
       },
       {
         text: "微服务",
         // icon: "SpringCloud",
-        prefix: "微服务/",
+        prefix: "Microservices/",
         collapsible: true,
         children:[
           "",
-          "微服务面试题-参考回答"
+          "more"
         ]
       },
       {
         text: "消息中间件",
-        prefix: "消息中间件/",
+        prefix: "message-middleware/",
         collapsible: true,
         children:[
           "",
-          "消息中间件面试题-参考回答.md"
+          "more.md"
         ]
       },
       {
         text: "集合",
-        prefix: "集合/",
+        prefix: "collection/",
         collapsible: true,
         children:[
           "",
-          "Java集合相关面试题"
+          "more"
         ]
       },
       {
         text: "并发编程",
-        prefix: "并发编程/",
+        prefix: "concurrent-programming/",
         collapsible: true,
         children:[
           "",
-          "多线程相关面试题"
+          "more"
         ]
       },
       {
         text: "JVM虚拟机",
         // icon: "stack",
-        prefix: "JVM虚拟机/",
+        prefix: "JVM/",
         collapsible: true,
         children:[
           "",
@@ -352,11 +352,11 @@ export const learnNote = [
       {
         text: "实际场景",
         // icon: "stack",
-        prefix: "企业场景/",
+        prefix: "enterprise-scenarios/",
         collapsible: true,
         children:[
-          "01-设计模式",
-          "02-常见技术场景"
+          "design-patterns.md",
+          "technical-scenarios.md"
         ]
       },
 
