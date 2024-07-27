@@ -73,21 +73,21 @@ export const learnNote = [
   {
     text: "大厂面试第三季",
     icon: "edit",
-    prefix: "大厂面试第三季/",
+    prefix: "shangguigu-three/",
     collapsible: true,
     children: [
       "",
-      "01_字符串常量Java内部加载/",
-      "02_闲聊力扣算法第一题/",
-      "04_可重入锁理论/",
-      "05_LockSupport是什么/",
-      "06_waitNotify限制/",
-      "07_awaitSignal限制/",
-      "08_LockSupport方法介绍/",
-      "09_AbstractQueuedSynchronizer之_AQS/",
-      "10_Spring/",
-      "11_redis/",
-      "12_集群高并发情况下如何保证分布式唯一全局Id生成/"
+      "one",
+      "two",
+      "ReentrantLock/",
+      "LockSupport/",
+      "WaitNotify/",
+      "await-signal",
+      "LockSupport/",
+      "AQS/",
+      "Spring/",
+      "Redis/",
+      "UUID/"
     ],
 
   },
