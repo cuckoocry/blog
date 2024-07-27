@@ -1,0 +1,1337 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="generator" content="VuePress 2.0.0-rc.14" />
+    <meta name="theme" content="VuePress Theme Hope 2.0.0-rc.52" />
+    <style>
+      html {
+        background: var(--bg-color, #fff);
+      }
+
+      html[data-theme="dark"] {
+        background: var(--bg-color, #1d1e1f);
+      }
+
+      body {
+        background: var(--bg-color);
+      }
+    </style>
+    <script>
+      const userMode = localStorage.getItem("vuepress-theme-hope-scheme");
+      const systemDarkMode =
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+      if (userMode === "dark" || (userMode !== "light" && systemDarkMode)) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    </script>
+    <meta property="og:url" content="https://mister-hope.github.io/study-notes/shangguigu-three/Redis/"><meta property="og:site_name" content="博客演示"><meta property="og:title" content="Redis"><meta property="og:description" content="1、Redis 6.0.8 笔记参考：https://blog.csdn.net/oneby1314/article/details/113789412 1.1、Redis 6.0.8 版本 官网地址 官网地址：https://redis.io/ 中文官网地址：http://www.redis.cn/ TODO 图片太多，后期替换删掉 为什么要使用 R..."><meta property="og:type" content="article"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2024-07-27T14:24:55.000Z"><meta property="article:author" content="樱宁"><meta property="article:tag" content="redis"><meta property="article:published_time" content="2023-03-11T00:00:00.000Z"><meta property="article:modified_time" content="2024-07-27T14:24:55.000Z"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Redis","image":[""],"datePublished":"2023-03-11T00:00:00.000Z","dateModified":"2024-07-27T14:24:55.000Z","author":[{"@type":"Person","name":"樱宁","url":"https://mister-hope.com"}]}</script><title>Redis | 博客演示</title><meta name="description" content="1、Redis 6.0.8 笔记参考：https://blog.csdn.net/oneby1314/article/details/113789412 1.1、Redis 6.0.8 版本 官网地址 官网地址：https://redis.io/ 中文官网地址：http://www.redis.cn/ TODO 图片太多，后期替换删掉 为什么要使用 R...">
+    <link rel="stylesheet" href="/assets/css/styles.5a20b7f1.css">
+    <link rel="preload" href="/assets/js/runtime~app.5b72abc4.js" as="script"><link rel="preload" href="/assets/css/styles.5a20b7f1.css" as="style"><link rel="preload" href="/assets/js/4438.2d872995.js" as="script"><link rel="preload" href="/assets/js/app.fca90c02.js" as="script">
+    <link rel="prefetch" href="/assets/js/study-notes_heima-java-bagu_concurrent-programming_more.html.44702e7d.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_heima-java-bagu_JVM_index.html.0efa9a79.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-three_AQS_index.html.e8925a07.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_heima-java-bagu_concurrent-programming_index.html.4d7af3a8.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_heima-java-bagu_collection_more.html.d94fda82.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_heima-java-bagu_enterprise-scenarios_design-patterns.html.99206936.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-three_Spring_index.html.add3056f.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-three_Redis_index.html.d3344801.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_heima-java-bagu_collection_index.html.70f5fcd4.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_ThreadPool_index.html.c8cf2874.js" as="script"><link rel="prefetch" href="/assets/js/problem-record_merge-pdf.html.f4d6c84a.js" as="script"><link rel="prefetch" href="/assets/js/problem-record_miscellaneous-notes.html.21c3dc64.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_BlockingQueue_index.html.d629dd9f.js" as="script"><link rel="prefetch" href="/assets/js/problem-record_delete-more-iif.html.dcd3d41c.js" as="script"><link rel="prefetch" href="/assets/js/photo-swipe.8b913169.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_JVM_six.html.094c7d11.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_volatile_two.html.bb3511d4.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_JVM_four.html.3f2c9751.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_ABA_index.html.9fe31448.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_heima-java-bagu_Redis_more.html.564b6d68.js" as="script"><link rel="prefetch" href="/assets/js/problem-record_HTTPInputStreamExample.html.291138fc.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-three_UUID_index.html.bc57336f.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_lock_one.html.fe3951a9.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_heima-java-bagu_Redis_index.html.77f67344.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_JVM_three.html.8f86034a.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_JVM_five.html.4fcca354.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_lock_three.html.ae2e55e6.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_heima-java-bagu_MySQL_index.html.4f63c31a.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_Linux_index.html.69eb62fc.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_heima-java-bagu_Microservices_more.html.5bbe5a11.js" as="script"><link rel="prefetch" href="/assets/js/problem-record_idea-template.html.0e7ed19b.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_ArrayList_index.html.a4d5b070.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_heima-java-bagu_frame_spring_index.html.a913830b.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_heima-java-bagu_MySQL_more.html.bd03c002.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_volatile_four.html.c676bb21.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-three_await-signal.html.612218cb.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-three_two.html.6c160b41.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_Synchronized-Lock_index.html.c01623b1.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_heima-java-bagu_message-middleware_more.html.24f9a684.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_heima-java-bagu_enterprise-scenarios_technical-scenarios.html.6ee2d2ca.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-three_WaitNotify_index.html.002191dd.js" as="script"><link rel="prefetch" href="/assets/js/demo_markdown.html.17315964.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_volatile_one.html.cd6f9164.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_SiSuo_index.html.25c16585.js" as="script"><link rel="prefetch" href="/assets/js/problem-record_github-tips.html.45eb8c2d.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_CAS_index.html.f83ccc37.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-three_ReentrantLock_index.html.78ef0e04.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_heima-java-bagu_frame_mybatis_index.html.890ae91f.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_heima-java-bagu_frame_index.html.61b10c18.js" as="script"><link rel="prefetch" href="/assets/js/problem-record_redission.html.dba77a91.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_volatile_three.html.4e3cbb03.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-three_one.html.f673306d.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_lock_four.html.5ef77acb.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_CountDownLatch_CyclicBarrier_Semaphore_Semaphore.html.0602d954.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_CountDownLatch_CyclicBarrier_Semaphore_countDownLatch.html.2875e217.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_CountDownLatch_CyclicBarrier_Semaphore_CyclicBarrier.html.2259ed78.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_heima-java-bagu_Microservices_index.html.953468ab.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_JVM_two.html.b7b3983d.js" as="script"><link rel="prefetch" href="/assets/js/about-the-blogs_about-learn.html.fb8bf246.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-three_LockSupport_index.html.b83f948f.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_lock_six.html.bb2f6712.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_lock_two.html.7adb1bc1.js" as="script"><link rel="prefetch" href="/assets/js/interview-related_index.html.2f9a4b47.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_github_index.html.314f4a89.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_lock_five.html.720451f8.js" as="script"><link rel="prefetch" href="/assets/js/demo_page.html.1116df52.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_JVM_one.html.16666480.js" as="script"><link rel="prefetch" href="/assets/js/vue_basics.html.fa4efd2b.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-three_index.html.e2ee3552.js" as="script"><link rel="prefetch" href="/assets/js/demo_layout.html.84dc71ae.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_heima-java-bagu_index.html.09335278.js" as="script"><link rel="prefetch" href="/assets/js/index.html.18742562.js" as="script"><link rel="prefetch" href="/assets/js/about-the-blogs_about-blogs.html.724b1019.js" as="script"><link rel="prefetch" href="/assets/js/problem-record_tool.html.0bae5cd5.js" as="script"><link rel="prefetch" href="/assets/js/posts_tomato.html.6a6b26b0.js" as="script"><link rel="prefetch" href="/assets/js/problem-record_interview-transcripts.html.dff822ef.js" as="script"><link rel="prefetch" href="/assets/js/posts_cherry.html.2dad0c8f.js" as="script"><link rel="prefetch" href="/assets/js/posts_dragonfruit.html.fa47ac6e.js" as="script"><link rel="prefetch" href="/assets/js/interview-related_collection.html.ba1c0521.js" as="script"><link rel="prefetch" href="/assets/js/interview-related_java-thread.html.3bd61f44.js" as="script"><link rel="prefetch" href="/assets/js/interview-related_network.html.9f8f3a82.js" as="script"><link rel="prefetch" href="/assets/js/posts_strawberry.html.05ad5241.js" as="script"><link rel="prefetch" href="/assets/js/interview-related_javase.html.44e3823e.js" as="script"><link rel="prefetch" href="/assets/js/interview-related_rocketMQ.html.1c88ac7d.js" as="script"><link rel="prefetch" href="/assets/js/demo_disable.html.961880dd.js" as="script"><link rel="prefetch" href="/assets/js/interview-related_mybatis.html.e31769c4.js" as="script"><link rel="prefetch" href="/assets/js/interview-related_spring.html.a796f7a0.js" as="script"><link rel="prefetch" href="/assets/js/problem-record_idea-tool.html.76c207fb.js" as="script"><link rel="prefetch" href="/assets/js/interview-related_mysql.html.939eb4e9.js" as="script"><link rel="prefetch" href="/assets/js/interview-related_redis.html.6d063d92.js" as="script"><link rel="prefetch" href="/assets/js/interview-related_jvm.html.404f5b6d.js" as="script"><link rel="prefetch" href="/assets/js/intro.html.9ca9803d.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_heima-java-bagu_message-middleware_index.html.3e5badcd.js" as="script"><link rel="prefetch" href="/assets/js/vue_advanced.html.a8e01279.js" as="script"><link rel="prefetch" href="/assets/js/demo_index.html.b28b599a.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_index.html.fa20fa44.js" as="script"><link rel="prefetch" href="/assets/js/about-the-blogs_index.html.2f11972e.js" as="script"><link rel="prefetch" href="/assets/js/demo_encrypt.html.54689103.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_CountDownLatch_CyclicBarrier_Semaphore_index.html.9b6622e3.js" as="script"><link rel="prefetch" href="/assets/js/tag_linux诊断原因_index.html.0a6d9e1d.js" as="script"><link rel="prefetch" href="/assets/js/tag_垃圾收集器_index.html.3cb688bc.js" as="script"><link rel="prefetch" href="/assets/js/tag_java中的引用_index.html.5995c237.js" as="script"><link rel="prefetch" href="/assets/js/tag_pdf文件合并_index.html.bc1c3f86.js" as="script"><link rel="prefetch" href="/assets/js/category_代码实践_index.html.4523a108.js" as="script"><link rel="prefetch" href="/assets/js/category_使用指南_index.html.a2cecbe2.js" as="script"><link rel="prefetch" href="/assets/js/category_开发工具_index.html.987700f6.js" as="script"><link rel="prefetch" href="/assets/js/category_文件下载_index.html.d4054993.js" as="script"><link rel="prefetch" href="/assets/js/category_面试指南_index.html.0bffbb34.js" as="script"><link rel="prefetch" href="/assets/js/category_分布式锁_index.html.081e91a6.js" as="script"><link rel="prefetch" href="/assets/js/category_学习笔记_index.html.9c86f430.js" as="script"><link rel="prefetch" href="/assets/js/tag_使用指南_index.html.47dbeaa1.js" as="script"><link rel="prefetch" href="/assets/js/tag_页面配置_index.html.7d7a41f2.js" as="script"><link rel="prefetch" href="/assets/js/category_火龙果_index.html.e9f3cd23.js" as="script"><link rel="prefetch" href="/assets/js/category_线程池_index.html.9a8d21b8.js" as="script"><link rel="prefetch" href="/assets/js/tag_线程池_index.html.fc1c4865.js" as="script"><link rel="prefetch" href="/assets/js/category_vue系列_index.html.9a9d80e5.js" as="script"><link rel="prefetch" href="/assets/js/tag_countdownlatch_index.html.2c3abb29.js" as="script"><link rel="prefetch" href="/assets/js/tag_blockingqueue_index.html.649dcf57.js" as="script"><link rel="prefetch" href="/assets/js/tag_cyclicbarrier_index.html.05808cbe.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_heima-java-bagu_enterprise-scenarios_index.html.ef4bad5a.js" as="script"><link rel="prefetch" href="/assets/js/tag_aba问题_index.html.b6f09168.js" as="script"><link rel="prefetch" href="/assets/js/tag_synchronized_index.html.533a0a47.js" as="script"><link rel="prefetch" href="/assets/js/category_作者_index.html.eefa12a3.js" as="script"><link rel="prefetch" href="/assets/js/category_博客_index.html.7f0e0b27.js" as="script"><link rel="prefetch" href="/assets/js/category_指南_index.html.1f16aa62.js" as="script"><link rel="prefetch" href="/assets/js/category_水果_index.html.bfc9b2f4.js" as="script"><link rel="prefetch" href="/assets/js/category_草莓_index.html.32cf262d.js" as="script"><link rel="prefetch" href="/assets/js/category_蔬菜_index.html.fe9a4703.js" as="script"><link rel="prefetch" href="/assets/js/category_面试_index.html.fc55b74f.js" as="script"><link rel="prefetch" href="/assets/js/category_黑马_index.html.9744e9d5.js" as="script"><link rel="prefetch" href="/assets/js/category_樱桃_index.html.316a1760.js" as="script"><link rel="prefetch" href="/assets/js/category_redisson_index.html.18c343e1.js" as="script"><link rel="prefetch" href="/assets/js/tag_加密_index.html.aac7b549.js" as="script"><link rel="prefetch" href="/assets/js/tag_死锁_index.html.edd94779.js" as="script"><link rel="prefetch" href="/assets/js/tag_禁用_index.html.26d9aa79.js" as="script"><link rel="prefetch" href="/assets/js/tag_布局_index.html.086b2c55.js" as="script"><link rel="prefetch" href="/assets/js/tag_semaphore_index.html.44feb01c.js" as="script"><link rel="prefetch" href="/assets/js/tag_markdown_index.html.8da52909.js" as="script"><link rel="prefetch" href="/assets/js/tag_redisson_index.html.089c3916.js" as="script"><link rel="prefetch" href="/assets/js/tag_volatile_index.html.ae265cb3.js" as="script"><link rel="prefetch" href="/assets/js/category_python_index.html.a6bac493.js" as="script"><link rel="prefetch" href="/assets/js/category_github_index.html.9723e081.js" as="script"><link rel="prefetch" href="/assets/js/tag_github_index.html.d6434673.js" as="script"><link rel="prefetch" href="/assets/js/tag_spring_index.html.3bf4e094.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_index.html.2b402d87.js" as="script"><link rel="prefetch" href="/assets/js/category_code_index.html.2de6674f.js" as="script"><link rel="prefetch" href="/assets/js/category_idea_index.html.6da45def.js" as="script"><link rel="prefetch" href="/assets/js/tag_redis_index.html.5652fa7a.js" as="script"><link rel="prefetch" href="/assets/js/tag_圆_index.html.888e03b6.js" as="script"><link rel="prefetch" href="/assets/js/tag_大_index.html.ae9402cd.js" as="script"><link rel="prefetch" href="/assets/js/tag_小_index.html.2cc614f9.js" as="script"><link rel="prefetch" href="/assets/js/tag_红_index.html.15a3206e.js" as="script"><link rel="prefetch" href="/assets/js/tag_锁_index.html.22df98ae.js" as="script"><link rel="prefetch" href="/assets/js/category_juc_index.html.35253cb4.js" as="script"><link rel="prefetch" href="/assets/js/tag_lock_index.html.a4668342.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_volatile_index.html.879f5c9e.js" as="script"><link rel="prefetch" href="/assets/js/tag_aqs_index.html.bb1cad36.js" as="script"><link rel="prefetch" href="/assets/js/tag_cas_index.html.df97e753.js" as="script"><link rel="prefetch" href="/assets/js/tag_git_index.html.0fb775f0.js" as="script"><link rel="prefetch" href="/assets/js/tag_oom_index.html.09176866.js" as="script"><link rel="prefetch" href="/assets/js/tag_juc_index.html.a2a32cb4.js" as="script"><link rel="prefetch" href="/assets/js/404.html.9a9b6983.js" as="script"><link rel="prefetch" href="/assets/js/timeline_index.html.a20d6848.js" as="script"><link rel="prefetch" href="/assets/js/problem-record_index.html.09d6775b.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_lock_index.html.c0871872.js" as="script"><link rel="prefetch" href="/assets/js/category_index.html.3ec4a418.js" as="script"><link rel="prefetch" href="/assets/js/study-notes_shangguigu-second_JVM_index.html.e7d420b7.js" as="script"><link rel="prefetch" href="/assets/js/article_index.html.4e741e60.js" as="script"><link rel="prefetch" href="/assets/js/tag_index.html.8323a90f.js" as="script"><link rel="prefetch" href="/assets/js/star_index.html.c355cacf.js" as="script"><link rel="prefetch" href="/assets/js/posts_index.html.0542f8d5.js" as="script"><link rel="prefetch" href="/assets/js/vue_index.html.eceb7e95.js" as="script">
+  </head>
+  <body>
+    <div id="app"><!--[--><!--[--><!--[--><span tabindex="-1"></span><a href="#main-content" class="vp-skip-link sr-only">跳至主要內容</a><!--]--><div class="theme-container external-link-icon has-toc"><!--[--><header id="navbar" class="vp-navbar"><div class="vp-navbar-start"><button type="button" class="vp-toggle-sidebar-button" title="Toggle Sidebar"><span class="icon"></span></button><!----><!--[--><a class="route-link vp-brand" href="/"><img class="vp-nav-logo" src="https://theme-hope-assets.vuejs.press/logo.svg" alt><!----><span class="vp-site-name hide-in-pad">博客演示</span></a><!--]--><!----></div><div class="vp-navbar-center"><!----><!--[--><nav class="vp-nav-links"><div class="vp-nav-item hide-in-mobile"><a class="route-link auto-link" href="/" aria-label="首页"><!--[--><span class="font-icon icon fa-fw fa-sm fas fa-home" style=""></span><!--]-->首页<!----></a></div><div class="vp-nav-item hide-in-mobile"><a class="route-link route-link-active auto-link" href="/study-notes/" aria-label="学习笔记"><!--[--><span class="font-icon icon fa-fw fa-sm fas fa-note" style=""></span><!--]-->学习笔记<!----></a></div><div class="vp-nav-item hide-in-mobile"><a class="route-link auto-link" href="/interview-related/" aria-label="面试指南"><!--[--><span class="font-icon icon fa-fw fa-sm fas fa-pen-to-square" style=""></span><!--]-->面试指南<!----></a></div><div class="vp-nav-item hide-in-mobile"><a class="route-link auto-link" href="/about-the-blogs/" aria-label="博客相关"><!--[--><span class="font-icon icon fa-fw fa-sm fas fa-blog" style=""></span><!--]-->博客相关<!----></a></div><div class="vp-nav-item hide-in-mobile"><a class="route-link auto-link" href="/problem-record/" aria-label="笔记"><!--[--><span class="font-icon icon fa-fw fa-sm fas fa-eye" style=""></span><!--]-->笔记<!----></a></div><div class="vp-nav-item hide-in-mobile"><a class="route-link auto-link" href="/vue/" aria-label="Vue系列"><!--[--><span class="font-icon icon fa-fw fa-sm fas fa-VSue" style=""></span><!--]-->Vue系列<!----></a></div><div class="vp-nav-item hide-in-mobile"><a class="route-link auto-link" href="/posts/" aria-label="博文"><!--[--><span class="font-icon icon fa-fw fa-sm fas fa-pen-to-square" style=""></span><!--]-->博文<!----></a></div></nav><!--]--><!----></div><div class="vp-navbar-end"><!----><!--[--><!----><div class="vp-nav-item vp-action"><a class="vp-action-link" href="https://github.com/vuepress-theme-hope/vuepress-theme-hope" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg xmlns="http://www.w3.org/2000/svg" class="icon github-icon" viewBox="0 0 1024 1024" fill="currentColor" aria-label="github icon" name="github" style="width:1.25rem;height:1.25rem;vertical-align:middle;"><path d="M511.957 21.333C241.024 21.333 21.333 240.981 21.333 512c0 216.832 140.544 400.725 335.574 465.664 24.49 4.395 32.256-10.07 32.256-23.083 0-11.69.256-44.245 0-85.205-136.448 29.61-164.736-64.64-164.736-64.64-22.315-56.704-54.4-71.765-54.4-71.765-44.587-30.464 3.285-29.824 3.285-29.824 49.195 3.413 75.179 50.517 75.179 50.517 43.776 75.008 114.816 53.333 142.762 40.79 4.523-31.66 17.152-53.377 31.19-65.537-108.971-12.458-223.488-54.485-223.488-242.602 0-53.547 19.114-97.323 50.517-131.67-5.035-12.33-21.93-62.293 4.779-129.834 0 0 41.258-13.184 134.912 50.346a469.803 469.803 0 0 1 122.88-16.554c41.642.213 83.626 5.632 122.88 16.554 93.653-63.488 134.784-50.346 134.784-50.346 26.752 67.541 9.898 117.504 4.864 129.834 31.402 34.347 50.474 78.123 50.474 131.67 0 188.586-114.73 230.016-224.042 242.09 17.578 15.232 33.578 44.672 33.578 90.454v135.85c0 13.142 7.936 27.606 32.854 22.87C862.25 912.597 1002.667 728.747 1002.667 512c0-271.019-219.648-490.667-490.71-490.667z"></path></svg></a></div><div class="vp-nav-item hide-in-mobile"><button type="button" class="vp-outlook-button" tabindex="-1" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" class="icon outlook-icon" viewBox="0 0 1024 1024" fill="currentColor" aria-label="outlook icon" name="outlook"><path d="M224 800c0 9.6 3.2 44.8 6.4 54.4 6.4 48-48 76.8-48 76.8s80 41.6 147.2 0 134.4-134.4 38.4-195.2c-22.4-12.8-41.6-19.2-57.6-19.2C259.2 716.8 227.2 761.6 224 800zM560 675.2l-32 51.2c-51.2 51.2-83.2 32-83.2 32 25.6 67.2 0 112-12.8 128 25.6 6.4 51.2 9.6 80 9.6 54.4 0 102.4-9.6 150.4-32l0 0c3.2 0 3.2-3.2 3.2-3.2 22.4-16 12.8-35.2 6.4-44.8-9.6-12.8-12.8-25.6-12.8-41.6 0-54.4 60.8-99.2 137.6-99.2 6.4 0 12.8 0 22.4 0 12.8 0 38.4 9.6 48-25.6 0-3.2 0-3.2 3.2-6.4 0-3.2 3.2-6.4 3.2-6.4 6.4-16 6.4-16 6.4-19.2 9.6-35.2 16-73.6 16-115.2 0-105.6-41.6-198.4-108.8-268.8C704 396.8 560 675.2 560 675.2zM224 419.2c0-28.8 22.4-51.2 51.2-51.2 28.8 0 51.2 22.4 51.2 51.2 0 28.8-22.4 51.2-51.2 51.2C246.4 470.4 224 448 224 419.2zM320 284.8c0-22.4 19.2-41.6 41.6-41.6 22.4 0 41.6 19.2 41.6 41.6 0 22.4-19.2 41.6-41.6 41.6C339.2 326.4 320 307.2 320 284.8zM457.6 208c0-12.8 12.8-25.6 25.6-25.6 12.8 0 25.6 12.8 25.6 25.6 0 12.8-12.8 25.6-25.6 25.6C470.4 233.6 457.6 220.8 457.6 208zM128 505.6C128 592 153.6 672 201.6 736c28.8-60.8 112-60.8 124.8-60.8-16-51.2 16-99.2 16-99.2l316.8-422.4c-48-19.2-99.2-32-150.4-32C297.6 118.4 128 291.2 128 505.6zM764.8 86.4c-22.4 19.2-390.4 518.4-390.4 518.4-22.4 28.8-12.8 76.8 22.4 99.2l9.6 6.4c35.2 22.4 80 12.8 99.2-25.6 0 0 6.4-12.8 9.6-19.2 54.4-105.6 275.2-524.8 288-553.6 6.4-19.2-3.2-32-19.2-32C777.6 76.8 771.2 80 764.8 86.4z"></path></svg><div class="vp-outlook-dropdown"><!----></div></button></div><!----><!--]--><!----><button type="button" class="vp-toggle-navbar-button" aria-label="Toggle Navbar" aria-expanded="false" aria-controls="nav-screen"><span><span class="vp-top"></span><span class="vp-middle"></span><span class="vp-bottom"></span></span></button></div></header><!----><!--]--><!----><div class="toggle-sidebar-wrapper"><span class="arrow start"></span></div><aside id="sidebar" class="vp-sidebar"><!----><ul class="vp-sidebar-links"><li><section class="vp-sidebar-group"><button class="vp-sidebar-header clickable" type="button"><span class="font-icon icon fa-fw fa-sm fas fa-edit" style=""></span><span class="vp-sidebar-title">大厂面试第二季</span><span class="vp-arrow end"></span></button><!----></section></li><li><section class="vp-sidebar-group"><button class="vp-sidebar-header clickable active" type="button"><span class="font-icon icon fa-fw fa-sm fas fa-edit" style=""></span><span class="vp-sidebar-title">大厂面试第三季</span><span class="vp-arrow down"></span></button><ul class="vp-sidebar-links"><li><a class="route-link auto-link vp-sidebar-link" href="/study-notes/shangguigu-three/" aria-label="大厂面试题第三季"><!---->大厂面试题第三季<!----></a></li><li><a class="route-link auto-link vp-sidebar-link" href="/study-notes/shangguigu-three/one.html" aria-label="字符串常量Java内部加载"><!---->字符串常量Java内部加载<!----></a></li><li><a class="route-link auto-link vp-sidebar-link" href="/study-notes/shangguigu-three/two.html" aria-label="闲聊力扣算法第一题"><!---->闲聊力扣算法第一题<!----></a></li><li><a class="route-link auto-link vp-sidebar-link" href="/study-notes/shangguigu-three/ReentrantLock/" aria-label="可重入锁理论"><!---->可重入锁理论<!----></a></li><li><a class="route-link auto-link vp-sidebar-link" href="/study-notes/shangguigu-three/LockSupport/" aria-label="LockSupport"><!---->LockSupport<!----></a></li><li><a class="route-link auto-link vp-sidebar-link" href="/study-notes/shangguigu-three/WaitNotify/" aria-label="线程等待唤醒机制"><!---->线程等待唤醒机制<!----></a></li><li><a class="route-link auto-link vp-sidebar-link" href="/study-notes/shangguigu-three/await-signal.html" aria-label="await - signal限制"><!---->await - signal限制<!----></a></li><li><a class="route-link auto-link vp-sidebar-link" href="/study-notes/shangguigu-three/LockSupport/" aria-label="LockSupport"><!---->LockSupport<!----></a></li><li><a class="route-link auto-link vp-sidebar-link" href="/study-notes/shangguigu-three/AQS/" aria-label="AQS"><!---->AQS<!----></a></li><li><a class="route-link auto-link vp-sidebar-link" href="/study-notes/shangguigu-three/Spring/" aria-label="Spring"><!---->Spring<!----></a></li><li><a class="route-link route-link-active auto-link vp-sidebar-link active" href="/study-notes/shangguigu-three/Redis/" aria-label="Redis"><!---->Redis<!----></a></li><li><a class="route-link auto-link vp-sidebar-link" href="/study-notes/shangguigu-three/UUID/" aria-label="集群高并发情况下如何保证分布式唯一全局Id生成"><!---->集群高并发情况下如何保证分布式唯一全局Id生成<!----></a></li></ul></section></li><li><section class="vp-sidebar-group"><button class="vp-sidebar-header clickable" type="button"><span class="font-icon icon fa-fw fa-sm fas fa-edit" style=""></span><span class="vp-sidebar-title">JVM</span><span class="vp-arrow end"></span></button><!----></section></li><li><section class="vp-sidebar-group"><button class="vp-sidebar-header clickable" type="button"><span class="font-icon icon fa-fw fa-sm fas fa-network" style=""></span><span class="vp-sidebar-title">计算机网络</span><span class="vp-arrow end"></span></button><!----></section></li><li><section class="vp-sidebar-group"><button class="vp-sidebar-header clickable" type="button"><span class="font-icon icon fa-fw fa-sm fas fa-edit" style=""></span><span class="vp-sidebar-title">SpringBoot</span><span class="vp-arrow end"></span></button><!----></section></li><li><section class="vp-sidebar-group"><button class="vp-sidebar-header clickable" type="button"><span class="font-icon icon fa-fw fa-sm fas fa-edit" style=""></span><span class="vp-sidebar-title">SpringCloud</span><span class="vp-arrow end"></span></button><!----></section></li><li><section class="vp-sidebar-group"><button class="vp-sidebar-header clickable" type="button"><span class="font-icon icon fa-fw fa-sm fas fa-edit" style=""></span><span class="vp-sidebar-title">ElasticStack技术栈</span><span class="vp-arrow end"></span></button><!----></section></li><li><section class="vp-sidebar-group"><button class="vp-sidebar-header clickable" type="button"><span class="font-icon icon fa-fw fa-sm fas fa-edit" style=""></span><span class="vp-sidebar-title">RocketMQ</span><span class="vp-arrow end"></span></button><!----></section></li><li><section class="vp-sidebar-group"><button class="vp-sidebar-header clickable" type="button"><span class="font-icon icon fa-fw fa-sm fas fa-edit" style=""></span><span class="vp-sidebar-title">Redis</span><span class="vp-arrow end"></span></button><!----></section></li><li><section class="vp-sidebar-group"><button class="vp-sidebar-header clickable" type="button"><!----><span class="vp-sidebar-title">黑马Java八股</span><span class="vp-arrow end"></span></button><!----></section></li><li><a class="route-link auto-link vp-sidebar-link" href="/study-notes/spring-boot/" aria-label="SpringBoot常⻅⾯试题总结"><!---->SpringBoot常⻅⾯试题总结<!----></a></li><li><a class="route-link auto-link vp-sidebar-link" href="/study-notes/video-one/" aria-label="短期突击面试题"><!---->短期突击面试题<!----></a></li><li><a class="route-link auto-link vp-sidebar-link" href="/study-notes/written-test/" aria-label="尚硅谷50道面试题"><!---->尚硅谷50道面试题<!----></a></li></ul><!----></aside><!--[--><main id="main-content" class="vp-page"><!--[--><!----><!----><nav class="vp-breadcrumb disable"></nav><div class="vp-page-title"><h1><!---->Redis</h1><div class="page-info"><span class="page-author-info" aria-label="作者🖊" data-balloon-pos="up"><svg xmlns="http://www.w3.org/2000/svg" class="icon author-icon" viewBox="0 0 1024 1024" fill="currentColor" aria-label="author icon" name="author"><path d="M649.6 633.6c86.4-48 147.2-144 147.2-249.6 0-160-128-288-288-288s-288 128-288 288c0 108.8 57.6 201.6 147.2 249.6-121.6 48-214.4 153.6-240 288-3.2 9.6 0 19.2 6.4 25.6 3.2 9.6 12.8 12.8 22.4 12.8h704c9.6 0 19.2-3.2 25.6-12.8 6.4-6.4 9.6-16 6.4-25.6-25.6-134.4-121.6-240-243.2-288z"></path></svg><span><a class="page-author-item" href="https://mister-hope.com" target="_blank" rel="noopener noreferrer">樱宁</a></span><span property="author" content="樱宁"></span></span><!----><span class="page-date-info" aria-label="写作日期📅" data-balloon-pos="up"><svg xmlns="http://www.w3.org/2000/svg" class="icon calendar-icon" viewBox="0 0 1024 1024" fill="currentColor" aria-label="calendar icon" name="calendar"><path d="M716.4 110.137c0-18.753-14.72-33.473-33.472-33.473-18.753 0-33.473 14.72-33.473 33.473v33.473h66.993v-33.473zm-334.87 0c0-18.753-14.72-33.473-33.473-33.473s-33.52 14.72-33.52 33.473v33.473h66.993v-33.473zm468.81 33.52H716.4v100.465c0 18.753-14.72 33.473-33.472 33.473a33.145 33.145 0 01-33.473-33.473V143.657H381.53v100.465c0 18.753-14.72 33.473-33.473 33.473a33.145 33.145 0 01-33.473-33.473V143.657H180.6A134.314 134.314 0 0046.66 277.595v535.756A134.314 134.314 0 00180.6 947.289h669.74a134.36 134.36 0 00133.94-133.938V277.595a134.314 134.314 0 00-133.94-133.938zm33.473 267.877H147.126a33.145 33.145 0 01-33.473-33.473c0-18.752 14.72-33.473 33.473-33.473h736.687c18.752 0 33.472 14.72 33.472 33.473a33.145 33.145 0 01-33.472 33.473z"></path></svg><span><!----></span><meta property="datePublished" content="2023-03-11T00:00:00.000Z"></span><!----><span class="page-reading-time-info" aria-label="阅读时间⌛" data-balloon-pos="up"><svg xmlns="http://www.w3.org/2000/svg" class="icon timer-icon" viewBox="0 0 1024 1024" fill="currentColor" aria-label="timer icon" name="timer"><path d="M799.387 122.15c4.402-2.978 7.38-7.897 7.38-13.463v-1.165c0-8.933-7.38-16.312-16.312-16.312H256.33c-8.933 0-16.311 7.38-16.311 16.312v1.165c0 5.825 2.977 10.874 7.637 13.592 4.143 194.44 97.22 354.963 220.201 392.763-122.204 37.542-214.893 196.511-220.2 389.397-4.661 5.049-7.638 11.651-7.638 19.03v5.825h566.49v-5.825c0-7.379-2.849-13.981-7.509-18.9-5.049-193.016-97.867-351.985-220.2-389.527 123.24-37.67 216.446-198.453 220.588-392.892zM531.16 450.445v352.632c117.674 1.553 211.787 40.778 211.787 88.676H304.097c0-48.286 95.149-87.382 213.728-88.676V450.445c-93.077-3.107-167.901-81.297-167.901-177.093 0-8.803 6.99-15.793 15.793-15.793 8.803 0 15.794 6.99 15.794 15.793 0 80.261 63.69 145.635 142.01 145.635s142.011-65.374 142.011-145.635c0-8.803 6.99-15.793 15.794-15.793s15.793 6.99 15.793 15.793c0 95.019-73.789 172.82-165.96 177.093z"></path></svg><span>大约 59 分钟</span><meta property="timeRequired" content="PT59M"></span><span class="page-category-info" aria-label="分类🌈" data-balloon-pos="up"><svg xmlns="http://www.w3.org/2000/svg" class="icon category-icon" viewBox="0 0 1024 1024" fill="currentColor" aria-label="category icon" name="category"><path d="M148.41 106.992h282.176c22.263 0 40.31 18.048 40.31 40.31V429.48c0 22.263-18.047 40.31-40.31 40.31H148.41c-22.263 0-40.311-18.047-40.311-40.31V147.302c0-22.263 18.048-40.31 40.311-40.31zM147.556 553.478H429.73c22.263 0 40.311 18.048 40.311 40.31v282.176c0 22.263-18.048 40.312-40.31 40.312H147.555c-22.263 0-40.311-18.049-40.311-40.312V593.79c0-22.263 18.048-40.311 40.31-40.311zM593.927 106.992h282.176c22.263 0 40.31 18.048 40.31 40.31V429.48c0 22.263-18.047 40.31-40.31 40.31H593.927c-22.263 0-40.311-18.047-40.311-40.31V147.302c0-22.263 18.048-40.31 40.31-40.31zM730.22 920.502H623.926c-40.925 0-74.22-33.388-74.22-74.425V623.992c0-41.038 33.387-74.424 74.425-74.424h222.085c41.038 0 74.424 33.226 74.424 74.067v114.233c0 10.244-8.304 18.548-18.547 18.548s-18.548-8.304-18.548-18.548V623.635c0-20.388-16.746-36.974-37.33-36.974H624.13c-20.585 0-37.331 16.747-37.331 37.33v222.086c0 20.585 16.654 37.331 37.126 37.331H730.22c10.243 0 18.547 8.304 18.547 18.547 0 10.244-8.304 18.547-18.547 18.547z"></path></svg><!--[--><span class="page-category-item color5 clickable" role="navigation">学习笔记</span><!--]--><meta property="articleSection" content="学习笔记"></span><span class="page-tag-info" aria-label="标签🏷" data-balloon-pos="up"><svg xmlns="http://www.w3.org/2000/svg" class="icon tag-icon" viewBox="0 0 1024 1024" fill="currentColor" aria-label="tag icon" name="tag"><path d="M939.902 458.563L910.17 144.567c-1.507-16.272-14.465-29.13-30.737-30.737L565.438 84.098h-.402c-3.215 0-5.726 1.005-7.634 2.913l-470.39 470.39a10.004 10.004 0 000 14.164l365.423 365.424c1.909 1.908 4.42 2.913 7.132 2.913s5.223-1.005 7.132-2.913l470.39-470.39c2.01-2.11 3.014-5.023 2.813-8.036zm-240.067-72.121c-35.458 0-64.286-28.828-64.286-64.286s28.828-64.285 64.286-64.285 64.286 28.828 64.286 64.285-28.829 64.286-64.286 64.286z"></path></svg><!--[--><span class="page-tag-item color8 clickable" role="navigation">redis</span><!--]--><meta property="keywords" content="redis"></span></div><hr></div><div class="vp-toc-placeholder"><aside id="toc"><!----><div class="vp-toc-header">此页内容<button type="button" class="print-button" title="打印"><svg xmlns="http://www.w3.org/2000/svg" class="icon print-icon" viewBox="0 0 1024 1024" fill="currentColor" aria-label="print icon" name="print"><path d="M819.2 364.8h-44.8V128c0-17.067-14.933-32-32-32H281.6c-17.067 0-32 14.933-32 32v236.8h-44.8C145.067 364.8 96 413.867 96 473.6v192c0 59.733 49.067 108.8 108.8 108.8h44.8V896c0 17.067 14.933 32 32 32h460.8c17.067 0 32-14.933 32-32V774.4h44.8c59.733 0 108.8-49.067 108.8-108.8v-192c0-59.733-49.067-108.8-108.8-108.8zM313.6 160h396.8v204.8H313.6V160zm396.8 704H313.6V620.8h396.8V864zM864 665.6c0 25.6-19.2 44.8-44.8 44.8h-44.8V588.8c0-17.067-14.933-32-32-32H281.6c-17.067 0-32 14.933-32 32v121.6h-44.8c-25.6 0-44.8-19.2-44.8-44.8v-192c0-25.6 19.2-44.8 44.8-44.8h614.4c25.6 0 44.8 19.2 44.8 44.8v192z"></path></svg></button><div class="arrow end"></div></div><div class="vp-toc-wrapper"><ul class="vp-toc-list"><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level2" href="#_1、redis-6-0-8">1、Redis 6.0.8</a></li><li><ul class="vp-toc-list"><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_1-1、redis-6-0-8-版本">1.1、Redis 6.0.8 版本</a></li><!----><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_1-2、安装-redis-6-0-8">1.2、安装 Redis 6.0.8</a></li><!----><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_1-3、安装后的配置">1.3、安装后的配置</a></li><!----><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_1-4、redis-命令大全">1.4、Redis 命令大全</a></li><!----><!--]--></ul></li><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level2" href="#_2、redis-基本数据类型">2、Redis 基本数据类型</a></li><li><ul class="vp-toc-list"><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_2-1、8-大类型">2.1、8 大类型</a></li><!----><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_2-2、string">2.2、string</a></li><!----><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_2-3、hash">2.3、hash</a></li><!----><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_2-4、list">2.4、list</a></li><!----><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_2-5、set">2.5、set</a></li><!----><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_2-6、zset">2.6、zset</a></li><!----><!--]--></ul></li><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level2" href="#_3、redis-分布式锁">3、Redis 分布式锁</a></li><li><ul class="vp-toc-list"><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_3-1、分布式锁的面试题">3.1、分布式锁的面试题</a></li><!----><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_3-2、搭建超卖工程">3.2、搭建超卖工程</a></li><!----><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_3-3、测试-找茬">3.3、测试 &amp; 找茬</a></li><!----><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_3-4、分布式锁总结">3.4、分布式锁总结</a></li><!----><!--]--></ul></li><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level2" href="#_4、redis-缓存淘汰策略">4、Redis 缓存淘汰策略</a></li><li><ul class="vp-toc-list"><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_4-1、缓存淘汰策略的面试题">4.1、缓存淘汰策略的面试题</a></li><!----><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_4-2、redis-内存满了怎么办">4.2、redis 内存满了怎么办</a></li><!----><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_4-3、redis-缓存淘汰策略">4.3、redis 缓存淘汰策略</a></li><!----><!--]--></ul></li><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level2" href="#_5、redis-lru-算法">5、redis LRU 算法</a></li><li><ul class="vp-toc-list"><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_5-1、lru-算法简介">5.1、LRU 算法简介</a></li><!----><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_5-2、lru-算法题来源">5.2、LRU 算法题来源</a></li><!----><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_5-3、lru-算法设计思想">5.3、LRU 算法设计思想</a></li><!----><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#_5-4、lru-算法编码实现">5.4、LRU 算法编码实现</a></li><!----><!--]--><!--[--><li class="vp-toc-item"><a class="route-link vp-toc-link level3" href="#原理">原理</a></li><!----><!--]--></ul></li><!--]--></ul><div class="vp-toc-marker" style="top:-1.7rem;"></div></div><!----></aside></div><!----><div class="theme-hope-content"><h2 id="_1、redis-6-0-8" tabindex="-1"><a class="header-anchor" href="#_1、redis-6-0-8"><span>1、Redis 6.0.8</span></a></h2><blockquote><p>笔记参考：https://blog.csdn.net/oneby1314/article/details/113789412</p></blockquote><h3 id="_1-1、redis-6-0-8-版本" tabindex="-1"><a class="header-anchor" href="#_1-1、redis-6-0-8-版本"><span>1.1、Redis 6.0.8 版本</span></a></h3><blockquote><p><strong>官网地址</strong></p></blockquote><ol><li><p>官网地址：<a href="https://redis.io/" target="_blank" rel="noopener noreferrer">https://redis.io/</a></p></li><li><p>中文官网地址：<a href="http://www.redis.cn/" target="_blank" rel="noopener noreferrer">http://www.redis.cn/</a></p></li></ol><blockquote><p>TODO 图片太多，后期替换删掉 <strong>为什么要使用 Redis 6.0.8</strong></p></blockquote><p>Redis突然发布了紧急版本 6.0.8 ，之前消息称 6.0.7 被称作最后一个 6.x 版本，但 Redis 团队表示 6.0.8 版本升级迫切性等级为高：任何将 Redis 6.0.7 与 <a href="https://so.csdn.net/so/search?q=Sentinel&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener noreferrer">Sentinel</a> 或 CONFIG REWRITE 命令配合使用的人都会受到影响，应尽快升级。</p><figure><img src="/assets/img/24afba3710eecc8f2225fdec39063d40.6383b8a3.png" alt="image-20210126163514224" tabindex="0" loading="lazy"><figcaption>image-20210126163514224</figcaption></figure><hr><p>从官方给出的信息来看，估计是出现了Bug，具体更新的内容如下：</p><p><strong>1、Bug修复</strong></p><ol><li>CONFIG REWRITE在通过CONFIG设置<strong>oom-score-adj-values</strong>后，可以通过CONFIG设置或从配置文件中加载，会生成一个损坏的配置文件。将会导致Redis无法启动</li><li>修正MacOS上redis-cli --pipe的问题。</li><li>在不存在的密钥上，修复HKEYS/HVALS的RESP3响应。</li><li>各种小的错误修复</li></ol><p><strong>2、新功能</strong></p><ol><li>当设置为madvise时，移除THP警告。</li><li>允许在群集中只读副本上使用读命令进行EXEC。</li><li>在redis-cli-cluster调用命令中增加master/replicas选项。</li></ol><p><strong>3、模块化API</strong></p><p>添加RedisModule_ThreadSafeContextTryLock。</p><h3 id="_1-2、安装-redis-6-0-8" tabindex="-1"><a class="header-anchor" href="#_1-2、安装-redis-6-0-8"><span>1.2、安装 Redis 6.0.8</span></a></h3><blockquote><p><strong>参考资料</strong></p></blockquote><ol><li><a href="https://www.cnblogs.com/heqiuyong/p/10463334.html" target="_blank" rel="noopener noreferrer">Centos7安装Redis</a></li><li><a href="https://blog.csdn.net/qq_42021376/article/details/109260130" target="_blank" rel="noopener noreferrer">CentOS7.3环境下安装Redis 6.0.8 编译报错</a></li></ol><blockquote><p><strong>在 Linux 下安装 Redis 6.0.8 版本</strong></p></blockquote><p><strong>1、查看 gcc 版本</strong></p><p>由于 redis 是用 C 语言开发，安装之前必先确认是否安装 gcc 环境（<code>gcc -v</code>），如果没有安装，执行以下命令进行安装，我本机版本为 4.8.5，很明显不符合 redis 6.0.8 版本的要求</p><p><strong>注意</strong>：当你下载redis最新版本6.0.8的时候会发现<code>make</code>的时候会报错，简单来说就是最新版的redis用到了c11 ，你的系统gcc版本低了，系统自带gcc版本是4.8.5，只需要更新下gcc到5.4以上即可，同时编译redis时带上gcc版本的使用参数，不影响系统自带gcc！</p><pre><code>[heygo@localhost redis-6.0.8]$ gcc -v
+使用内建 specs。
+COLLECT_GCC=gcc
+COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-redhat-linux/4.8.5/lto-wrapper
+目标：x86_64-redhat-linux
+配置为：../configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=http://bugzilla.redhat.com/bugzilla --enable-bootstrap --enable-shared --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-linker-build-id --with-linker-hash-style=gnu --enable-languages=c,c++,objc,obj-c++,java,fortran,ada,go,lto --enable-plugin --enable-initfini-array --disable-libgcj --with-isl=/builddir/build/BUILD/gcc-4.8.5-20150702/obj-x86_64-redhat-linux/isl-install --with-cloog=/builddir/build/BUILD/gcc-4.8.5-20150702/obj-x86_64-redhat-linux/cloog-install --enable-gnu-indirect-function --with-tune=generic --with-arch_32=x86-64 --build=x86_64-redhat-linux
+线程模型：posix
+gcc 版本 4.8.5 20150623 (Red Hat 4.8.5-44) (GCC) 
+</code></pre><hr><p><strong>2、安装 gcc 环境</strong></p><p>使用 yum 更新 gcc，依次执行如下指令即可</p><pre><code>yum -y install centos-release-scl
+yum -y install devtoolset-9-gcc devtoolset-9-gcc-c++ devtoolset-9-binutils
+scl enable devtoolset-9 bash
+</code></pre><p>安装后再次使用 <code>gcc -v</code> 查看本机 gcc 版本</p><pre><code>[heygo@localhost redis-6.0.8]$ gcc -v
+Using built-in specs.
+COLLECT_GCC=gcc
+COLLECT_LTO_WRAPPER=/opt/rh/devtoolset-9/root/usr/libexec/gcc/x86_64-redhat-linux/9/lto-wrapper
+Target: x86_64-redhat-linux
+Configured with: ../configure --enable-bootstrap --enable-languages=c,c++,fortran,lto --prefix=/opt/rh/devtoolset-9/root/usr --mandir=/opt/rh/devtoolset-9/root/usr/share/man --infodir=/opt/rh/devtoolset-9/root/usr/share/info --with-bugurl=http://bugzilla.redhat.com/bugzilla --enable-shared --enable-threads=posix --enable-checking=release --enable-multilib --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-linker-build-id --with-gcc-major-version-only --with-linker-hash-style=gnu --with-default-libstdcxx-abi=gcc4-compatible --enable-plugin --enable-initfini-array --with-isl=/builddir/build/BUILD/gcc-9.3.1-20200408/obj-x86_64-redhat-linux/isl-install --disable-libmpx --enable-gnu-indirect-function --with-tune=generic --with-arch_32=x86-64 --build=x86_64-redhat-linux
+Thread model: posix
+gcc version 9.3.1 20200408 (Red Hat 9.3.1-2) (GCC) 
+</code></pre><hr><p><strong>3、下载并解压安装包</strong></p><p>使用 <code>wget</code> 命令下载 <code>.tar.gz</code> 压缩包（我的天，太慢了，下次找镜像），并使用 <code>tar</code> 指令将其解压</p><pre><code>wget http://download.redis.io/releases/redis-6.0.8.tar.gz
+tar -zxvf redis-6.0.8.tar.gz
+</code></pre><p><strong>4、执行编译</strong></p><p>下载以及解压的 Redis 安装包位置如图所示</p><p><code>cd</code> 切换到 redis 解压目录下，执行编译</p><pre><code>cd redis-6.0.8/
+make
+</code></pre><p><strong>5、安装 redis</strong></p><p>将 redis 安装到指定目录</p><pre><code>make install PREFIX=/usr/local/redis
+</code></pre><blockquote><p><strong>测试安装是否成功</strong></p></blockquote><p>切换到 redis 安装目录下</p><pre><code>cd /usr/local/redis/bin/
+</code></pre><p>启动 redis 服务端</p><pre><code>./redis-server
+</code></pre><p>通过 redis 客户端连接 redis 服务端</p><pre><code>./redis-cli -h 127.0.0.1 -p 6379
+</code></pre><p>能够通过客户端连接工具连接上 redis 服务器，则说明安装成功</p><figure><img src="/assets/img/a5baa77a4b087e96a406f2bea5295e5c.7cbdbf74.png" alt="image-20210124234956650" tabindex="0" loading="lazy"><figcaption>image-20210124234956650</figcaption></figure><blockquote><p><strong>查看 redis 版本</strong></p></blockquote><p>1、在 Linux 命令行下：在 redis 安装目录下执行 <code>redis-server -version</code> 命令</p><figure><img src="/assets/img/b16aa21090e64bd6ccdbab58e78db6f5.334e55de.png" alt="image-20210124235611841" tabindex="0" loading="lazy"><figcaption>image-20210124235611841</figcaption></figure><p>2、在 redis 命令行下：执行 <code>info</code> 命令</p><figure><img src="/assets/img/59dbaf6cd24c579ea268a2c59e9c55e6.402c67f6.png" alt="image-20210124235228022" tabindex="0" loading="lazy"><figcaption>image-20210124235228022</figcaption></figure><h3 id="_1-3、安装后的配置" tabindex="-1"><a class="header-anchor" href="#_1-3、安装后的配置"><span>1.3、安装后的配置</span></a></h3><blockquote><p><strong>设置 redis 服务后台运行</strong></p></blockquote><p>从 redis 的源码目录中复制 redis.conf 到 redis 的安装目录</p><pre><code>cp redis-6.0.8/redis.conf /usr/local/redis/bin/
+</code></pre><p>使用 vim 编辑器编辑 redis.conf 配置文件</p><pre><code>vim /usr/local/redis/bin/redis.conf
+</code></pre><p>修改 redis.conf 文件，把 <code>daemonize no</code> 改为 <code>daemonize yes</code></p><figure><img src="/assets/img/8edb107c6732977f40d1c6cf45cf1b11.60e9bc51.png" alt="image-20210124233439884" tabindex="0" loading="lazy"><figcaption>image-20210124233439884</figcaption></figure><blockquote><p><strong>设置 redis 开机自启动</strong></p></blockquote><p>使用 vim 编辑 <code>/etc/systemd/system/redis.service</code> 配置文件</p><pre><code>vim /etc/systemd/system/redis.service
+</code></pre><p>添加如下配置：</p><pre><code>[Unit]
+Description=redis-server
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/local/redis/bin/redis-server /usr/local/redis/bin/redis.conf
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+</code></pre><blockquote><p>我是docker安装的，访问入下：</p></blockquote><div class="language-shell line-numbers-mode" data-highlighter="shiki" data-ext="shell" data-title="shell" style="--shiki-light:#383A42;--shiki-dark:#abb2bf;--shiki-light-bg:#FAFAFA;--shiki-dark-bg:#282c34;"><pre class="shiki shiki-themes one-light one-dark-pro vp-code"><code><span class="line"><span style="--shiki-light:#A0A1A7;--shiki-dark:#7F848E;--shiki-light-font-style:italic;--shiki-dark-font-style:italic;">#1、进入redis容器：</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">docker</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> exec</span><span style="--shiki-light:#986801;--shiki-dark:#D19A66;"> -it</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;"> [pid] bash</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#A0A1A7;--shiki-dark:#7F848E;--shiki-light-font-style:italic;--shiki-dark-font-style:italic;">#2、选择连接的redis ip和端口：</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">redis-cli</span><span style="--shiki-light:#986801;--shiki-dark:#D19A66;"> -h</span><span style="--shiki-light:#986801;--shiki-dark:#D19A66;"> 127.0.0.1</span><span style="--shiki-light:#986801;--shiki-dark:#D19A66;"> -p</span><span style="--shiki-light:#986801;--shiki-dark:#D19A66;"> 6379</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#A0A1A7;--shiki-dark:#7F848E;--shiki-light-font-style:italic;--shiki-dark-font-style:italic;">#3、输入 </span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">auth</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;"> [redis密码]</span></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="_1-4、redis-命令大全" tabindex="-1"><a class="header-anchor" href="#_1-4、redis-命令大全"><span>1.4、Redis 命令大全</span></a></h3><blockquote><p><strong><a href="http://www.redis.cn/commands.html" target="_blank" rel="noopener noreferrer">官网命令大全</a></strong></p></blockquote><p>直接搜索即可</p><figure><img src="/assets/img/bc0857fd16e54b47f2e2762d8c7405c7.f27edd88.png" alt="image-20210126222802272" tabindex="0" loading="lazy"><figcaption>image-20210126222802272</figcaption></figure><p><strong>注</strong>：命令不区分大小写，而key是区分大小写的，可使用 <code>help @类型名词</code> 查看</p><h2 id="_2、redis-基本数据类型" tabindex="-1"><a class="header-anchor" href="#_2、redis-基本数据类型"><span>2、Redis 基本数据类型</span></a></h2><h3 id="_2-1、8-大类型" tabindex="-1"><a class="header-anchor" href="#_2-1、8-大类型"><span>2.1、8 大类型</span></a></h3><blockquote><p><strong>以前是 5 种数据类型，现在是 8 种啦~</strong></p></blockquote><ol><li>String(字符类型)</li><li>Hash(散列类型)</li><li>List(列表类型)</li><li>Set(集合类型)</li><li>SortedSet(有序集合类型，简称zset)</li><li>Bitmap(位图)</li><li>HyperLogLog(统计)</li><li>GEO(地理)</li></ol><h3 id="_2-2、string" tabindex="-1"><a class="header-anchor" href="#_2-2、string"><span>2.2、string</span></a></h3><blockquote><p><strong>获取/设置单个值</strong></p></blockquote><p><strong>设置</strong>：<code>SET key value</code></p><p><strong>获取</strong>：<code>SET key</code></p><div class="language-shell line-numbers-mode" data-highlighter="shiki" data-ext="shell" data-title="shell" style="--shiki-light:#383A42;--shiki-dark:#abb2bf;--shiki-light-bg:#FAFAFA;--shiki-dark-bg:#282c34;"><pre class="shiki shiki-themes one-light one-dark-pro vp-code"><code><span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">set</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> name</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> jiang</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">OK</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">get</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> name</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">&quot;jiang&quot;</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt;</span></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><hr><p><strong>注意事项</strong>：执行 redis 指令可能会出现如下错误：(error) MISCONF Redis is configured to save RDB snapshots, but it is currently not able to persist on disk. Commands that may modify the data set are disabled, because this instance is configured to report errors during writes if RDB snapshotting fails (stop-writes-on-bgsave-error option). Please check the Redis logs for details about the RDB error.</p><p><strong>原因分析</strong>：究其原因是因为强制把 redis 快照关闭了导致不能持久化的问题，在网上查了一些相关解决方案，通过 stop-writes-on-bgsave-error 值设置为 no 即可避免这种问题。</p><p><strong>解决方案一</strong>：通过 redis 命令行修改，在 redis 命令行执行 <code>config set stop-writes-on-bgsave-error no</code> 指令</p><p><strong>解决方案二</strong>：直接修改 redis.conf 配置文件，使用 vim 编辑器打开 redis-server 配置的 redis.conf 文件，然后使用快捷匹配模式：/stop-writes-on-bgsave-error 定位到 stop-writes-on-bgsave-error 字符串所在位置，接着把后面的 yes 设置为 no 即可。</p><blockquote><p><strong>同时设置/获取多个键值</strong></p></blockquote><p><strong>设置</strong>：<code>MSET key value [key value ....]</code></p><p><strong>获取</strong>：<code>MGET key [key ....]</code></p><div class="language-shell line-numbers-mode" data-highlighter="shiki" data-ext="shell" data-title="shell" style="--shiki-light:#383A42;--shiki-dark:#abb2bf;--shiki-light-bg:#FAFAFA;--shiki-dark-bg:#282c34;"><pre class="shiki shiki-themes one-light one-dark-pro vp-code"><code><span class="line"></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">mset</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> k1</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> v1</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> k2</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> v2</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> k3</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> v3</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">OK</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">mget</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> k1</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> k2</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> k3</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">1</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">) </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">&quot;v1&quot;</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">2</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">) </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">&quot;v2&quot;</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">3</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">) </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">&quot;v3&quot;</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt;</span></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><blockquote><p><strong>数值增减</strong></p></blockquote><p><strong>递增数字</strong>：<code>INCR key</code></p><p><strong>增加指定的整数</strong>：<code>INCRBY key increment</code></p><p><strong>递减数值</strong>：<code>DECR key</code></p><p><strong>减少指定的整数</strong>：<code>DECRBY key decrement</code></p><div class="language-shell line-numbers-mode" data-highlighter="shiki" data-ext="shell" data-title="shell" style="--shiki-light:#383A42;--shiki-dark:#abb2bf;--shiki-light-bg:#FAFAFA;--shiki-dark-bg:#282c34;"><pre class="shiki shiki-themes one-light one-dark-pro vp-code"><code><span class="line"></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">INCR</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> a1</span></span>
+<span class="line"><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">(</span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">integer</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">) </span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">1</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">INCR</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> a1</span></span>
+<span class="line"><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">(</span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">integer</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">) </span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">2</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">INCR</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> a1</span></span>
+<span class="line"><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">(</span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">integer</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">) </span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">3</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">INCR</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> a1</span></span>
+<span class="line"><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">(</span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">integer</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">) </span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">4</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">INCR</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> a1</span></span>
+<span class="line"><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">(</span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">integer</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">) </span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">5</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">decr</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> a1</span></span>
+<span class="line"><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">(</span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">integer</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">) </span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">4</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">incrby</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> a1</span><span style="--shiki-light:#986801;--shiki-dark:#D19A66;"> 5</span></span>
+<span class="line"><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">(</span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">integer</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">) </span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">9</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">decrby</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> a1</span><span style="--shiki-light:#986801;--shiki-dark:#D19A66;"> 3</span></span>
+<span class="line"><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">(</span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">integer</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">) </span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">6</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt;</span></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><blockquote><p><strong>获取字符串长度</strong></p></blockquote><p><strong>字符串长度</strong>：<code>STRLEN key</code></p><div class="language-shell line-numbers-mode" data-highlighter="shiki" data-ext="shell" data-title="shell" style="--shiki-light:#383A42;--shiki-dark:#abb2bf;--shiki-light-bg:#FAFAFA;--shiki-dark-bg:#282c34;"><pre class="shiki shiki-themes one-light one-dark-pro vp-code"><code><span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">strlen</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> name</span></span>
+<span class="line"><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">(</span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">integer</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">) </span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">5</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt;</span></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><blockquote><p><strong>分布式锁</strong></p></blockquote><p><strong>设置分布式锁</strong>：<code>set key value [Ex seconds][PX milliseconds][NX|XX]</code></p><p><strong>参数解释</strong>：</p><ol><li>EX：key 在多少秒之后过期</li><li>PX：key 在多少毫秒之后过期</li><li>NX：当 key 不存在的时候，才创建 key，效果等同于<code>setnx key value</code></li><li>XX：当 key 存在的时候，覆盖 key</li></ol><div class="language-shell line-numbers-mode" data-highlighter="shiki" data-ext="shell" data-title="shell" style="--shiki-light:#383A42;--shiki-dark:#abb2bf;--shiki-light-bg:#FAFAFA;--shiki-dark-bg:#282c34;"><pre class="shiki shiki-themes one-light one-dark-pro vp-code"><code><span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">set</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> k1</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> v1</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> EX</span><span style="--shiki-light:#986801;--shiki-dark:#D19A66;"> 10</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">OK</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">ttl</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> k1</span></span>
+<span class="line"><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">(</span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">integer</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">) </span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">6</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">get</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> l1</span></span>
+<span class="line"><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">(</span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">nil</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">)</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt;</span></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><blockquote><p><strong>应用场景</strong></p></blockquote><p><strong>1、商品编号、订单号采用 INCR 命令生成</strong></p><p><strong>2、文章阅读量、点赞数和在看数</strong></p><figure><img src="/assets/img/7da43d9cdde95fff5b50c4119302fddc.7ce491e8.png" alt="image-20210127235408326" tabindex="0" loading="lazy"><figcaption>image-20210127235408326</figcaption></figure><h3 id="_2-3、hash" tabindex="-1"><a class="header-anchor" href="#_2-3、hash"><span>2.3、hash</span></a></h3><blockquote><p><strong>获取/设置单个字段值</strong></p></blockquote><p>redis 中的 hash 类似于 java 中的 <code>Map&lt;String,Map&lt;Object,object&gt;&gt;</code> 数据结构，即以字符串为 key，以 Map 对象为 value</p><p><strong>添加一个 hash 对象</strong>：<code>HSET key field value</code></p><p><strong>获取 hash 对象的字段值</strong>：<code>HGET key field</code></p><div class="language-shell line-numbers-mode" data-highlighter="shiki" data-ext="shell" data-title="shell" style="--shiki-light:#383A42;--shiki-dark:#abb2bf;--shiki-light-bg:#FAFAFA;--shiki-dark-bg:#282c34;"><pre class="shiki shiki-themes one-light one-dark-pro vp-code"><code><span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">hset</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> person</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> oneby</span><span style="--shiki-light:#986801;--shiki-dark:#D19A66;"> 25</span></span>
+<span class="line"><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">(</span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">integer</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">) </span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">1</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">hget</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> person</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> oneby</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">&quot;25&quot;</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt;</span></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><blockquote><p><strong>同时设置/获取多个字段值</strong></p></blockquote><p><strong>添加多个 hash 对象</strong>：<code>HMSET key field value [field value ...]</code></p><p><strong>获取多个 hash 对象的字段值</strong>：<code>HMGET key field [field ....]</code></p><div class="language-shell line-numbers-mode" data-highlighter="shiki" data-ext="shell" data-title="shell" style="--shiki-light:#383A42;--shiki-dark:#abb2bf;--shiki-light-bg:#FAFAFA;--shiki-dark-bg:#282c34;"><pre class="shiki shiki-themes one-light one-dark-pro vp-code"><code><span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">hmset</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> persion</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> score</span><span style="--shiki-light:#986801;--shiki-dark:#D19A66;"> 98</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> brith</span><span style="--shiki-light:#986801;--shiki-dark:#D19A66;"> 20201010</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">OK</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt; </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">hgetall</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> persion</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">1</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">) </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">&quot;score&quot;</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">2</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">) </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">&quot;98&quot;</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">3</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">) </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">&quot;brith&quot;</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">4</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">) </span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">&quot;20201010&quot;</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">127.0.0.1:6379</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">&gt;</span></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><blockquote><p><strong>获取所有字段值</strong></p></blockquote><p>获取 key 所对应所有的 hash 对象：<code>HGETALL key</code></p><figure><img src="/assets/img/ffcc3ef64ee95628f23f5140e1b1b699.fc1f9c48.png" alt="image-20210128205025070" tabindex="0" loading="lazy"><figcaption>image-20210128205025070</figcaption></figure><blockquote><p><strong>获取某个 key 内的全部数量</strong></p></blockquote><p>获取 key 对应的所有 hash 对象个数：<code>HLEN key</code></p><figure><img src="/assets/img/352ab1f790c84068478b02117fed96d8.a1af99e5.png" alt="image-20210128205524945" tabindex="0" loading="lazy"><figcaption>image-20210128205524945</figcaption></figure><blockquote><p><strong>判断是否存在</strong></p></blockquote><p>判断字段名为 field 的 hash 对象是否存在：<code>HEXISTS key field</code></p><figure><img src="/assets/img/83e89ecbc6e2d1df2063d83acbaff6b1.2c65cf5b.png" alt="image-20210128211618862" tabindex="0" loading="lazy"><figcaption>image-20210128211618862</figcaption></figure><blockquote><p><strong>删除一个 key</strong></p></blockquote><p>删除一个 hash 对象：<code>HDEL key</code></p><figure><img src="/assets/img/81fd91d767519b31f23a7b5e28bfb389.504efee3.png" alt="image-20210128205619662" tabindex="0" loading="lazy"><figcaption>image-20210128205619662</figcaption></figure><blockquote><p><strong>数值增减</strong></p></blockquote><p>如何 key 和 field 不存在，则初始值为 0，否则在之前的数值上递增：<code>HINCRBY key field increment</code></p><figure><img src="/assets/img/b9e802af5a3ea40d97418bd3c0c183d2.9d97719a.png" alt="image-20210128211850894" tabindex="0" loading="lazy"><figcaption>image-20210128211850894</figcaption></figure><blockquote><p><strong>应用场景</strong></p></blockquote><p>购物车早期版本，可在小中厂项目中使用</p><ol><li>新增商品：<code>hset shopcar:uid1024 334488 1</code></li><li>新增商品：<code>hset shopcar:uid1024 334477 1</code></li><li>增加商品数量：<code>hincrby shopcar:uid1024 334477 1</code></li><li>商品总数：<code>hlen shopcar:uid1024</code></li><li>全部选择：<code>hgetall shopcar:uid1024</code></li></ol><figure><img src="/assets/img/d1b66d90dfbaab24679e9684c1802d73.7e77ca8d.png" alt="image-20210128211421555" tabindex="0" loading="lazy"><figcaption>image-20210128211421555</figcaption></figure><h3 id="_2-4、list" tabindex="-1"><a class="header-anchor" href="#_2-4、list"><span>2.4、list</span></a></h3><p>与其说 list 是个集合，还不如说 list 是个双端队列</p><blockquote><p><strong>添加元素 &amp; 查看列表</strong></p></blockquote><ol><li>向 list 左边添加元素，如果 list 不存在则创建该 list：<code>LPUSH key value [value ...]</code></li><li>向 list 右边添加元素，如果 list 不存在则创建该 list：<code>RPUSH key value [value ....]</code></li><li>查看 list 中包含的元素：<code>LRANGE key start stop</code>，注：<code>LRANGE key 0 -1</code> 表示查看 list 中所有的元素</li></ol><figure><img src="/assets/img/7f580a6cf272354b90607944949877b2.31f85b3d.png" alt="image-20210128212718522" tabindex="0" loading="lazy"><figcaption>image-20210128212718522</figcaption></figure><blockquote><p><strong>删除元素</strong></p></blockquote><ol><li>从左边出队：<code>LPOP key</code></li><li>从右边出队：<code>RPOP key</code></li></ol><figure><img src="/assets/img/f6eb9f2358ddfab7abe98fa7f95e02cb.77fcf67b.png" alt="image-20210128213910671" tabindex="0" loading="lazy"><figcaption>image-20210128213910671</figcaption></figure><blockquote><p><strong>获取列表中元素的个数</strong></p></blockquote><p>查看 list 中包含几个元素：<code>LLEN key</code></p><figure><img src="/assets/img/239eb8c4809522426c2a475719283acd.64b3bf9d.png" alt="image-20210128212830391" tabindex="0" loading="lazy"><figcaption>image-20210128212830391</figcaption></figure><blockquote><p><strong>应用场景</strong></p></blockquote><p>微信文章订阅公众号</p><ol><li>比如我订阅了如下两个公众号，他们发布了两篇文章，文章 ID 分别为 666 和 888，可以通过执行 <code>LPUSH likearticle:onebyId 666 888</code> 命令推送给我</li><li>查看我自己的号订阅的全部文章，类似分页，下面0~10就是一次显示10条：<code>LPUSH likearticle:onebyId 0 10</code></li></ol><figure><img src="/assets/img/6603fe66ea435add800602cc3afc4b6a.862e297d.png" alt="image-20210128213123998" tabindex="0" loading="lazy"><figcaption>image-20210128213123998</figcaption></figure><h3 id="_2-5、set" tabindex="-1"><a class="header-anchor" href="#_2-5、set"><span>2.5、set</span></a></h3><blockquote><p><strong>添加元素 &amp; 删除元素 &amp; 查看元素</strong></p></blockquote><ol><li>向 set 中添加一个元素：<code>SADD key member[member ...]</code></li><li>删除 set 中的指定元素：<code>SREM key member [member ...]</code></li><li>获取 set 中的所有元素：<code>SMEMBERS key</code></li></ol><figure><img src="/assets/img/86aba03de0215b26efc68004cc085a8e.dbd32079.png" alt="image-20210128214344652" tabindex="0" loading="lazy"><figcaption>image-20210128214344652</figcaption></figure><blockquote><p><strong>判断元素是否在集合中</strong></p></blockquote><p>判断指定元素是否在 set 中：<code>SISMEMBER key member</code></p><figure><img src="/assets/img/dcb378d391f6df59419ff51cf4b06472.6bf18333.png" alt="image-20210128224102125" tabindex="0" loading="lazy"><figcaption>image-20210128224102125</figcaption></figure><blockquote><p><strong>获取集合中的元素个数</strong></p></blockquote><p>获取 set 中元素的个数：<code>SCARD key</code></p><figure><img src="/assets/img/8cdf34a73521918eb0e3b4aacb78e265.884d5740.png" alt="image-20210128224221240" tabindex="0" loading="lazy"><figcaption>image-20210128224221240</figcaption></figure><blockquote><p><strong>从集合中随机弹出元素</strong></p></blockquote><ol><li>从集合中随机弹出元素，元素不删除：<code>SRANDMEMBER key [数字]</code></li><li>从集合中随机弹出一个元素，出几个删几个：<code>SPOP key[数字]</code></li></ol><figure><img src="/assets/img/faa0e20de00b6ebed72e61e48be9cb6b.0cf8dcf1.png" alt="image-20210128225505073" tabindex="0" loading="lazy"><figcaption>image-20210128225505073</figcaption></figure><blockquote><p><strong>集合运算</strong></p></blockquote><ol><li>集合的差集运算A-B：<code>SDIFF key [key ...]</code>，属于A但不属于B的元素构成的集合</li><li>集合的交集运算A∩B：<code>SINTER key [key ...]</code>，属于A同时也属于B的共同拥有的元素构成的集合</li><li>集合的并集运算AUB：<code>SUNION key [key ...]</code>，属于A或者属于B的元素合并后的集合</li></ol><figure><img src="/assets/img/46eb101fdddd1aebf2e6562ba16b12c2.a729f28f.png" alt="image-20210128224623392" tabindex="0" loading="lazy"><figcaption>image-20210128224623392</figcaption></figure><blockquote><p><strong>应用场景</strong></p></blockquote><p><strong>1、微信抽奖小程序</strong></p><ol><li>如果某个用户点击了立即参与按钮，则执行 <code>sadd key useId</code> 命令将该用户 ID 添加至 set 中</li><li>显示已经有多少人参与了抽奖：<code>SCARD key</code></li><li>抽奖(从set中任意选取N个中奖人) <ol><li>随机抽奖2个人，元素不删除：<code>SRANDMEMBER key 2</code></li><li>随机抽奖3个人，元素会删除：<code>SPOP key 3</code></li></ol></li></ol><figure><img src="/assets/img/e4b8bef2d792bfc0236812aea3b7f029.8bf6b4d9.png" alt="image-20210128225210254" tabindex="0" loading="lazy"><figcaption>image-20210128225210254</figcaption></figure><hr><p><strong>2、微信朋友圈点赞</strong></p><ol><li>新增点赞：<code>SADD pub:msgID 点赞用户ID1 点赞用户ID2</code></li><li>取消点赞：<code>SREM pub:msgID 点赞用户ID</code></li><li>展现所有点赞过的用户：<code>SMEMBERS pub:msgID</code></li><li>点赞用户数统计，就是常见的点赞红色数字：<code>SCARD pub.msgID</code></li><li>判断某个朋友是否对楼主点赞过：<code>SISMEMBER pub:msgID 用户ID</code></li></ol><figure><img src="/assets/img/dbcc8ec2d6c163169a2cba99af38b542.894430ed.png" alt="image-20210128230328171" tabindex="0" loading="lazy"><figcaption>image-20210128230328171</figcaption></figure><hr><p><strong>3、Bilibili 共同关注的好友</strong></p><p>共同关注的好友：<code>SINTER 我关注的人 Ta关注的人</code></p><figure><img src="/assets/img/879b3fce7f6204feec766738d9ec5a60.0b6b9581.png" alt="image-20210128230413453" tabindex="0" loading="lazy"><figcaption>image-20210128230413453</figcaption></figure><hr><p><strong>4、QQ内推可能认识的人</strong></p><p>QQ 共同好友：<code>SINTER 我的好友 Ta的好友</code></p><figure><img src="/assets/img/e89122a368917a5fcd4bf0675efcdeb5.21c72632.png" alt="image-20210128230723385" tabindex="0" loading="lazy"><figcaption>image-20210128230723385</figcaption></figure><h3 id="_2-6、zset" tabindex="-1"><a class="header-anchor" href="#_2-6、zset"><span>2.6、zset</span></a></h3><p>形象理解 zset：向有序集合中加入一个元素和该元素的分数</p><blockquote><p><strong>添加元素 &amp; 删除元素 &amp; 获取元素</strong></p></blockquote><ol><li>向 zset 中添加一个带分数（权值）的元素：<code>ZADD key score member [score member ...]</code></li><li>删除 zset 中的指定元素：<code>ZREM key member [member ...]</code></li><li>返回索引从start到stop之间的所有元素，并按照元素分数从小到大的顺序：<code>ZRANGE key start stop [WITHSCORES]</code>，注：如果想要获取所有元素并且从小到大排序，可写为 <code>ZRANGE key 0 -1</code></li></ol><figure><img src="/assets/img/35176a1cb1602f9bb0a44fe7e187082e.765fa4d9.png" alt="image-20210128231731769" tabindex="0" loading="lazy"><figcaption>image-20210128231731769</figcaption></figure><blockquote><p><strong>获取元素的分数</strong></p></blockquote><p>获取指定元素的分数：<code>ZSCORE key member</code></p><figure><img src="/assets/img/eb712eda46427d7529b260e26a637dd6.3995fb5a.png" alt="image-20210128231849177" tabindex="0" loading="lazy"><figcaption>image-20210128231849177</figcaption></figure><blockquote><p><strong>获取指定分数范围的元素</strong></p></blockquote><p>获取指定分数范围的元素：<code>ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT offset count]</code></p><figure><img src="/assets/img/a67748e43f96fde8e87e0a103e2f8690.b2f579b2.png" alt="image-20210128232342877" tabindex="0" loading="lazy"><figcaption>image-20210128232342877</figcaption></figure><blockquote><p><strong>获取集合中元素的数量</strong></p></blockquote><p>获取集合中元素的数量：<code>ZCARD key</code></p><figure><img src="/assets/img/bb317a5f15255d035058455688289299.2d9c7fb6.png" alt="image-20210128232512729" tabindex="0" loading="lazy"><figcaption>image-20210128232512729</figcaption></figure><blockquote><p><strong>获得指定分数范围内的元素个数</strong></p></blockquote><p>获得指定分数范围内的元素个数：<code>ZCOUNT key min max</code></p><figure><img src="/assets/img/204cf6417f93af82056167b1172862e4.7d2410b8.png" alt="image-20210128232651755" tabindex="0" loading="lazy"><figcaption>image-20210128232651755</figcaption></figure><blockquote><p><strong>增加某个元素的分数</strong></p></blockquote><p>增加某个元素的分数：<code>ZINCRBY key increment member</code></p><figure><img src="/assets/img/3b83d15a8f5b36f835dc73674b3a60cb.a4c0e096.png" alt="image-20210128232819305" tabindex="0" loading="lazy"><figcaption>image-20210128232819305</figcaption></figure><blockquote><p><strong>按照排名范围删除元素</strong></p></blockquote><p>按照排名范围删除元素：<code>ZREMRANGEBYRANK key start stop</code></p><figure><img src="/assets/img/2b5477fea034095745d5dc30065028f8.4bd5a6f3.png" alt="image-20210128233059793" tabindex="0" loading="lazy"><figcaption>image-20210128233059793</figcaption></figure><blockquote><p><strong>获取元素的排名</strong></p></blockquote><p>从小到大：<code>ZRANK key member</code></p><p>从大到小：<code>ZREVRANK key member</code></p><figure><img src="/assets/img/2818e8b6901ff314c33cbcd192d15ecc.618cf025.png" alt="image-20210128233322102" tabindex="0" loading="lazy"><figcaption>image-20210128233322102</figcaption></figure><blockquote><p><strong>应用场景</strong></p></blockquote><p><strong>1、根据商品销售对商品进行排序显示</strong></p><p>思路:定义商品销售排行榜(sorted set集合)，key为goods:sellsort，分数为商品销售数量。</p><ol><li>商品编号1001的销量是9，商品编号1002的销量是15：<code>ZADD goods:sellsort 9 1001 15 1002</code></li><li>有一个客户又买了2件商品1001，商品编号1001销量加2：<code>ZINCRBY goods:sellsort 2 1001</code></li><li>求商品销量前10名：<code>ZRANGE goods:sellsort 0 10 WITHSCORES</code></li></ol><figure><img src="/assets/img/414653aa0aa091a76a9e4c27d521d63c.78514892.png" alt="image-20210128233926925" tabindex="0" loading="lazy"><figcaption>image-20210128233926925</figcaption></figure><hr><p><strong>2、抖音热搜</strong></p><ol><li><p>点击视频增加播放量：<code>ZINCRBY hotvcr:20200919 1八佰</code>，<code>ZINCRBY hotvcr:20200919 15 八佰 2 花木兰</code></p></li><li><p>展示当日排行前10条：<code>ZREVRANGE hotvcr:20200919 0 9 WITHSCORES</code></p></li></ol><figure><img src="/assets/img/6f6411bd597f0901680f981c6361191a.e9925473.png" alt="image-20210128233458432" tabindex="0" loading="lazy"><figcaption>image-20210128233458432</figcaption></figure><h2 id="_3、redis-分布式锁" tabindex="-1"><a class="header-anchor" href="#_3、redis-分布式锁"><span>3、Redis 分布式锁</span></a></h2><blockquote><p><strong>面试官：中门来对狙</strong></p></blockquote><p>知道分布式锁吗？有哪些实现方案？ 你谈谈对redis分布式锁的理解， 删key的时候有什么问题？ 1、MySQL 2、zookeeper 3、redis</p><p>一般的互联公司用的redis实现。</p><h3 id="_3-1、分布式锁的面试题" tabindex="-1"><a class="header-anchor" href="#_3-1、分布式锁的面试题"><span>3.1、分布式锁的面试题</span></a></h3><blockquote><p><strong>分布式锁的常见面试题</strong></p></blockquote><ol><li><p>Redis除了拿来做缓存，你还见过基于Redis的什么用法?</p></li><li><p>Redis做分布式锁的时候有需要注意的问题?</p></li><li><p>如果是Redis是单点部署的，会带来什么问题? 那你准备怎么解决单点问题呢?</p></li><li><p>集群模式下，比如主从模式，有没有什么问题呢?</p></li><li><p>那你简单的介绍一下Redlock吧? 你简历上写redisson，你谈谈</p></li><li><p>Redis分布式锁如何续期?看门狗知道吗?</p></li></ol><h3 id="_3-2、搭建超卖工程" tabindex="-1"><a class="header-anchor" href="#_3-2、搭建超卖工程"><span>3.2、搭建超卖工程</span></a></h3><h4 id="_3-2-1、centos-固定-ip-地址" tabindex="-1"><a class="header-anchor" href="#_3-2-1、centos-固定-ip-地址"><span>3.2.1、CentOS 固定 IP 地址</span></a></h4><blockquote><p><strong>准备工作：CentOS 固定 IP 设置</strong></p></blockquote><p><strong>前言</strong>：本来不想配置，结果睡了一觉起来，CentOS 的 IP 地址就变了</p><hr><p><strong>参考资料</strong>：</p><ol><li><a href="https://www.cnblogs.com/lfhappy/p/10798400.html" target="_blank" rel="noopener noreferrer">centOS7虚拟机设置固定IP</a></li><li><a href="https://blog.csdn.net/sjhuangx/article/details/79618865" target="_blank" rel="noopener noreferrer">centos7设置静态IP地址</a></li></ol><hr><p><strong>1、设置虚拟机的网络连接方式为 NAT 模式</strong></p><figure><img src="/assets/img/a11a318ca8d15247d7f3dd12de2a88a4.6fa29ed3.png" alt="image-20210203100155618" tabindex="0" loading="lazy"><figcaption>image-20210203100155618</figcaption></figure><p><strong>2、配置虚拟机 NAT 模式的网络参数</strong></p><p>选择【编辑】–&gt;【虚拟网络编辑器】，点击【更改设置】</p><figure><img src="/assets/img/99dca919fa054dba43b004c6c4ad9573.ba98e8c7.png" alt="image-20210203100644717" tabindex="0" loading="lazy"><figcaption>image-20210203100644717</figcaption></figure><p>选择【NAT 模式】的 VMnet8</p><ol><li>取消勾选【使用本地DHCP服务将IP地址分配给虚拟机】，禁用自动分配 IP 地址的功能</li><li>设置【子网 IP】为 192.168.152.0</li><li>设置【子网掩码】为 255.255.255.0，表示最后 8 位为主机位</li><li>点击【NAT 设置】查看子网网关</li></ol><figure><img src="/assets/img/c482e04f9939102dfdb2b173f966344c.d223ee16.png" alt="image-20210203100855976" tabindex="0" loading="lazy"><figcaption>image-20210203100855976</figcaption></figure><p>喏，点击【NAT 设置】查看子网网关（不要改这个设置，我改了就把我自己害惨了。。。）</p><figure><img src="/assets/img/7b2122f54bbfcc997beed0cefced1df6.7d25ac1e.png" alt="image-20210203101220750" tabindex="0" loading="lazy"><figcaption>image-20210203101220750</figcaption></figure><hr><p><strong>3、修改 CentOS 网卡对应的配置文件</strong></p><p>centos7 的网络 IP 地址配置文件在 <code>/etc/sysconfig/network-scripts</code> 文件夹下，使用 <code>ifconfig</code> 命令查看当前网卡名称：ens33</p><figure><img src="/assets/img/c507b046f7362d9fb22b6fed2f4bacad.fc1fb969.png" alt="image-20210203101957577" tabindex="0" loading="lazy"><figcaption>image-20210203101957577</figcaption></figure><p>ens33 网卡对应的配置文件为 ifcfg-ens33</p><figure><img src="/assets/img/9483896f4256714689c6b2871e7c1ffd.af086bd3.png" alt="image-20210203101719410" tabindex="0" loading="lazy"><figcaption>image-20210203101719410</figcaption></figure><p>使用 <code>vim ifcfg-ens33</code> 指令编辑配置文件，填入如下配置内容（如果有就修改，没有就新增）</p><pre><code>BOOTPROTO=static        #开机协议，有dhcp及static；
+ONBOOT=yes              #设置为开机启动；
+DNS1=114.114.114.114    #这个是国内的DNS地址，是固定的；
+IPADDR=192.168.152.233  #你想要设置的固定IP，理论上192.168.2.2-255之间都可以，请自行验证；
+NETMASK=255.255.255.0   #子网掩码，不需要修改；
+GATEWAY=192.168.152.5     #网关地址
+</code></pre><figure><img src="/assets/img/ee772b76b0b21a725861a8d8b33b819b.6351657b.png" alt="image-20210203154554548" tabindex="0" loading="lazy"><figcaption>image-20210203154554548</figcaption></figure><p>完整的配置如下，下次用的时候就可以直接复制粘贴啦</p><pre><code>TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=static
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+IPV6_ADDR_GEN_MODE=stable-privacy
+NAME=ens33
+UUID=b15652db-78af-49cc-8f4e-ff601a1d5c5d
+DEVICE=ens33
+ONBOOT=yes
+DNS1=114.114.114.114
+IPADDR=192.168.152.233
+NETMASK=255.255.255.0
+GATEWAY=192.168.152.2
+</code></pre><hr><p><strong>4、重启生效</strong></p><p>使用 <code>service network restart</code> 重启网络服务，然后使用 <code>ifconfig</code> 命令查看本机 IP 地址，已经变为 192.168.152.233</p><figure><img src="/assets/img/5a6512a2051b32500a476c1a161bbee7.a57722aa.png" alt="image-20210203154705836" tabindex="0" loading="lazy"><figcaption>image-20210203154705836</figcaption></figure><p>在 CentOS 中能够 ping 通 Windows</p><figure><img src="/assets/img/1b199001057efeb6dde12f5384257af2.a5951366.png" alt="image-20210203114750273" tabindex="0" loading="lazy"><figcaption>image-20210203114750273</figcaption></figure><p>在 Windows 中也能 ping 通 CentOS</p><figure><img src="/assets/img/8a3fdd284b4bc8106843bc0abe8e90cb.5f7277a2.png" alt="image-20210203103443246" tabindex="0" loading="lazy"><figcaption>image-20210203103443246</figcaption></figure><h4 id="_3-2-2、超卖工程测试说明" tabindex="-1"><a class="header-anchor" href="#_3-2-2、超卖工程测试说明"><span>3.2.2、超卖工程测试说明</span></a></h4><blockquote><p><strong>Redis 分布式锁测试说明</strong></p></blockquote><p><strong>测试目的</strong>：多个服务间保证同一时刻同一时间段内同一用户只能有一个请求(防止关键业务出现并发攻击)</p><p><strong>两个 Module</strong>：boot_redis01 和 boot_redis02</p><figure><img src="/assets/img/40140d85d0c7a0450f98b7ff3b86e3aa.0d2ddfb3.png" alt="image-20210202184529015" tabindex="0" loading="lazy"><figcaption>image-20210202184529015</figcaption></figure><h4 id="_3-2-3、搭建-springboot-工程" tabindex="-1"><a class="header-anchor" href="#_3-2-3、搭建-springboot-工程"><span>3.2.3、搭建 SpringBoot 工程</span></a></h4><blockquote><p><strong>搭建 SpringBoot 工程的步骤</strong></p></blockquote><ol><li>新建 Module 或者 Maven 子工程</li><li>编写 pom.xml 管理工程依赖</li><li>编写 application.yml 配置文件（或者 application.properties 配置文件）</li><li>编写主启动类</li><li>编写配置类</li><li>编写业务类</li><li>代码测试</li></ol><blockquote><p><strong>boot_redis01 工程</strong></p></blockquote><ol><li><p>修改 pom.xnl 文件</p><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;2.3.3.RELEASE&lt;/version&gt;
+        &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+    &lt;/parent&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;com.oneby&lt;/groupId&gt;
+    &lt;artifactId&gt;boot_redis01&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+
+    &lt;properties&gt;
+        &lt;java.version&gt;1.8&lt;/java.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-actuator --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- https://mvnrepository.com/artifact/org.apache.commons/commons-pool2 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
+            &lt;artifactId&gt;commons-pool2&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- https://mvnrepository.com/artifact/redis.clients/jedis --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;redis.clients&lt;/groupId&gt;
+            &lt;artifactId&gt;jedis&lt;/artifactId&gt;
+            &lt;version&gt;3.1.0&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-aop&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- https://mvnrepository.com/artifact/org.redisson/redisson --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.redisson&lt;/groupId&gt;
+            &lt;artifactId&gt;redisson&lt;/artifactId&gt;
+            &lt;version&gt;3.13.4&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;4.12&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+
+&lt;/project&gt;
+</code></pre></li><li><p>新建 application.properties 配置文件</p><pre><code>server.port=1111
+
+spring.redis.database=0
+spring.redis.host=
+spring.redis.port=6379
+#连接池最大连接数（使用负值表示没有限制）默认8
+spring.redis.lettuce.pool.max-active=8
+#连接池最大阻塞等待时间（使用负值表示没有限制）默认-1
+spring.redis.lettuce.pool.max-wait=-1
+#连接池中的最大空闲连接默认8
+spring.redis.lettuce.pool.max-idle=8
+#连接池中的最小空闲连接默认0
+spring.redis.lettuce.pool.min-idle=0
+</code></pre></li><li><p>新建 <code>BootRedis01Application</code> 主启动类</p><pre><code>/**
+ * @ClassName BootRedis01Application
+ * @Description TODO
+ * @Author Oneby
+ * @Date 2021/2/2 18:54
+ * @Version 1.0
+ */
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+public class BootRedis01Application {
+    public static void main(String[] args) {
+        SpringApplication.run(BootRedis01Application.class);
+    }
+}
+</code></pre></li><li><p>新建 <code>RedisConfig</code> 配置类，用于获取 <code>RedisTemplate</code> 对象</p><pre><code>/**
+ * @ClassName RedisConfig
+ * @Description TODO
+ * @Author Oneby
+ * @Date 2021/2/2 18:55
+ * @Version 1.0
+ */
+@Configuration
+public class RedisConfig {
+
+    @Bean
+    public RedisTemplate&lt;String, Serializable&gt; redisTemplate(LettuceConnectionFactory connectionFactory){
+        // 新建 RedisTemplate 对象，key 为 String 对象，value 为 Serializable（可序列化的）对象
+        RedisTemplate&lt;String, Serializable&gt; redisTemplate = new RedisTemplate&lt;&gt;();
+        // key 值使用字符串序列化器
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        // value 值使用 json 序列化器
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        // 传入连接工厂
+        redisTemplate.setConnectionFactory(connectionFactory);
+        // 返回 redisTemplate 对象
+        return redisTemplate;
+    }
+
+}
+</code></pre></li><li><p>新建 <code>GoodController</code> 业务类，用于贩卖商品</p><pre><code>/**
+ * @ClassName GoodController
+ * @Description TODO
+ * @Author Oneby
+ * @Date 2021/2/2 18:59
+ * @Version 1.0
+ */
+@RestController
+public class GoodController {
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Value(&quot;${server.port}&quot;)
+    private String serverPort;
+
+    @GetMapping(&quot;/buy_goods&quot;)
+    public String buy_Goods() {
+        // 从 redis 中获取商品的剩余数量
+        String result = stringRedisTemplate.opsForValue().get(&quot;goods:001&quot;);
+        int goodsNumber = result == null ? 0 : Integer.parseInt(result);
+        String retStr = null;
+
+        // 商品数量大于零才能出售
+        if (goodsNumber &gt; 0) {
+            int realNumber = goodsNumber - 1;
+            stringRedisTemplate.opsForValue().set(&quot;goods:001&quot;, realNumber + &quot;&quot;);
+            retStr = &quot;你已经成功秒杀商品，此时还剩余：&quot; + realNumber + &quot;件&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+        } else {
+            retStr = &quot;商品已经售罄/活动结束/调用超时，欢迎下次光临&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+        }
+        System.out.println(retStr);
+        return retStr;
+    }
+
+}
+</code></pre></li></ol><blockquote><p><strong>boot_redis02 工程</strong></p></blockquote><p>boot_redis02 工程的端口号为 2222，其他配置均与 boot_redis01 相同</p><h4 id="_3-2-4、demo-工程代码测试" tabindex="-1"><a class="header-anchor" href="#_3-2-4、demo-工程代码测试"><span>3.2.4、Demo 工程代码测试</span></a></h4><blockquote><p><strong>代码测试</strong></p></blockquote><p><strong>抛异常：<code>Unable to connect to Redis</code></strong></p><p>启动 SpringBoot 应用，二话不说直接抛了个异常：<code>org.springframework.data.redis.RedisConnectionFailureException: Unable to connect to Redis; nested exception is org.springframework.data.redis.connection.PoolException: Could not get a resource from the pool; nested exception is io.lettuce.core.RedisConnectionException: Unable to connect to 192.168.152.233:6379</code>，</p><p>重点看：<code>Unable to connect to Redis</code>，明明 IP 地址和端口号都配置正确了，还连接不上，就要考虑是防火墙的问题了~</p><p><strong>解决问题：关闭 CentOS 防火墙</strong></p><p>执行 <code>systemctl stop firewalld.service</code> 命令关闭 CentOS 防火墙，然后使用 <code>systemctl status firewalld.service</code> 查看防火墙状态，出现 dead 字样就表示防火墙已经关闭</p><figure><img src="/assets/img/ed6d07951cc7b8671f1c3699295a4fa5.b1042a31.png" alt="image-20210202201824435" tabindex="0" loading="lazy"><figcaption>image-20210202201824435</figcaption></figure><p>PS：上面的方法，一旦重启操作系统，防火墙就自动开启了，该怎么设置才能永久关闭防火墙呢？使用 <code>systemctl disable firewalld.service</code> 命令可禁用防火墙</p><hr><p><strong>再次抛异常：<code>DENIED Redis is running in protected mode because protected mode is enabled</code></strong></p><p>当访问页面时，二话不说又直接抛了个异常：<code>io.lettuce.core.RedisConnectionException: DENIED Redis is running in protected mode because protected mode is enabled, no bind address was specified, no authentication password is requested to clients. In this mode connections are only accepted from the loopback interface. If you want to connect from external computers to Redis you may adopt one of the following solutions: 1) Just disable protected mode sending the command &#39;CONFIG SET protected-mode no&#39; from the loopback interface by connecting to Redis from the same host the server is running, however MAKE SURE Redis is not publicly accessible from internet if you do so. Use CONFIG REWRITE to make this change permanent. 2) Alternatively you can just disable the protected mode by editing the Redis configuration file, and setting the protected mode option to &#39;no&#39;, and then restarting the server. 3) If you started the server manually just for testing, restart it with the &#39;--protected-mode no&#39; option. 4) Setup a bind address or an authentication password. NOTE: You only need to do one of the above things in order for the server to start accepting connections from the outside.</code></p><p>Redis protected-mode 是3.2 之后加入的新特性，在 Redis.conf 的注释中，我们可以了解到，他的具体作用和启用条件。链接 redis 时只能通过本地 localhost（127.0.0.1）这个来链接，而不能用网络 ip（192.168…）这个链接，如果用网络 ip 链接会报错</p><p>我们需要去修改 redis.conf 配置文件：将 <code>protected-mode</code> 字段设置为 <code>no</code>，将 <code>bind</code> 字段的配置注释掉</p><figure><img src="/assets/img/2cd0346e3625cc841558ecf427df7972.c407b31a.png" alt="image-20210202205851770" tabindex="0" loading="lazy"><figcaption>image-20210202205851770</figcaption></figure><p><strong>解决问题：将 <code>protected-mode</code> 字段设置为 <code>no</code></strong></p><p>打开 redis.conf 配置文件，将 <code>protected-mode</code> 字段设置为 <code>no</code></p><figure><img src="/assets/img/a8515ae66bb2bc82b84ca43edbf84fe3.f74e4b44.png" alt="image-20210202203048701" tabindex="0" loading="lazy"><figcaption>image-20210202203048701</figcaption></figure><p>接着将 <code>bind</code> 字段的配置注释掉</p><figure><img src="/assets/img/f30942a588eed365caaa2a4855d6dde9.110df102.png" alt="image-20210202205803979" tabindex="0" loading="lazy"><figcaption>image-20210202205803979</figcaption></figure><p>使用 <code>ps aux | grep redis</code> 命令查找 redis 相关的后台服务，并使用 <code>kill -9 进程ID</code> 关闭 redis 后台进程，然后重启 redis 服务</p><figure><img src="/assets/img/e5eedb67f5f4a5048f842bd2bbec5bea.b9ddb816.png" alt="image-20210202205736970" tabindex="0" loading="lazy"><figcaption>image-20210202205736970</figcaption></figure><hr><p><strong>再再次抛异常：<code>MISCONF Redis is configured to save RDB snapshots, but it is currently not able to persist on disk</code></strong></p><p>当访问页面时，二话不说又又直接抛了个异常：<code>io.lettuce.core.RedisCommandExecutionException: MISCONF Redis is configured to save RDB snapshots, but it is currently not able to persist on disk. Commands that may modify the data set are disabled, because this instance is configured to report errors during writes if RDB snapshotting fails (stop-writes-on-bgsave-error option). Please check the Redis logs for details about the RDB error.</code></p><p>嗨呀，好熟悉的异常，这不是之前见到过的嘛~究其原因是因为强制把 redis 快照关闭了导致不能持久化的问题，通过将 <code>stop-writes-on-bgsave-error</code> 字段的值设置为 <code>no</code> 即可避免这种问题。</p><p>**解决问题：将 <code>stop-writes-on-bgsave-error</code> 字段的值设置为 <code>no</code> **</p><p>打开 redis.conf 配置文件，将 <code>stop-writes-on-bgsave-error</code> 字段的值设置为 <code>no</code>，然后重启 redis 服务</p><figure><img src="/assets/img/9c102b1b76aec7b591c5f5209586f578.6592ed3a.png" alt="image-20210202223424915" tabindex="0" loading="lazy"><figcaption>image-20210202223424915</figcaption></figure><hr><p><strong>代码测试</strong></p><p>在 Windows 浏览器中访问 <code>http://192.168.1.6:1111/buy_goods</code> 和 <code>http://192.168.1.6:2222/buy_goods</code> 能得到如下结果</p><figure><img src="/assets/img/fb0dd135e27e04a5c5331882ffdae350.7f550b01.png" alt="image-20210203155231974" tabindex="0" loading="lazy"><figcaption>image-20210203155231974</figcaption></figure><p>在 CentOS 浏览器中访问 <code>http://192.168.1.6:1111/buy_goods</code> 和 <code>http://192.168.1.6:2222/buy_goods</code> 能得到如下结果</p><figure><img src="/assets/img/7dc743e7047a5850de8a02953246bf40.273615b3.png" alt="image-20210203155224900" tabindex="0" loading="lazy"><figcaption>image-20210203155224900</figcaption></figure><h3 id="_3-3、测试-找茬" tabindex="-1"><a class="header-anchor" href="#_3-3、测试-找茬"><span>3.3、测试 &amp; 找茬</span></a></h3><h4 id="_3-3-1、单机版" tabindex="-1"><a class="header-anchor" href="#_3-3-1、单机版"><span>3.3.1、单机版</span></a></h4><blockquote><p><strong>1、单机版程序没加锁存在什么问题？</strong></p></blockquote><p><strong>问题</strong>：单机版程序没有加锁，在并发测试下数字不对，会出现超卖现象</p><p><strong>解决</strong>：加锁，那么问题又来了，加 <code>synchronized</code> 锁还是 <code>ReentrantLock</code> 锁呢？</p><ol><li><code>synchronized</code>：不见不散，等不到锁就会死等</li><li><code>ReentrantLock</code>：过时不候，<code>lock.tryLock()</code> 提供一个过时时间的参数，时间一到自动放弃锁</li></ol><p><strong>如何选择</strong>：根据业务需求来选，如果非要抢到锁不可，就使用 <code>synchronized</code> 锁；如果可以暂时放弃锁，等会再来强，就使用 <code>ReentrantLock</code> 锁</p><blockquote><p><strong>2.0 版本的代码：使用 <code>synchronized</code> 锁保证单机版程序在并发下的安全性</strong></p></blockquote><p>Ctrl + Alt + T ，用 <code>synchronized</code> 锁将方法体中的代码包裹起来</p><pre><code>/**
+ * @ClassName GoodController
+ * @Description TODO
+ * @Author Oneby
+ * @Date 2021/2/2 18:59
+ * @Version 2.0
+ */
+@RestController
+public class GoodController {
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Value(&quot;${server.port}&quot;)
+    private String serverPort;
+
+    @GetMapping(&quot;/buy_goods&quot;)
+    public String buy_Goods() {
+        synchronized (this) {
+            // 从 redis 中获取商品的剩余数量
+            String result = stringRedisTemplate.opsForValue().get(&quot;goods:001&quot;);
+            int goodsNumber = result == null ? 0 : Integer.parseInt(result);
+            String retStr = null;
+
+            // 商品数量大于零才能出售
+            if (goodsNumber &gt; 0) {
+                int realNumber = goodsNumber - 1;
+                stringRedisTemplate.opsForValue().set(&quot;goods:001&quot;, realNumber + &quot;&quot;);
+                retStr = &quot;你已经成功秒杀商品，此时还剩余：&quot; + realNumber + &quot;件&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+            } else {
+                retStr = &quot;商品已经售罄/活动结束/调用超时，欢迎下次光临&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+            }
+            System.out.println(retStr);
+            return retStr;
+        }
+    }
+
+}
+</code></pre><blockquote><p><strong>注意事项</strong></p></blockquote><ol><li><p>在单机环境下，可以使用 <code>synchronized</code> 锁或 <code>Lock</code> 锁来实现。</p></li><li><p>但是在分布式系统中，因为竞争的线程可能不在同一个节点上（同一个 jvm 中），所以需要一个让所有进程都能访问到的锁来实现，比如 redis 或者 zookeeper 来构建;</p></li><li><p>不同进程 jvm 层面的锁就不管用了，那么可以利用第三方的一个组件，来获取锁，未获取到锁，则阻塞当前想要运行的线程</p></li></ol><h4 id="_3-3-2、分布式版" tabindex="-1"><a class="header-anchor" href="#_3-3-2、分布式版"><span>3.3.2、分布式版</span></a></h4><blockquote><p><strong>2、分布式部署之后，单机版的锁失效</strong></p></blockquote><p><strong>问题</strong>：</p><p>分布式部署之后，单机版的锁失效，单机版的锁还是会导致超卖现象，这时就需要需要分布式锁</p><p>如下，在我们的两个微服务之上，挡了一个 nginx 服务器，用于实现负载均衡的功能</p><figure><img src="/assets/img/5a13a86d6601989f39f0bbb0be267a61.dd5d55ba.png" alt="image-20210202230229310" tabindex="0" loading="lazy"><figcaption>image-20210202230229310</figcaption></figure><blockquote><p><strong>安装 nginx</strong></p></blockquote><p>哈哈，我还没学过 nginx，那就现学现卖一波吧，参考资料：<a href="https://www.cnblogs.com/boonya/p/7907999.html" target="_blank" rel="noopener noreferrer">CentOS7安装nginx</a>、<a href="https://blog.csdn.net/qq_37345604/article/details/90034424" target="_blank" rel="noopener noreferrer">centOS7安装nginx及nginx配置</a></p><p><strong>1、安装 gcc</strong></p><p>安装 nginx 需要先将官网下载的源码进行编译，编译依赖 gcc 环境，如果没有 gcc 环境，则需要安装：</p><pre><code>yum install gcc-c++
+</code></pre><p><strong>2、PCRE pcre-devel 安装</strong></p><p>PCRE（Perl Compatible Regular Expressions）是一个 Perl 库，包括 perl 兼容的正则表达式库。nginx 的 http 模块使用 pcre 来解析正则表达式，所以需要在 linux 上安装 pcre 库，pcre-devel 是使用 pcre 开发的一个二次开发库。nginx也需要此库。安装命令为：</p><pre><code>yum install -y pcre pcre-devel
+</code></pre><p><strong>3、zlib 安装</strong></p><p>zlib 库提供了很多种压缩和解压缩的方式， nginx 使用 zlib 对 http 包的内容进行 gzip ，所以需要在 CentOS 上安装 zlib 库。</p><pre><code>yum install -y zlib zlib-devel
+</code></pre><p><strong>4、OpenSSL 安装</strong><br> OpenSSL 是一个强大的安全套接字层密码库，囊括主要的密码算法、常用的密钥和证书封装管理功能及 SSL 协议，并提供丰富的应用程序供测试或其它目的使用。nginx 不仅支持 http 协议，还支持 https（即在ssl协议上传输http），所以需要在 Centos 安装 OpenSSL 库。</p><pre><code>yum install -y openssl openssl-devel
+</code></pre><p><strong>5、下载 nginx 安装包</strong></p><p>使用 <code>wget</code> 命令下载 nginx 安装包，确保系统已经安装了<code>wget</code>，如果没有安装，执行 <code>yum install wget</code> 安装</p><pre><code>wget -c https://nginx.org/download/nginx-1.12.0.tar.gz
+</code></pre><p><strong>6、解压安装包</strong></p><p>使用 <code>tar -zxvf</code> 指令解压下载好的安装包，并进入解压后的目录</p><pre><code>tar -zxvf nginx-1.12.0.tar.gz
+cd nginx-1.12.0
+</code></pre><p><strong>7、配置 nginx</strong></p><p>其实在 nginx-1.12.0 版本中你就不需要去配置相关东西，默认就可以了。当然，如果你要自己配置目录也是可以的。我这里采用默认配置，在 nginx 安装包目录下执行如下指令：</p><pre><code>./configure
+</code></pre><p>执行完 <code>./configure</code> 命令之后会生成 Makefile 文件，我们编译安装程序就需要它</p><figure><img src="/assets/img/9115cf21e6183645336d12af5a886e51.b30f0dad.png" alt="image-20210202234656410" tabindex="0" loading="lazy"><figcaption>image-20210202234656410</figcaption></figure><p><strong>8、编译 &amp; 安装</strong></p><p><code>make</code> 和 <code>make install</code> 打一套</p><pre><code>make
+make install
+</code></pre><p><strong>9、查看 nginx 安装目录</strong></p><p>使用 <code>whereis nginx</code> 命令查看 nginx 的默认安装目录</p><figure><img src="/assets/img/9f75a8ef48c400b83af03ccccf803ef9.e1fb9cea.png" alt="image-20210202235207546" tabindex="0" loading="lazy"><figcaption>image-20210202235207546</figcaption></figure><blockquote><p><strong>启动 nginx</strong></p></blockquote><p>首先进入 nginx 安装目录下的可执行文件存放的目录</p><pre><code>cd /usr/local/nginx/sbin/
+</code></pre><p>启动 nginx</p><pre><code>./nginx                # 启动 nginx 服务器
+./nginx -s stop        # 此方式相当于先查出nginx进程id再使用kill命令强制杀掉进程。
+./nginx -s quit        # 此方式停止步骤是待nginx进程处理任务完毕进行停止。
+./nginx -s reload      # 重启nginx服务
+</code></pre><p>访问 <code>http://localhost/</code>（nginx 默认是 80 端口），如出现如下页面则说明启动成功</p><figure><img src="/assets/img/7341394899d9da5f67ac1eb42e913c94.fce7aedb.png" alt="image-20210202235806986" tabindex="0" loading="lazy"><figcaption>image-20210202235806986</figcaption></figure><blockquote><p><strong>nginx 的其他细节</strong></p></blockquote><p>查询 nginx 进程：</p><pre><code>ps aux|grep nginx
+</code></pre><hr><p>**重启 nginx **</p><p>1、先停止再启动（推荐）：</p><p>对 nginx 进行重启相当于先停止再启动，即先执行停止命令再执行启动命令。如下：</p><pre><code>./nginx -s quit
+./nginx
+</code></pre><p>2、重新加载配置文件：</p><p>当 nginx 的配置文件 nginx.conf 修改后，要想让配置生效需要重启 nginx，使用<code>-s reload</code> 可以不用停止 nginx 服务，即可将配置信息在 nginx 中生效，如下：</p><pre><code>./nginx -s reload
+</code></pre><hr><p><strong>指定启动配置文件</strong></p><p>在 <code>nginx</code> 命令后带上 <code>-c</code> 参数，并跟上配置文件的路径即可</p><pre><code>/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+</code></pre><blockquote><p><strong>nginx 配置负载均衡</strong></p></blockquote><p><strong>1、编写配置文件</strong></p><p>首先进入 <code>/usr/local/nginx/conf/</code>，该文件中包含 nginx 的配置文件：nginx.conf</p><pre><code>cd /usr/local/nginx/conf/
+</code></pre><figure><img src="/assets/img/b45838412833649dbdeb094a9e1f2439.c657775a.png" alt="image-20210203110830602" tabindex="0" loading="lazy"><figcaption>image-20210203110830602</figcaption></figure><p>使用 <code>vim nginx.conf</code> 命令编辑配置文件</p><pre><code>    #gzip  on;
+
+    upstream mynginx{
+        server 192.168.1.6:1111 weight=1;
+        server 192.168.1.6:2222 weight=1;
+    }
+
+    server {
+        listen       80;
+        server_name  localhost;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+
+        location / {
+            #root   html;
+            proxy_pass http://mynginx;
+            index index.html index.htm;
+        }
+
+        #error_page  404              /404.html;
+
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+    
+    	# ...
+</code></pre><p><strong>2、重启 nginx 服务</strong></p><p>执行 <code>./nginx -s reload</code> 命令重启 nginx 服务</p><p><strong>3、访问 nginx</strong></p><p>访问 <code>http://192.168.152.233/buy_goods</code> 网址能够得到如下代码，我们在 nginx 配置的权重相等，默认是轮询访问</p><figure><img src="/assets/img/5a4d451ec702e8d136dc9ea410a3335d.30370bb1.png" alt="image-20210203155818647" tabindex="0" loading="lazy"><figcaption>image-20210203155818647</figcaption></figure><blockquote><p><strong>使用 jmeter 进行压测</strong></p></blockquote><p><strong>1、jmeter 下载地址</strong></p><p><a href="https://jmeter.apache.org/" target="_blank" rel="noopener noreferrer">jmeter 官网</a>：这下载速度到猴年马月才能下载完成</p><p><a href="https://mirrors.tuna.tsinghua.edu.cn/apache/" target="_blank" rel="noopener noreferrer">清华大学镜像</a>：推荐下载地址~~~</p><hr><p><strong>2、配置 jmeter</strong></p><p>点击【bin】目录下的【jmeter.bat】批处理脚本启动 jmeter</p><figure><img src="/assets/img/0bbf1990e7279517825c37c4ef8c299b.f75f0b0b.png" alt="image-20210203161248838" tabindex="0" loading="lazy"><figcaption>image-20210203161248838</figcaption></figure><p>在【Test Plan】上右击，选择【Add】–&gt;【Threads】–&gt;【Thread Group】，添加线程组</p><figure><img src="/assets/img/e4d6b2ed44b89da2c84cfb09f36264a8.578a51b0.png" alt="image-20210203162823331" tabindex="0" loading="lazy"><figcaption>image-20210203162823331</figcaption></figure><p>设置如下四个参数</p><ol><li>Name：线程组的名称</li><li>Number of Threads(users)：打出去的线程数量</li><li>Ramp-up period(seconds)：在多长时间内需要将这些线程打出去</li><li>Loop Count：循环次数，选择 Infinite 表示无限重复执行</li></ol><figure><img src="/assets/img/b1e863033f19bdb657250ee8fb45ee29.08148929.png" alt="image-20210203163001306" tabindex="0" loading="lazy"><figcaption>image-20210203163001306</figcaption></figure><p>在线程组之上右击，选择【Add】–&gt;【Sampler】–&gt;【HTTP Request】，添加 HTTP 请求</p><figure><img src="/assets/img/5b9d7bf3051f37d30d4c8a28732a1dd4.d19a8721.png" alt="image-20210203163132246" tabindex="0" loading="lazy"><figcaption>image-20210203163132246</figcaption></figure><p>设置如下三个参数</p><ol><li>Server Name or IP：服务器名称或者 IP 地址</li><li>Port Number：访问的端口号</li><li>Path：访问的路径</li></ol><figure><img src="/assets/img/9c1d98be7c3db41fde39d7ff67309ecd.64152d2a.png" alt="image-20210203163305729" tabindex="0" loading="lazy"><figcaption>image-20210203163305729</figcaption></figure><p>保存此 HTTP Request 后才能进行压测</p><figure><img src="/assets/img/3f16af7936752594f3556f9a27149265.1157551a.png" alt="image-20210203163403879" tabindex="0" loading="lazy"><figcaption>image-20210203163403879</figcaption></figure><p>点击【Start】按钮开始进行压测</p><figure><img src="/assets/img/ab8c6f0961b406285792df6c375a7d42.06dc7224.png" alt="image-20210203163447144" tabindex="0" loading="lazy"><figcaption>image-20210203163447144</figcaption></figure><p><strong>3、压测结果</strong></p><p>可以看到，相同的商品被出售两次，出现超卖现象</p><figure><img src="/assets/img/69a506bf7f3d584cf7b4bb7d352eedeb.5fcac89e.png" alt="image-20210203163846600" tabindex="0" loading="lazy"><figcaption>image-20210203163846600</figcaption></figure><blockquote><p><strong>3.0 版本的代码：使用 redis 分布式锁</strong></p></blockquote><p><strong>1、<a href="https://redis.io/commands/set" target="_blank" rel="noopener noreferrer">SET 命令</a></strong></p><p>Redis具有极高的性能，且其命令对分布式锁支持友好，借助 SET 命令即可实现加锁处理</p><p>The <a href="https://redis.io/commands/set" target="_blank" rel="noopener noreferrer">SET</a> command supports a set of options that modify its behavior:</p><ol><li><code>EX</code> <em>seconds</em> – Set the specified expire time, in seconds.</li><li><code>PX</code> <em>milliseconds</em> – Set the specified expire time, in milliseconds.</li><li><code>EXAT</code> <em>timestamp-seconds</em> – Set the specified Unix time at which the key will expire, in seconds.</li><li><code>PXAT</code> <em>timestamp-milliseconds</em> – Set the specified Unix time at which the key will expire, in milliseconds.</li><li><code>NX</code> – Only set the key if it does not already exist.</li><li><code>XX</code> – Only set the key if it already exist.</li><li><code>KEEPTTL</code> – Retain the time to live associated with the key.</li><li><a href="https://redis.io/commands/get" target="_blank" rel="noopener noreferrer">GET</a> – Return the old value stored at key, or nil when key did not exist.</li></ol><hr><p><strong>2、在代码中使用分布式锁</strong></p><p>使用当前请求的 UUID + 线程名作为分布式锁的 value，执行 <code>stringRedisTemplate.opsForValue().setIfAbsent(REDIS_LOCK_KEY, value)</code> 方法尝试抢占锁，如果抢占失败，则返回值为 false；如果抢占成功，则返回值为 true。最后记得调用 <code>stringRedisTemplate.delete(REDIS_LOCK_KEY)</code> 方法释放分布式锁</p><pre><code>/**
+ * @ClassName GoodController
+ * @Description TODO
+ * @Author Oneby
+ * @Date 2021/2/2 18:59
+ * @Version 2.0
+ */
+@RestController
+public class GoodController {
+
+    private static final String REDIS_LOCK_KEY = &quot;lockOneby&quot;;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Value(&quot;${server.port}&quot;)
+    private String serverPort;
+
+    @GetMapping(&quot;/buy_goods&quot;)
+    public String buy_Goods() {
+        // 当前请求的 UUID + 线程名
+        String value = UUID.randomUUID().toString()+Thread.currentThread().getName();
+        // setIfAbsent() 就相当于 setnx，如果不存在就新建锁
+        Boolean lockFlag = stringRedisTemplate.opsForValue().setIfAbsent(REDIS_LOCK_KEY, value);
+
+        // 抢锁失败
+        if(lockFlag == false){
+            return &quot;抢锁失败 o(╥﹏╥)o&quot;;
+        }
+
+        // 从 redis 中获取商品的剩余数量
+        String result = stringRedisTemplate.opsForValue().get(&quot;goods:001&quot;);
+        int goodsNumber = result == null ? 0 : Integer.parseInt(result);
+        String retStr = null;
+
+        // 商品数量大于零才能出售
+        if (goodsNumber &gt; 0) {
+            int realNumber = goodsNumber - 1;
+            stringRedisTemplate.opsForValue().set(&quot;goods:001&quot;, realNumber + &quot;&quot;);
+            retStr = &quot;你已经成功秒杀商品，此时还剩余：&quot; + realNumber + &quot;件&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+        } else {
+            retStr = &quot;商品已经售罄/活动结束/调用超时，欢迎下次光临&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+        }
+        System.out.println(retStr);
+        stringRedisTemplate.delete(REDIS_LOCK_KEY); // 释放分布式锁
+        return retStr;
+    }
+
+}
+</code></pre><p><strong>3、代码测试</strong></p><p>加上分布式锁之后，解决了超卖现象</p><figure><img src="/assets/img/7ae1096a15daceb386af7c4ee327c89d.5e2704ad.png" alt="image-20210203165907616" tabindex="0" loading="lazy"><figcaption>image-20210203165907616</figcaption></figure><h4 id="_3-3-3、finally-版" tabindex="-1"><a class="header-anchor" href="#_3-3-3、finally-版"><span>3.3.3、finally 版</span></a></h4><blockquote><p><strong>存在的问题</strong></p></blockquote><p>如果代码在执行的过程中出现异常，那么就可能无法释放锁，因此必须要在代码层面加上 <code>finally</code> 代码块，保证锁的释放</p><blockquote><p><strong>4.0 版本的代码：保证锁的释放</strong></p></blockquote><p>加入 finally 代码块，保证锁的释放</p><pre><code>/**
+ * @ClassName GoodController
+ * @Description TODO
+ * @Author Oneby
+ * @Date 2021/2/2 18:59
+ * @Version 1.0
+ */
+@RestController
+public class GoodController {
+
+    private static final String REDIS_LOCK_KEY = &quot;lockOneby&quot;;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Value(&quot;${server.port}&quot;)
+    private String serverPort;
+
+    @GetMapping(&quot;/buy_goods&quot;)
+    public String buy_Goods() {
+        // 当前请求的 UUID + 线程名
+        String value = UUID.randomUUID().toString() + Thread.currentThread().getName();
+        try {
+            // setIfAbsent() 就相当于 setnx，如果不存在就新建锁
+            Boolean lockFlag = stringRedisTemplate.opsForValue().setIfAbsent(REDIS_LOCK_KEY, value);
+
+            // 抢锁失败
+            if (lockFlag == false) {
+                return &quot;抢锁失败 o(╥﹏╥)o&quot;;
+            }
+
+            // 从 redis 中获取商品的剩余数量
+            String result = stringRedisTemplate.opsForValue().get(&quot;goods:001&quot;);
+            int goodsNumber = result == null ? 0 : Integer.parseInt(result);
+            String retStr = null;
+
+            // 商品数量大于零才能出售
+            if (goodsNumber &gt; 0) {
+                int realNumber = goodsNumber - 1;
+                stringRedisTemplate.opsForValue().set(&quot;goods:001&quot;, realNumber + &quot;&quot;);
+                retStr = &quot;你已经成功秒杀商品，此时还剩余：&quot; + realNumber + &quot;件&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+            } else {
+                retStr = &quot;商品已经售罄/活动结束/调用超时，欢迎下次光临&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+            }
+            System.out.println(retStr);
+            return retStr;
+        } finally {
+            stringRedisTemplate.delete(REDIS_LOCK_KEY); // 释放分布式锁
+        }
+    }
+
+}
+</code></pre><h4 id="_3-3-4、过期时间版" tabindex="-1"><a class="header-anchor" href="#_3-3-4、过期时间版"><span>3.3.4、过期时间版</span></a></h4><blockquote><p><strong>存在的问题</strong></p></blockquote><p>假设部署了微服务 jar 包的服务器挂了，代码层面根本没有走到 finally 这块，也没办法保证解锁。这个 key 没有被删除，其他微服务就一直抢不到锁，因此我们需要加入一个过期时间限定的 key</p><blockquote><p><strong>5.0 版本的代码：设置带过期时间的 key</strong></p></blockquote><p>执行 <code>stringRedisTemplate.expire(REDIS_LOCK_KEY, 10L, TimeUnit.SECONDS);</code> 方法为分布式锁设置过期时间，保证锁的释放</p><pre><code>/**
+ * @ClassName GoodController
+ * @Description TODO
+ * @Author Oneby
+ * @Date 2021/2/2 18:59
+ * @Version 1.0
+ */
+@RestController
+public class GoodController {
+
+    private static final String REDIS_LOCK_KEY = &quot;lockOneby&quot;;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Value(&quot;${server.port}&quot;)
+    private String serverPort;
+
+    @GetMapping(&quot;/buy_goods&quot;)
+    public String buy_Goods() {
+        // 当前请求的 UUID + 线程名
+        String value = UUID.randomUUID().toString() + Thread.currentThread().getName();
+        try {
+            // setIfAbsent() 就相当于 setnx，如果不存在就新建锁
+            Boolean lockFlag = stringRedisTemplate.opsForValue().setIfAbsent(REDIS_LOCK_KEY, value);
+            // 设置过期时间为 10s
+            stringRedisTemplate.expire(REDIS_LOCK_KEY, 10L, TimeUnit.SECONDS);
+
+            // 抢锁失败
+            if (lockFlag == false) {
+                return &quot;抢锁失败 o(╥﹏╥)o&quot;;
+            }
+
+            // 从 redis 中获取商品的剩余数量
+            String result = stringRedisTemplate.opsForValue().get(&quot;goods:001&quot;);
+            int goodsNumber = result == null ? 0 : Integer.parseInt(result);
+            String retStr = null;
+
+            // 商品数量大于零才能出售
+            if (goodsNumber &gt; 0) {
+                int realNumber = goodsNumber - 1;
+                stringRedisTemplate.opsForValue().set(&quot;goods:001&quot;, realNumber + &quot;&quot;);
+                retStr = &quot;你已经成功秒杀商品，此时还剩余：&quot; + realNumber + &quot;件&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+            } else {
+                retStr = &quot;商品已经售罄/活动结束/调用超时，欢迎下次光临&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+            }
+            System.out.println(retStr);
+            return retStr;
+        } finally {
+            stringRedisTemplate.delete(REDIS_LOCK_KEY); // 释放分布式锁
+        }
+    }
+
+}
+</code></pre><h4 id="_3-3-5、加锁原子版" tabindex="-1"><a class="header-anchor" href="#_3-3-5、加锁原子版"><span>3.3.5、加锁原子版</span></a></h4><blockquote><p><strong>存在的问题</strong></p></blockquote><p>加锁与设置过期时间的操作分开了，假设服务器刚刚执行了加锁操作，然后宕机了，也没办法保证解锁。</p><blockquote><p><strong>6.0 版本的代码：保证加锁和设置过期时间为原子操作</strong></p></blockquote><p>使用 <code>stringRedisTemplate.opsForValue().setIfAbsent(REDIS_LOCK_KEY, value, 10L, TimeUnit.SECONDS)</code> 方法，在加锁的同时设置过期时间，保证这两个操作的原子性</p><pre><code>/**
+ * @ClassName GoodController
+ * @Description TODO
+ * @Author Oneby
+ * @Date 2021/2/2 18:59
+ * @Version 1.0
+ */
+@RestController
+public class GoodController {
+
+    private static final String REDIS_LOCK_KEY = &quot;lockOneby&quot;;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Value(&quot;${server.port}&quot;)
+    private String serverPort;
+
+    @GetMapping(&quot;/buy_goods&quot;)
+    public String buy_Goods() {
+        // 当前请求的 UUID + 线程名
+        String value = UUID.randomUUID().toString() + Thread.currentThread().getName();
+        try {
+            // setIfAbsent() 就相当于 setnx，如果不存在就新建锁，同时加上过期时间保证原子性
+            Boolean lockFlag = stringRedisTemplate.opsForValue().setIfAbsent(REDIS_LOCK_KEY, value, 10L, TimeUnit.SECONDS);
+
+            // 抢锁失败
+            if (lockFlag == false) {
+                return &quot;抢锁失败 o(╥﹏╥)o&quot;;
+            }
+
+            // 从 redis 中获取商品的剩余数量
+            String result = stringRedisTemplate.opsForValue().get(&quot;goods:001&quot;);
+            int goodsNumber = result == null ? 0 : Integer.parseInt(result);
+            String retStr = null;
+
+            // 商品数量大于零才能出售
+            if (goodsNumber &gt; 0) {
+                int realNumber = goodsNumber - 1;
+                stringRedisTemplate.opsForValue().set(&quot;goods:001&quot;, realNumber + &quot;&quot;);
+                retStr = &quot;你已经成功秒杀商品，此时还剩余：&quot; + realNumber + &quot;件&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+            } else {
+                retStr = &quot;商品已经售罄/活动结束/调用超时，欢迎下次光临&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+            }
+            System.out.println(retStr);
+            return retStr;
+        } finally {
+            stringRedisTemplate.delete(REDIS_LOCK_KEY); // 释放分布式锁
+        }
+    }
+
+}
+</code></pre><h4 id="_3-3-6、动自己奶酪版" tabindex="-1"><a class="header-anchor" href="#_3-3-6、动自己奶酪版"><span>3.3.6、动自己奶酪版</span></a></h4><blockquote><p><strong>存在的问题</strong></p></blockquote><p>张冠李戴，删除了别人的锁：我们无法保证一个业务的执行时间，有可能是 10s，有可能是 20s，也有可能更长。因为执行业务的时候可能会调用其他服务，我们并不能保证其他服务的调用时间。如果设置的锁过期了，当前业务还正在执行，那么就有可能出现超卖问题，并且还有可能出现当前业务执行完成后，释放了其他业务的锁</p><p>如下图，假设进程 A 在 T2 时刻设置了一把过期时间为 30s 的锁，在 T5 时刻该锁过期被释放，在 T5 和 T6 期间，Test 这把锁已经失效了，并不能保证进程 A 业务的原子性了。于是进程 B 在 T6 时刻能够获取 Test 这把锁，但是进程 A 在 T7 时刻删除了进程 B 加的锁，进程 B 在 T8 时刻删除锁的时候就蒙蔽了，我 TM 锁呢？</p><figure><img src="/assets/img/7779829b07787062d2fb57a8f91bb5ce.309b3436.png" alt="image-20210204161115030" tabindex="0" loading="lazy"><figcaption>image-20210204161115030</figcaption></figure><blockquote><p><strong>7.0 版本的代码：只允许删除自己的锁，不允许删除别人的锁</strong></p></blockquote><p>在释放锁之前，执行 <code>value.equalsIgnoreCase(stringRedisTemplate.opsForValue().get(REDIS_LOCK_KEY))</code> 方法判断是否为自己加的锁</p><pre><code>/**
+ * @ClassName GoodController
+ * @Description TODO
+ * @Author Oneby
+ * @Date 2021/2/2 18:59
+ * @Version 1.0
+ */
+@RestController
+public class GoodController {
+
+    private static final String REDIS_LOCK_KEY = &quot;lockOneby&quot;;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Value(&quot;${server.port}&quot;)
+    private String serverPort;
+
+    @GetMapping(&quot;/buy_goods&quot;)
+    public String buy_Goods() {
+        // 当前请求的 UUID + 线程名
+        String value = UUID.randomUUID().toString() + Thread.currentThread().getName();
+        try {
+            // setIfAbsent() 就相当于 setnx，如果不存在就新建锁，同时加上过期时间保证原子性
+            Boolean lockFlag = stringRedisTemplate.opsForValue().setIfAbsent(REDIS_LOCK_KEY, value, 10L, TimeUnit.SECONDS);
+
+            // 抢锁失败
+            if (lockFlag == false) {
+                return &quot;抢锁失败 o(╥﹏╥)o&quot;;
+            }
+
+            // 从 redis 中获取商品的剩余数量
+            String result = stringRedisTemplate.opsForValue().get(&quot;goods:001&quot;);
+            int goodsNumber = result == null ? 0 : Integer.parseInt(result);
+            String retStr = null;
+
+            // 商品数量大于零才能出售
+            if (goodsNumber &gt; 0) {
+                int realNumber = goodsNumber - 1;
+                stringRedisTemplate.opsForValue().set(&quot;goods:001&quot;, realNumber + &quot;&quot;);
+                retStr = &quot;你已经成功秒杀商品，此时还剩余：&quot; + realNumber + &quot;件&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+            } else {
+                retStr = &quot;商品已经售罄/活动结束/调用超时，欢迎下次光临&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+            }
+            System.out.println(retStr);
+            return retStr;
+        } finally {
+            // 判断是否是自己加的锁
+            if(value.equalsIgnoreCase(stringRedisTemplate.opsForValue().get(REDIS_LOCK_KEY))){
+                stringRedisTemplate.delete(REDIS_LOCK_KEY); // 释放分布式锁
+            }
+        }
+    }
+
+}
+</code></pre><h4 id="_3-3-7、解锁原子版" tabindex="-1"><a class="header-anchor" href="#_3-3-7、解锁原子版"><span>3.3.7、解锁原子版</span></a></h4><blockquote><p><strong>存在的问题</strong></p></blockquote><p>在 finally 代码块中的判断与删除并不是原子操作，假设执行 <code>if</code> 判断的时候，这把锁还是属于当前业务，但是有可能刚执行完 <code>if</code> 判断，这把锁就被其他业务给释放了，还是会出现误删锁的情况</p><pre><code>try {
+    // ...
+}
+finally {
+    // 判断加锁与解锁是不是同一个客户端
+    if (value.equalsIgnoreCase(stringRedisTemplate.opsForValue().get(REDIS_LOCK_KEY))){
+        // 若在此时，这把锁突然不是这个客户端的，则会误解锁
+        stringRedisTemplate.delete(REDIS_LOCK_KEY);//释放锁
+    }
+}
+</code></pre><blockquote><p><strong>8.1 版本的代码：使用 redis 自身事务保证原子性操作</strong></p></blockquote><p><strong>redis 事务相关命令复习</strong></p><p><strong>1、事务介绍</strong></p><ol><li>Redis的事务是通过MULTl，EXEC，DISCARD和WATCH这四个命令来完成。</li><li>Redis的单个命令都是原子性的，所以这里确保事务性的对象是命令集合。</li><li>Redis将命令集合序列化并确保处于一事务的命令集合连续且不被打断的执行。</li><li>Redis不支持回滚的操作。</li></ol><p><strong>2、相关命令</strong></p><ol><li><code>MULTI</code><ol><li>用于标记事务块的开始。</li><li>Redis会将后续的命令逐个放入队列中，然后使用EXEC命令原子化地执行这个命令序列。</li><li>语法：<code>MULTI</code></li></ol></li><li><code>EXEC</code><ol><li>在一个事务中执行所有先前放入队列的命令，然后恢复正常的连接状态。</li><li>语法：<code>EXEC</code></li></ol></li><li><code>DISCARD</code><ol><li>清除所有先前在一个事务中放入队列的命令，然后恢复正常的连接状态。</li><li>语法：<code>DISCARD</code></li></ol></li><li>WATCH <ol><li>当某个事务需要按条件执行时，就要使用这个命令将给定的键设置为受监控的状态。</li><li>语法：<code>WATCH key[key..…]</code>注：该命令可以实现redis的乐观锁</li></ol></li><li><code>UNWATCH</code><ol><li>清除所有先前为一个事务监控的键。</li><li>语法：<code>UNWATCH</code></li></ol></li></ol><hr><p><strong>演示事务的使用</strong></p><p>ClienA 使用 <code>MULTI</code> 命令开启一个事务，并执行 <code>SET lock 1</code> 命令，当开启事务之后，执行命令返回 QUEUED，表示已经将该命令压入队列</p><figure><img src="/assets/img/02ef0afa6b319cbbfed109f1cf6ba25c.74e0eda8.png" alt="image-20210204170555664" tabindex="0" loading="lazy"><figcaption>image-20210204170555664</figcaption></figure><p>ClientB 执行 <code>SET lock 2</code> 命令将 <code>lock</code> 的值设置为 <code>2</code></p><figure><img src="/assets/img/05f0b85658fe29d813689d9333f654d2.2739feec.png" alt="image-20210204170725293" tabindex="0" loading="lazy"><figcaption>image-20210204170725293</figcaption></figure><p>ClientA 执行 <code>EXEC</code> 命令提交事务，执行 <code>get lock</code> 命令获取到 <code>lock</code> 的值为 <code>1</code>（ClientB 虽然加塞，但不影响 ClientA 的事务，但这不是我们想要的效果）</p><figure><img src="/assets/img/6bd44e45f51bb7d463d267cdb4cecc71.f7783609.png" alt="image-20210204170845237" tabindex="0" loading="lazy"><figcaption>image-20210204170845237</figcaption></figure><hr><p><strong>演示 WATCH 的使用</strong></p><p>ClientA 先使用 <code>WATCH lock</code> 命令见监视 <code>lock</code> 这把锁，然后使用 <code>MULTI</code> 命令开启事务修改 <code>lock</code> 的值</p><figure><img src="/assets/img/daba90cf633e4ea3e1a2eed5c21bd920.164706ad.png" alt="image-20210204171141855" tabindex="0" loading="lazy"><figcaption>image-20210204171141855</figcaption></figure><p>ClientB 执行 <code>set lock 4</code> 命令将 <code>lock</code> 的值修改为 <code>4</code></p><figure><img src="/assets/img/5c830ded1144b17988d27ecd895165dc.88e5a09b.png" alt="image-20210204171209116" tabindex="0" loading="lazy"><figcaption>image-20210204171209116</figcaption></figure><p>ClientA 执行 <code>EXEC</code> 命令提交事务，发现命令的返回值为 <code>nil</code>，表示事务执行失败，使用 <code>GET lock</code> 获取 <code>lock</code> 变量的值为 <code>4</code>（修改失败），<code>WATCH</code> 之后记得使用 <code>UNWATCH</code> 解除监视</p><figure><img src="/assets/img/a97327452ab3fe4eee61256b2c1ab5e2.2d1be343.png" alt="image-20210204171426866" tabindex="0" loading="lazy"><figcaption>image-20210204171426866</figcaption></figure><hr><p><strong>代码</strong></p><p>开启事务不断监视 <code>REDIS_LOCK_KEY</code> 这把锁有没有被别人动过，如果已经被别人动过了，那么继续重新执行删除操作，否则就解除监视</p><pre><code>/**
+ * @ClassName GoodController
+ * @Description TODO
+ * @Author Oneby
+ * @Date 2021/2/2 18:59
+ * @Version 1.0
+ */
+@RestController
+public class GoodController {
+
+    private static final String REDIS_LOCK_KEY = &quot;lockOneby&quot;;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Value(&quot;${server.port}&quot;)
+    private String serverPort;
+
+    @GetMapping(&quot;/buy_goods&quot;)
+    public String buy_Goods() {
+        // 当前请求的 UUID + 线程名
+        String value = UUID.randomUUID().toString() + Thread.currentThread().getName();
+        try {
+            // setIfAbsent() 就相当于 setnx，如果不存在就新建锁，同时加上过期时间保证原子性
+            Boolean lockFlag = stringRedisTemplate.opsForValue().setIfAbsent(REDIS_LOCK_KEY, value, 10L, TimeUnit.SECONDS);
+
+            // 抢锁失败
+            if (lockFlag == false) {
+                return &quot;抢锁失败 o(╥﹏╥)o&quot;;
+            }
+
+            // 从 redis 中获取商品的剩余数量
+            String result = stringRedisTemplate.opsForValue().get(&quot;goods:001&quot;);
+            int goodsNumber = result == null ? 0 : Integer.parseInt(result);
+            String retStr = null;
+
+            // 商品数量大于零才能出售
+            if (goodsNumber &gt; 0) {
+                int realNumber = goodsNumber - 1;
+                stringRedisTemplate.opsForValue().set(&quot;goods:001&quot;, realNumber + &quot;&quot;);
+                retStr = &quot;你已经成功秒杀商品，此时还剩余：&quot; + realNumber + &quot;件&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+            } else {
+                retStr = &quot;商品已经售罄/活动结束/调用超时，欢迎下次光临&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+            }
+            System.out.println(retStr);
+            return retStr;
+        } finally {
+            while (true) {
+                //加事务，乐观锁
+                stringRedisTemplate.watch(REDIS_LOCK_KEY);
+                // 判断是否是自己加的锁
+                if (value.equalsIgnoreCase(stringRedisTemplate.opsForValue().get(REDIS_LOCK_KEY))) {
+                    // 开启事务
+                    stringRedisTemplate.setEnableTransactionSupport(true);
+                    stringRedisTemplate.multi();
+                    stringRedisTemplate.delete(REDIS_LOCK_KEY);
+                    // 判断事务是否执行成功，如果等于 null，就是没有删掉，删除失败，再回去 while 循环那再重新执行删除
+                    List&lt;Object&gt; list = stringRedisTemplate.exec();
+                    if (list == null) {
+                        continue;
+                    }
+                }
+                //如果删除成功，释放监控器，并且 break 跳出当前循环
+                stringRedisTemplate.unwatch();
+                break;
+            }
+        }
+    }
+
+}
+</code></pre><blockquote><p><strong>8.1 版本的代码：使用 lua 脚本保证原子性操作</strong></p></blockquote><p><a href="https://redis.io/commands/set" target="_blank" rel="noopener noreferrer">lua 脚本</a></p><p>redis 可以通过 <code>eval</code> 命令保证代码执行的原子性</p><figure><img src="/assets/img/f8dda21727ecd0a9163b9c4e216a6ea5.f3816348.png" alt="image-20210204173538862" tabindex="0" loading="lazy"><figcaption>image-20210204173538862</figcaption></figure><hr><p><strong>代码</strong></p><p><strong>1、<code>RedisUtils</code> 工具类</strong></p><p><code>getJedis()</code> 方法用于从 <code>jedisPool</code> 中获取一个连接块对象</p><pre><code>/**
+ * @ClassName RedisUtils
+ * @Description TODO
+ * @Author Oneby
+ * @Date 2021/2/4 17:41
+ * @Version 1.0
+ */
+public class RedisUtils {
+
+    private static JedisPool jedisPool;
+
+    private static String hostAddr = &quot;192.168.152.233&quot;;
+
+    static {
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxTotal(20);
+        jedisPoolConfig.setMaxIdle(10);
+        jedisPool = new JedisPool(jedisPoolConfig, hostAddr, 6379, 100000);
+    }
+
+    public static Jedis getJedis() throws Exception {
+        if (null != jedisPool) {
+            return jedisPool.getResource();
+        }
+        throw new Exception(&quot;Jedispool is not ok&quot;);
+    }
+
+}
+</code></pre><p><strong>2、使用 lua 脚本保证解锁操作的原子性</strong></p><pre><code>/**
+ * @ClassName GoodController
+ * @Description TODO
+ * @Author Oneby
+ * @Date 2021/2/2 18:59
+ * @Version 1.0
+ */
+@RestController
+public class GoodController {
+
+    private static final String REDIS_LOCK_KEY = &quot;lockOneby&quot;;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Value(&quot;${server.port}&quot;)
+    private String serverPort;
+
+    @GetMapping(&quot;/buy_goods&quot;)
+    public String buy_Goods() throws Exception {
+        // 当前请求的 UUID + 线程名
+        String value = UUID.randomUUID().toString() + Thread.currentThread().getName();
+        try {
+            // setIfAbsent() 就相当于 setnx，如果不存在就新建锁，同时加上过期时间保证原子性
+            Boolean lockFlag = stringRedisTemplate.opsForValue().setIfAbsent(REDIS_LOCK_KEY, value, 10L, TimeUnit.SECONDS);
+
+            // 抢锁失败
+            if (lockFlag == false) {
+                return &quot;抢锁失败 o(╥﹏╥)o&quot;;
+            }
+
+            // 从 redis 中获取商品的剩余数量
+            String result = stringRedisTemplate.opsForValue().get(&quot;goods:001&quot;);
+            int goodsNumber = result == null ? 0 : Integer.parseInt(result);
+            String retStr = null;
+
+            // 商品数量大于零才能出售
+            if (goodsNumber &gt; 0) {
+                int realNumber = goodsNumber - 1;
+                stringRedisTemplate.opsForValue().set(&quot;goods:001&quot;, realNumber + &quot;&quot;);
+                retStr = &quot;你已经成功秒杀商品，此时还剩余：&quot; + realNumber + &quot;件&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+            } else {
+                retStr = &quot;商品已经售罄/活动结束/调用超时，欢迎下次光临&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+            }
+            System.out.println(retStr);
+            return retStr;
+        } finally {
+            // 获取连接对象
+            Jedis jedis = RedisUtils.getJedis();
+            // lua 脚本，摘自官网
+            String script = &quot;if redis.call(&#39;get&#39;, KEYS[1]) == ARGV[1]&quot; + &quot;then &quot;
+                    + &quot;return redis.call(&#39;del&#39;, KEYS[1])&quot; + &quot;else &quot; + &quot;  return 0 &quot; + &quot;end&quot;;
+            try {
+                // 执行 lua 脚本
+                Object result = jedis.eval(script, Collections.singletonList(REDIS_LOCK_KEY), Collections.singletonList(value));
+                // 获取 lua 脚本的执行结果
+                if (&quot;1&quot;.equals(result.toString())) {
+                    System.out.println(&quot;------del REDIS_LOCK_KEY success&quot;);
+                } else {
+                    System.out.println(&quot;------del REDIS_LOCK_KEY error&quot;);
+                }
+            } finally {
+                // 关闭链接
+                if (null != jedis) {
+                    jedis.close();
+                }
+            }
+        }
+    }
+
+}
+</code></pre><p><strong>3、代码测试</strong></p><p>使用 lua 脚本可以防止别人动我们自己的锁~~~</p><figure><img src="/assets/img/c0605673aefcef02a014f8620bbde92d.c510d209.png" alt="image-20210204180354202" tabindex="0" loading="lazy"><figcaption>image-20210204180354202</figcaption></figure><h4 id="_3-3-8、自动续期版" tabindex="-1"><a class="header-anchor" href="#_3-3-8、自动续期版"><span>3.3.8、自动续期版</span></a></h4><blockquote><p><strong>存在的问题</strong></p></blockquote><p>前面已经讲过了：我们无法保证一个业务的执行时间，有可能是 10s，有可能是 20s，也有可能更长。因为执行业务的时候可能会调用其他服务，我们并不能保证其他服务的调用时间。如果设置的锁过期了，当前业务还正在执行，那么之前设置的锁就失效了，就有可能出现超卖问题。</p><p>因此我们需要确保 redisLock 过期时间大于业务执行时间的问题，即面临如何对 Redis 分布式锁进行续期的问题</p><blockquote><p><strong>redis 与 zookeeper 在 CAP 方面的对比</strong></p></blockquote><p><strong>redis</strong></p><p>redis 异步复制造成的锁丢失， 比如：主节点没来的及把刚刚 set 进来这条数据给从节点，就挂了，那么主节点和从节点的数据就不一致。此时如果集群模式下，就得上 Redisson 来解决</p><hr><p><strong>zookeeper</strong></p><p>zookeeper 保持强一致性原则，对于集群中所有节点来说，要么同时更新成功，要么失败，因此使用 zookeeper 集群并不存在主从节点数据丢失的问题，但丢失了速度方面的性能</p><blockquote><p><strong>9.0 版本的代码：使用 Redisson 实现自动续期功能</strong></p></blockquote><p>redis 集群环境下，我们自己写的也不OK，直接上 RedLock 之 Redisson 落地实现</p><ol><li><a href="https://redis.io/topics/distlock" target="_blank" rel="noopener noreferrer">redis 分布式锁</a></li><li><a href="https://github.com/redisson/redisson" target="_blank" rel="noopener noreferrer">redisson GitHub 地址</a></li></ol><hr><p><strong>代码实现</strong></p><p><strong>1、注入 <code>Redisson</code> 对象</strong></p><p>在 <code>RedisConfig</code> 配置类中注入 <code>Redisson</code> 对象</p><pre><code>/**
+ * @ClassName RedisConfig
+ * @Description TODO
+ * @Author Oneby
+ * @Date 2021/2/2 18:55
+ * @Version 1.0
+ */
+@Configuration
+public class RedisConfig {
+
+    @Value(&quot;${spring.redis.host}&quot;)
+    private String redisHost;
+
+    @Bean
+    public RedisTemplate&lt;String, Serializable&gt; redisTemplate(LettuceConnectionFactory connectionFactory) {
+        // 新建 RedisTemplate 对象，key 为 String 对象，value 为 Serializable（可序列化的）对象
+        RedisTemplate&lt;String, Serializable&gt; redisTemplate = new RedisTemplate&lt;&gt;();
+        // key 值使用字符串序列化器
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        // value 值使用 json 序列化器
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        // 传入连接工厂
+        redisTemplate.setConnectionFactory(connectionFactory);
+        // 返回 redisTemplate 对象
+        return redisTemplate;
+    }
+
+    @Bean
+    public Redisson redisson() {
+        Config config = new Config();
+        config.useSingleServer().setAddress(&quot;redis://&quot; + redisHost + &quot;:6379&quot;).setDatabase(0);
+        return (Redisson) Redisson.create(config);
+    }
+
+}
+</code></pre><p><strong>2、业务逻辑</strong></p><p>直接 <code>redissonLock.lock()</code>、<code>redissonLock.unlock()</code> 完事儿，这尼玛就是 juc 版本的 redis 分布式锁啊</p><pre><code>/**
+ * @ClassName GoodController
+ * @Description TODO
+ * @Author Oneby
+ * @Date 2021/2/2 18:59
+ * @Version 1.0
+ */
+@RestController
+public class GoodController {
+
+    private static final String REDIS_LOCK_KEY = &quot;lockOneby&quot;;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Value(&quot;${server.port}&quot;)
+    private String serverPort;
+
+    @Autowired
+    private Redisson redisson;
+
+    @GetMapping(&quot;/buy_goods&quot;)
+    public String buy_Goods() throws Exception {
+        // 当前请求的 UUID + 线程名
+        String value = UUID.randomUUID().toString() + Thread.currentThread().getName();
+        // 获取锁
+        RLock redissonLock = redisson.getLock(REDIS_LOCK_KEY);
+        // 上锁
+        redissonLock.lock();
+
+        try {
+            // 从 redis 中获取商品的剩余数量
+            String result = stringRedisTemplate.opsForValue().get(&quot;goods:001&quot;);
+            int goodsNumber = result == null ? 0 : Integer.parseInt(result);
+            String retStr = null;
+
+            // 商品数量大于零才能出售
+            if (goodsNumber &gt; 0) {
+                int realNumber = goodsNumber - 1;
+                stringRedisTemplate.opsForValue().set(&quot;goods:001&quot;, realNumber + &quot;&quot;);
+                retStr = &quot;你已经成功秒杀商品，此时还剩余：&quot; + realNumber + &quot;件&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+            } else {
+                retStr = &quot;商品已经售罄/活动结束/调用超时，欢迎下次光临&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+            }
+            System.out.println(retStr);
+            return retStr;
+        } finally {
+            // 解锁
+            redissonLock.unlock();
+        }
+    }
+
+}
+</code></pre><hr><p><strong>代码测试</strong></p><p>没有出现超卖现象（但我用的是个假的 nginx？？？）</p><figure><img src="/assets/img/91d6563435b38862de83762911cd9d4a.6db37b13.png" alt="image-20210204183252071" tabindex="0" loading="lazy"><figcaption>image-20210204183252071</figcaption></figure><blockquote><p><strong>9.1 版本的代码：Bug 的完善</strong></p></blockquote><p><strong>问题</strong></p><p>阳哥说在超高并发的情况下，可能会抛出如下异常，原因是解锁 lock 的线程并不是当前线程，啥意思？？？</p><figure><img src="/assets/img/5bf8d9d12b20b9e4c27772b43e22a57a.3d48be1a.png" alt="image-20210204182943599" tabindex="0" loading="lazy"><figcaption>image-20210204182943599</figcaption></figure><hr><p><strong>代码</strong></p><p>在释放锁之前加一个判断：还在持有锁的状态，并且是当前线程持有的锁再解锁</p><pre><code>/**
+ * @ClassName GoodController
+ * @Description TODO
+ * @Author Oneby
+ * @Date 2021/2/2 18:59
+ * @Version 1.0
+ */
+@RestController
+public class GoodController {
+
+    private static final String REDIS_LOCK_KEY = &quot;lockOneby&quot;;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Value(&quot;${server.port}&quot;)
+    private String serverPort;
+
+    @Autowired
+    private Redisson redisson;
+
+    @GetMapping(&quot;/buy_goods&quot;)
+    public String buy_Goods() throws Exception {
+        // 当前请求的 UUID + 线程名
+        String value = UUID.randomUUID().toString() + Thread.currentThread().getName();
+        // 获取锁
+        RLock redissonLock = redisson.getLock(REDIS_LOCK_KEY);
+        // 上锁
+        redissonLock.lock();
+
+        try {
+            // 从 redis 中获取商品的剩余数量
+            String result = stringRedisTemplate.opsForValue().get(&quot;goods:001&quot;);
+            int goodsNumber = result == null ? 0 : Integer.parseInt(result);
+            String retStr = null;
+
+            // 商品数量大于零才能出售
+            if (goodsNumber &gt; 0) {
+                int realNumber = goodsNumber - 1;
+                stringRedisTemplate.opsForValue().set(&quot;goods:001&quot;, realNumber + &quot;&quot;);
+                retStr = &quot;你已经成功秒杀商品，此时还剩余：&quot; + realNumber + &quot;件&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+            } else {
+                retStr = &quot;商品已经售罄/活动结束/调用超时，欢迎下次光临&quot; + &quot;\t 服务器端口: &quot; + serverPort;
+            }
+            System.out.println(retStr);
+            return retStr;
+        } finally {
+            // 还在持有锁的状态，并且是当前线程持有的锁再解锁
+            if (redissonLock.isLocked() &amp;&amp; redissonLock.isHeldByCurrentThread()){
+                redissonLock.unlock();
+            }
+        }
+    }
+
+}
+</code></pre><h3 id="_3-4、分布式锁总结" tabindex="-1"><a class="header-anchor" href="#_3-4、分布式锁总结"><span>3.4、分布式锁总结</span></a></h3><blockquote><p><strong>回顾测试 &amp; 找茬的步骤</strong></p></blockquote><ol><li>synchronized 锁：单机版 OK，上 nginx分布式微服务，单机锁就不 OK,</li><li>分布式锁：取消单机锁，上 redis 分布式锁 <code>SETNX</code></li><li>如果出异常的话，可能无法释放锁， 必须要在 finally 代码块中释放锁</li><li>如果宕机了，部署了微服务代码层面根本没有走到 finally 这块，也没办法保证解锁，因此需要有设置锁的过期时间</li><li>除了增加过期时间之外，还必须要 <code>SETNX</code> 操作和设置过期时间的操作必须为原子性操作</li><li>规定只能自己删除自己的锁，你不能把别人的锁删除了，防止张冠李戴，可使用 lua 脚本或者事务</li><li>判断锁所属业务与删除锁的操作也需要是原子性操作</li><li>redis 集群环境下，我们自己写的也不 OK，直接上 RedLock 之 Redisson 落地实现</li></ol><h2 id="_4、redis-缓存淘汰策略" tabindex="-1"><a class="header-anchor" href="#_4、redis-缓存淘汰策略"><span>4、Redis 缓存淘汰策略</span></a></h2><h3 id="_4-1、缓存淘汰策略的面试题" tabindex="-1"><a class="header-anchor" href="#_4-1、缓存淘汰策略的面试题"><span>4.1、缓存淘汰策略的面试题</span></a></h3><blockquote><p><strong>Redis 缓存淘汰策略相关的面试题</strong></p></blockquote><ol><li>生产上你们的redis内存设置多少？</li><li>如何配置、修改redis的内存大小？</li><li>如果内存满了你怎么办？</li><li>redis 清理内存的方式？定期删除和惰性删除了解过吗</li><li>redis 的缓存淘汰策略</li><li>redis 的 LRU 淘汰机制了解过吗？可否手写一个 LRU 算法</li></ol><h3 id="_4-2、redis-内存满了怎么办" tabindex="-1"><a class="header-anchor" href="#_4-2、redis-内存满了怎么办"><span>4.2、redis 内存满了怎么办</span></a></h3><blockquote><p><strong>redis 默认内存多少？在哪里查看? 如何设置修改?</strong></p></blockquote><p><strong>1、如何查看 redis 最大占用内存</strong></p><p>在 redis.conf 配置文件中有一个，输入 <code>:set nu</code> 显示行号，大约在 800 多行有一个 <code>maxmemory</code> 字段，用预设值 redis 的最大占用内存</p><figure><img src="/assets/img/d8b324a3c021ae11e71dcc5da1ab8c0b.a5d77fdf.png" alt="image-20210207172808438" tabindex="0" loading="lazy"><figcaption>image-20210207172808438</figcaption></figure><hr><p><strong>2、redis 会占用物理机器多少内存？</strong></p><p>如果不设置最大内存大小或者设置最大内存大小为 0，在 64 位操作系统下不限制内存大小，在32位操作系统下最多使用 3GB 内存</p><hr><p><strong>3、一般生产上如何配置 redis 的内存</strong></p><p>一般推荐Redis设置内存为最大物理内存的四分之三，也就是 0.75</p><hr><p><strong>4、如何修改 redis 内存设置</strong></p><ol><li><p>通过修改文件配置（永久生效）：修改 maxmemory 字段，单位为字节</p><figure><img src="/assets/img/060a18caee395fae8796a48e5214202d.253ac4b1.png" alt="image-20210207173214138" tabindex="0" loading="lazy"><figcaption>image-20210207173214138</figcaption></figure></li><li><p>通过命令修改（重启失效）：<code>config set maxmemory 104857600</code> 设置 redis 最大占用内存为 100MB，<code>config get maxmemory</code> 获取 redis 最大占用内存</p><figure><img src="/assets/img/5e551161caeb7f6eb7892e23d45c2a79.3348cae6.png" alt="image-20210207173506155" tabindex="0" loading="lazy"><figcaption>image-20210207173506155</figcaption></figure></li></ol><hr><p><strong>5、通过命令查看 redis 内存使用情况?</strong></p><p>通过 info 指令可以查看 redis 内存使用情况：<code>used_memory_human</code> 表示实际已经占用的内存，<code>maxmemory</code> 表示 redis 最大占用内存</p><figure><img src="/assets/img/54e71cba443b2b5d8f49dad6450bee42.abd27cf4.png" alt="image-20210207173935763" tabindex="0" loading="lazy"><figcaption>image-20210207173935763</figcaption></figure><blockquote><p><strong>如果把 redis 内存打满了会发生什么? 如果 redis 内存使用超出了设置的最大值会怎样?</strong></p></blockquote><p>修改配置，故意把最大内存设置为 1byte，再通过 <code>set k1 v1</code> 命令下 redis 中写入数据，redis 将会报错：(error) OOM command not allowed when used memory &gt; ‘maxmemory’</p><figure><img src="/assets/img/6189714705ebc59c70c9c360ef983328.f35f22e7.png" alt="image-20210207174153452" tabindex="0" loading="lazy"><figcaption>image-20210207174153452</figcaption></figure><blockquote><p><strong>总结 &amp; 结论</strong></p></blockquote><p>如果设置了 <code>maxmemory</code> 的选项，假如 redis 内存使用达到上限，并且 key 都没有加上过期时间，就会导致数据写爆 redis 内存。</p><p>为了避免类似情况，于是引出下一部分的内存淘汰策略</p><h3 id="_4-3、redis-缓存淘汰策略" tabindex="-1"><a class="header-anchor" href="#_4-3、redis-缓存淘汰策略"><span>4.3、redis 缓存淘汰策略</span></a></h3><blockquote><p><strong>redis 如何删除设置了过期时间的 key</strong></p></blockquote><p><strong>1、redis过期键的删除策略</strong></p><p>如果一个键是过期的，那它到了过期时间之后是不是马上就从内存中被被删除呢？如果回答是，那么面试官就会问你：自己走还是我送你？那么过期后到底什么时候被删除呢？edis 如何操作的呢？</p><p>通过查看 redis 配置文件可知，默认淘汰策略是【noeviction（Don’t evict anything, just return an error on write operations.）】，如果 redis 内存被写爆了，直接返回 error</p><figure><img src="/assets/img/f8c3f3b937fd77a48cb570188367f8d0.ae722909.png" alt="image-20210207174720294" tabindex="0" loading="lazy"><figcaption>image-20210207174720294</figcaption></figure><blockquote><p><strong>redis 对于过期 key 的三种不同删除策略</strong></p></blockquote><p><strong>1、定时删除</strong></p><p>立即删除能保证内存中数据的最大新鲜度，因为它保证过期键值会在过期后马上被删除，其所占用的内存也会随之释放。但是立即删除对 CPU 是最不友好的。因为删除操作会占用 CPU 的时间，如果刚好碰上了 CPU 很忙的时候，比如正在做交集或排序等计算的时候，就会给 CPU 造成额外的压力，让 CPU 心累，时时需要删除，忙死。。。。。。</p><p>这会产生大量的性能消耗，同时也会影响数据的读取操作。</p><p><strong>总结</strong>：定时删除对 CPU 不友好，但对 memory 友好，用处理器性能换取存储空间（拿时间换空间）</p><hr><p><strong>2、惰性删除</strong></p><p>惰性删除的策略刚好和定时删除相反，惰性删除在数据到达过期时间后不做处理，等下次访问该数据时发现已过期，并将其删除，并返回不存在。</p><p>使用惰性删除访问数据的特点：访问一个数据，如果发现其在过期时间之内，则返回改数据；如果发现已经过了过期时间，则将其删除，并返回不存在</p><p>如果一个键已经过期，而这个键又仍然保留在数据库中，那么只要这个过期键不被删除，它所占用的内存就不会释放。因此惰性删除策略的缺点是：它对内存是最不友好的。</p><p>在使用惰性删除策略时，如果数据库中有非常多的过期键，而这些过期键又恰好没有被访问到的话，那么它们也许永远也不会被删除（除非用户手动执行 <code>FLUSHDB</code>），我们甚至可以将这种情况看作是一种内存泄漏——无用的垃圾数据占用了大量的内存，而服务器却不会自己去释放它们，这对于运行状态非常依赖于内存的 redis 服务器来说，肯定不是一个好消息</p><p><strong>总结</strong>：惰性删除对 memory 不友好，但对 CPU 友好，用存储空间换取处理器性能（拿空间换时间）</p><hr><p><strong>3、定期删除</strong></p><p><strong>折中方案：定期删除</strong></p><p>上面两种删除策略都走极端，因此引出我们的定期删除策略。</p><p>定期删除策略是前两种策略的折中：定期删除策略每隔一段时间执行一次删除过期键操作，并通过限制删除操作执行的时长和频率来减少删除操作对 CPU 时间的影响。其做法为：周期性轮询 redis 库中的时效性数据，采用随机抽取的策略，利用过期数据占比的方式控制删除频度。</p><p><strong>定期删除的特点</strong></p><p>特点1：CPU 性能占用设置有峰值，检测频度可自定义设置</p><p>特点2：内存压力不是很大，长期占用内存的冷数据会被持续清理</p><p>总结：周期性抽查存储空间（随机抽查，重点抽查)</p><p><strong>定期删除的举例</strong></p><p>redis 默认每间隔 100ms 检查是否有过期的 key，如果有过期 key 则删除。注意：redis 不是每隔100ms 将所有的 key 检查一次而是随机抽取进行检查（如果每隔 100ms，全部 key 进行检查，redis 直接进去ICU）。因此，如果只采用定期删除策略，会导致很多 key 到时间没有删除。</p><p><strong>定期删除的难点</strong></p><p>定期删除策略的难点是确定删除操作执行的时长和频率：redis 不可能时时刻刻遍历所有被设置了生存时间的 key，来检测数据是否已经到达过期时间，然后对它进行删除。</p><p>如果删除操作执行得太频繁，或者执行的时间太长，定期删除策略就会退化成定时删除策略，以至于将 CPU 时间过多地消耗在删除过期键上面。</p><p>如果删除操作执行得太少，或者执行的时间太短，定期删除策略又会和惰性删除束略一样，出现浪费内存的情况。</p><p>因此，如果采用定期删除策略的话，服务器必须根据情况，合理地设置删除操作的执行时长和执行频率。</p><hr><p><strong>总结</strong></p><p>惰性删除和定期删除都存在数据没有被抽到的情况，如果这些数据已经到了过期时间，没有任何作用，这会导致大量过期的 key 堆积在内存中，导致 redis 内存空间紧张或者很快耗尽</p><p>因此必须要有一个更好的兜底方案，接下来引出 redis 内存淘汰策略</p><blockquote><p><strong>redis 6.0.8 版本的内存淘汰策略有哪些？</strong></p></blockquote><p><strong>8 种内存淘汰策略</strong></p><ol><li>noeviction：不会驱逐任何key</li><li>allkeys-lru：对所有key使用LRU算法进行删除</li><li>volatile-lru：对所有设置了过期时间的key使用LRU算法进行删除</li><li>allkeys-random：对所有key随机删除</li><li>volatile-random：对所有设置了过期时间的key随机删除</li><li>volatile-ttl：删除马上要过期的key</li><li>allkeys-lfu：对所有key使用LFU算法进行删除</li><li>volatile-lfu：对所有设置了过期时间的key使用LFU算法进行删除</li></ol><hr><p><strong>总结</strong></p><ol><li>2个维度 <ol><li>过期键中筛选</li><li>所有键中筛选</li></ol></li><li>4个方面 <ol><li>lru</li><li>lfu</li><li>random</li><li>ttl</li></ol></li></ol><blockquote><p><strong>如何配置 redis 的内存淘汰策略</strong></p></blockquote><ol><li><p>通过修改文件配置（永久生效）：配置 <code>maxmemory-policy</code> 字段</p><figure><img src="/assets/img/a0f037718cb8d2cbaee49f686dcf0e74.c3b86a6e.png" alt="image-20210207181430526" tabindex="0" loading="lazy"><figcaption>image-20210207181430526</figcaption></figure></li><li><p>通过命令修改（重启失效）：<code>config set maxmemory-policy allkeys-lru</code> 命令设置内存淘汰策略，<code>config get maxmemory-policy</code> 命令获取当前采用的内存淘汰策略</p><figure><img src="/assets/img/12c5526453ae59e64efda4a309510040.e65caa8c.png" alt="image-20210207182204402" tabindex="0" loading="lazy"><figcaption>image-20210207182204402</figcaption></figure></li></ol><h2 id="_5、redis-lru-算法" tabindex="-1"><a class="header-anchor" href="#_5、redis-lru-算法"><span>5、redis LRU 算法</span></a></h2><h3 id="_5-1、lru-算法简介" tabindex="-1"><a class="header-anchor" href="#_5-1、lru-算法简介"><span>5.1、LRU 算法简介</span></a></h3><blockquote><p><strong>LRU 算法的简介</strong></p></blockquote><p>LRU 是 Least Recently Used 的缩写，即最近最少使用，是一种常用的页面置换算法，每次选择最近最久未使用的页面予以淘汰</p><h3 id="_5-2、lru-算法题来源" tabindex="-1"><a class="header-anchor" href="#_5-2、lru-算法题来源"><span>5.2、LRU 算法题来源</span></a></h3><blockquote><p><a href="https://leetcode-cn.com/problems/lru-cache/" target="_blank" rel="noopener noreferrer">146. LRU 缓存机制</a></p></blockquote><p>运用你所掌握的数据结构，设计和实现一个 <a href="https://baike.baidu.com/item/LRU" target="_blank" rel="noopener noreferrer">LRU (最近最少使用) 缓存机制</a> 。</p><p>实现 <code>LRUCache</code> 类：</p><ol><li><code>LRUCache(int capacity)</code> 以正整数作为容量 <code>capacity</code> 初始化 LRU 缓存</li><li><code>int get(int key)</code> 如果关键字 <code>key</code> 存在于缓存中，则返回关键字的值，否则返回 <code>-1</code> 。</li><li><code>void put(int key, int value)</code> 如果关键字已经存在，则变更其数据值；如果关键字不存在，则插入该组「关键字-值」。当缓存容量达到上限时，它应该在写入新数据之前删除最久未使用的数据值，从而为新的数据值留出空间。</li></ol><hr><p><strong>进阶</strong>：你是否可以在 <code>O(1)</code> 时间复杂度内完成这两种操作？</p><hr><p><strong>示例：</strong></p><pre><code>输入
+[&quot;LRUCache&quot;, &quot;put&quot;, &quot;put&quot;, &quot;get&quot;, &quot;put&quot;, &quot;get&quot;, &quot;put&quot;, &quot;get&quot;, &quot;get&quot;, &quot;get&quot;]
+[[2], [1, 1], [2, 2], [1], [3, 3], [2], [4, 4], [1], [3], [4]]
+输出
+[null, null, null, 1, null, -1, null, -1, 3, 4]
+
+解释
+LRUCache lRUCache = new LRUCache(2);
+lRUCache.put(1, 1); // 缓存是 {1=1}
+lRUCache.put(2, 2); // 缓存是 {1=1, 2=2}
+lRUCache.get(1);    // 返回 1
+lRUCache.put(3, 3); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}
+lRUCache.get(2);    // 返回 -1 (未找到)
+lRUCache.put(4, 4); // 该操作会使得关键字 1 作废，缓存是 {4=4, 3=3}
+lRUCache.get(1);    // 返回 -1 (未找到)
+lRUCache.get(3);    // 返回 3
+lRUCache.get(4);    // 返回 4
+</code></pre><h3 id="_5-3、lru-算法设计思想" tabindex="-1"><a class="header-anchor" href="#_5-3、lru-算法设计思想"><span>5.3、LRU 算法设计思想</span></a></h3><p>查找和插入的时间复杂度为 <code>O(1)</code>，HashMap 没得跑了，但是 HashMap 是无序的集合，怎么样将其改造为有序集合呢？答案就是在各个 Node 节点之间增加 <code>prev</code> 指针和 <code>next</code> 指针，构成双向链表</p><figure><img src="/assets/img/abc068f7d766a68862079499bfea6613.1c77993d.png" alt="image-20210207184327176" tabindex="0" loading="lazy"><figcaption>image-20210207184327176</figcaption></figure><p>LRU 的算法核心是哈希链表，本质就是 HashMap+DoubleLinkedList 时间复杂度是O(1)，哈希表+双向链表的结合体，下面这幅动图完美诠释了 HashMap+DoubleLinkedList 的工作原理</p><figure><img src="/assets/img/174430816d515a4f9070b7a7158dffa6.3569a8ec.gif" alt="image-20210206182454498" tabindex="0" loading="lazy"><figcaption>image-20210206182454498</figcaption></figure><h3 id="_5-4、lru-算法编码实现" tabindex="-1"><a class="header-anchor" href="#_5-4、lru-算法编码实现"><span>5.4、LRU 算法编码实现</span></a></h3><blockquote><p><strong>1、借助 JDK 自带的 <code>LinkedHashMap</code></strong></p></blockquote><p><code>LinkedHashMap</code> 的注释中写明了： <code>LinkedHashMap</code> 非常适合用来构建 LRU 缓存</p><figure><img src="/assets/img/61d11a2206812ac5cfb0ab75e0cbe6e4.b8de5195.png" alt="image-20210207185047179" tabindex="0" loading="lazy"><figcaption>image-20210207185047179</figcaption></figure><hr><p><strong>LRU 代码</strong></p><p>通过继承 <code>LinkedHashMap</code>，重写 <code>boolean removeEldestEntry(Map.Entry&lt;K, V&gt; eldest)</code> 方法就完事了。。。</p><pre><code>/**
+ * @ClassName LRUCacheDemo
+ * @Description TODO
+ * @Author Oneby
+ * @Date 2021/2/7 16:26
+ * @Version 1.0
+ */
+public class LRUCacheDemo&lt;K, V&gt; extends LinkedHashMap&lt;K, V&gt; {
+
+    // 缓存容量
+    private int capacity;
+
+    public LRUCacheDemo(int capacity) {
+        // accessOrder：the ordering mode. true for access-order；false for insertion-order
+        super(capacity, 0.75F, true);
+        this.capacity = capacity;
+    }
+
+    // 用于判断是否需要删除最近最久未使用的节点
+    @Override
+    protected boolean removeEldestEntry(Map.Entry&lt;K, V&gt; eldest) {
+        return super.size() &gt; capacity;
+    }
+
+    public static void main(String[] args) {
+        LRUCacheDemo lruCacheDemo = new LRUCacheDemo(3);
+
+        lruCacheDemo.put(1, &quot;a&quot;);
+        lruCacheDemo.put(2, &quot;b&quot;);
+        lruCacheDemo.put(3, &quot;c&quot;);
+        System.out.println(lruCacheDemo.keySet());
+
+        lruCacheDemo.put(4, &quot;d&quot;);
+        System.out.println(lruCacheDemo.keySet());
+
+        lruCacheDemo.put(3, &quot;c&quot;);
+        System.out.println(lruCacheDemo.keySet());
+        lruCacheDemo.put(3, &quot;c&quot;);
+        System.out.println(lruCacheDemo.keySet());
+        lruCacheDemo.put(3, &quot;c&quot;);
+        System.out.println(lruCacheDemo.keySet());
+        lruCacheDemo.put(5, &quot;x&quot;);
+        System.out.println(lruCacheDemo.keySet());
+    }
+
+}
+</code></pre><hr><p><strong>为何要重写 <code>boolean removeEldestEntry(Map.Entry&lt;K, V&gt; eldest)</code> 方法</strong></p><p>先来看看 <code>LinkedHashMap</code> 中的 <code>boolean removeEldestEntry(Map.Entry&lt;K, V&gt; eldest)</code> 方法，直接 <code>return false</code>，缓存爆就爆，反正就是不会删除 <code>EldestEntry</code></p><pre><code>/**
+ * Returns &lt;tt&gt;true&lt;/tt&gt; if this map should remove its eldest entry.
+ * This method is invoked by &lt;tt&gt;put&lt;/tt&gt; and &lt;tt&gt;putAll&lt;/tt&gt; after
+ * inserting a new entry into the map.  It provides the implementor
+ * with the opportunity to remove the eldest entry each time a new one
+ * is added.  This is useful if the map represents a cache: it allows
+ * the map to reduce memory consumption by deleting stale entries.
+ */
+protected boolean removeEldestEntry(Map.Entry&lt;K,V&gt; eldest) {
+    return false;
+}
+</code></pre><p><code>boolean removeEldestEntry(Map.Entry&lt;K, V&gt; eldest)</code> 方法在 <code>void afterNodeInsertion(boolean evict)</code> 方法中被调用，只有当 <code>boolean removeEldestEntry(Map.Entry&lt;K, V&gt; eldest)</code> 方法返回 <code>true</code> 时，才能够删除 <code>EldestEntry</code></p><figure><img src="/assets/img/7570b462ec360e4c471e0115f9c40dbe.cd650514.png" alt="image-20210207191111729" tabindex="0" loading="lazy"><figcaption>image-20210207191111729</figcaption></figure><p>因此我们重写之后的判断条件为：如果 <code>LinkedHashMap</code> 中存储的元素个数已经大于缓存容量 <code>capacity</code>，则返回 <code>true</code>，表示允许删除 <code>EldestEntry</code>；否则返回 <code>false</code>，表示无需删除 <code>EldestEntry</code></p><pre><code>// 用于判断是否需要删除最近最久未使用的节点
+@Override
+protected boolean removeEldestEntry(Map.Entry&lt;K, V&gt; eldest) {
+    return super.size() &gt; capacity;
+}
+</code></pre><hr><p><strong>举例说明构造函数中的 <code>accessOrder</code> 的含义</strong></p><p><strong>构造函数中的 <code>accessOrder</code> 字段</strong></p><p>在 <code>LRUCacheDemo</code> 的构造方法中，我们调用了 <code>LinkedHashMap</code> 的构造方法，其中有一个字段为 <code>accessOrder</code></p><figure><img src="/assets/img/e2135890194fbd120f88377c16d34b26.bb56c8a4.png" alt="image-20210207193458904" tabindex="0" loading="lazy"><figcaption>image-20210207193458904</figcaption></figure><p><strong><code>accessOrder = true</code> 和 <code>accessOrder = false</code> 的情况</strong></p><p>当 <code>accessOrder = true</code> 时，每次使用 key 时（put 或者 get 时），都将 key 对应的数据移动到队尾（右边），表示最近经常使用；当 <code>accessOrder = false</code> 时，key 的顺序为插入双向链表时的顺序</p><figure><img src="/assets/img/b2d5a55df4837226e085710d78a0d8f6.8f4978be.png" alt="image-20210207194714608" tabindex="0" loading="lazy"><figcaption>image-20210207194714608</figcaption></figure><hr><p><strong><code>LinkedHashMap</code> 的 <code>put()</code> 方法</strong></p><p><code>LinkedHashMap</code> 的 <code>put()</code> 方法其实就是 <code>HashMap</code> 的 <code>put()</code> 方法，我就奇了怪了，<code>LinkedHashMap</code> 就是 <code>HashMap</code>？？？其实并不是。。。</p><figure><img src="/assets/img/8b951c9716edddca0ffbf18939a85b7f.5cef5fff.png" alt="image-20210207201318744" tabindex="0" loading="lazy"><figcaption>image-20210207201318744</figcaption></figure><p>在 <code>putval()</code> 方法的调用了两个方法：<code>afterNodeAccess(e)</code> 方法和 <code>afterNodeInsertion(evict)</code> 方法，这两个方法就是专门针对于 <code>LinkedHashMap</code> 写的方法</p><figure><img src="/assets/img/20281aaa0047452e62895ab11a15d3c7.6ec0b14a.png" alt="image-20210207213030434" tabindex="0" loading="lazy"><figcaption>image-20210207213030434</figcaption></figure><p>在 HashMap 中这些方法均为空实现的方法，没有任何代码逻辑，需要推迟到子类 <code>LinkedHashMap</code> 中去实现，等等，听着好像有点耳熟，这不就是模板方法设计模式嘛~</p><figure><img src="/assets/img/cba6f4aecbc28f7805722ab4f4ae66ab.d475a490.png" alt="image-20210207204446152" tabindex="0" loading="lazy"><figcaption>image-20210207204446152</figcaption></figure><p>在 <code>LinkedHashMap</code> 的 <code>void afterNodeAccess(Node&lt;K,V&gt; e)</code> 方法中：如果设置了 <code>accessOrder = true</code> 时，则每次使用 key 时（put 或者 get 时），都将 key 对应的数据移动到队尾（右边），表示这是最近经常使用的节点</p><figure><img src="/assets/img/5b9e9c2cf24bd998b510f3b998d186ae.4abfa8fc.png" alt="image-20210207213252015" tabindex="0" loading="lazy"><figcaption>image-20210207213252015</figcaption></figure><p>在 <code>LinkedHashMap</code> 的 <code>void afterNodeInsertion(boolean evict)</code> 方法中：如果头指针不为空并且当前需要删除老节点，则执行 <code>removeNode(hash(key), key, null, false, true)</code> 方法删除 <code>EldestEntry</code>（若 <code>accessOrder = true</code> 时，<code>EldestEntry</code> 表示最近最少使用的数据，若 <code>accessOrder = false</code> 时，<code>EldestEntry</code> 表示最先插入链表的节点）</p><figure><img src="/assets/img/3850a07b1fc4b5bbfd0748ee2a757ced.b66a3dab.png" alt="image-20210207204652052" tabindex="0" loading="lazy"><figcaption>image-20210207204652052</figcaption></figure><hr><p><strong><code>LinkedHashMap</code> 的 <code>get()</code> 方法</strong></p><p>在 <code>LinkedHashMap</code> 的 <code>get()</code> 方法中：若 <code>accessOrder = true</code> 时，则每次 <code>get(key)</code> 之后都会将 key 对应的数据移动至双向链表的尾部</p><figure><img src="/assets/img/4ca06bbb4e77c2f2d417531326d61848.05a667dc.png" alt="image-20210207213541630" tabindex="0" loading="lazy"><figcaption>image-20210207213541630</figcaption></figure><hr><p><strong>LinkedHashMap 中如何构造双向链表？</strong></p><p><code>Entry&lt;K,V&gt;</code> 继承了 <code>HashMap.Node&lt;K,V&gt;</code>，并且有 <code>Entry&lt;K,V&gt; before, after;</code> 两个字段，这不就是双线链表的标配嘛</p><figure><img src="/assets/img/30f70c33662af55fd6456357ea63c197.117c9bec.png" alt="image-20210207214024085" tabindex="0" loading="lazy"><figcaption>image-20210207214024085</figcaption></figure><p>在 <code>LinkedHashMap</code> 中定义了 <code>head</code> 和 <code>tail</code> ，分别指向双向链表的头部和尾部，人家注释中也说了，<code>head</code> 用于指向双向链表中最老的节点，tail 用于指向最年轻的节点，至于最老和最年轻的定义，就得看 <code>accessOrder</code> 字段的值了：如果 <code>accessOrder = true</code>，那么最老的节点就是最久没有被使用过的节点，最年轻的节点就是最近被刚被使用过的节点；如果 <code>accessOrder = true</code>，那么最老的节点就是链表头部的节点，最年轻的节点就是链表尾部的节点</p><figure><img src="/assets/img/002c18eae3ba2ac7ab9c4930dfdb9226.7ff9b86a.png" alt="image-20210207214134771" tabindex="0" loading="lazy"><figcaption>image-20210207214134771</figcaption></figure><blockquote><p><strong>2、完全自己手写</strong></p></blockquote><ol><li><p>依葫芦画瓢，先定义 Node 类作为数据的承载体</p><pre><code>// 1.构造一个node节点作为数据载体
+class Node&lt;K, V&gt; {
+    K key;
+    V value;
+    Node&lt;K, V&gt; prev;
+    Node&lt;K, V&gt; next;
+
+    public Node() {
+        this.prev = this.next = null;
+    }
+
+    public Node(K key, V value) {
+        this.key = key;
+        this.value = value;
+        this.prev = this.next = null;
+    }
+}
+</code></pre></li><li><p>定义双向链表，里面存放的就是 Node 对象，Node 节点之间通过 <code>prev</code> 和 <code>next</code> 指针连接起来</p><pre><code>// 2.构建一个虚拟的双向链表,,里面存放的就是我们的Node
+class DoubleLinkedList&lt;K, V&gt; {
+    Node&lt;K, V&gt; head;
+    Node&lt;K, V&gt; tail;
+
+    public DoubleLinkedList() {
+        head = new Node&lt;&gt;();
+        tail = new Node&lt;&gt;();
+        head.next = tail;
+        tail.prev = head;
+    }
+
+    // 3.添加到头
+    public void addHead(Node&lt;K, V&gt; node) {
+        node.next = head.next;
+        node.prev = head;
+        head.next.prev = node;
+        head.next = node;
+    }
+
+    // 4.删除节点
+    public void removeNode(Node&lt;K, V&gt; node) {
+        node.next.prev = node.prev;
+        node.prev.next = node.next;
+        node.prev = null;
+        node.next = null;
+    }
+
+    // 5.获得最后一个节点
+    public Node getLast() {
+        return tail.prev;
+    }
+}
+</code></pre></li><li><p>通过 <code>HashMap</code> 和 <code>DoubleLinkedList</code> 构建 <code>LinkedHashMap</code>，我们这里可是将最近最常使用的节点放在了双向链表的头部（和 <code>LinkedHashMap</code> 不同哦）</p><pre><code>private int cacheSize;
+Map&lt;Integer, Node&lt;Integer, Integer&gt;&gt; map;
+DoubleLinkedList&lt;Integer, Integer&gt; doubleLinkedList;
+
+public LRUCacheDemo(int cacheSize) {
+    this.cacheSize = cacheSize;//坑位
+    map = new HashMap&lt;&gt;();//查找
+    doubleLinkedList = new DoubleLinkedList&lt;&gt;();
+}
+
+public int get(int key) {
+    if (!map.containsKey(key)) {
+        return -1;
+    }
+
+    Node&lt;Integer, Integer&gt; node = map.get(key);
+    doubleLinkedList.removeNode(node);
+    doubleLinkedList.addHead(node);
+    
+    return node.value;
+}
+
+public void put(int key, int value) {
+    if (map.containsKey(key)) {  //update
+        Node&lt;Integer, Integer&gt; node = map.get(key);
+        node.value = value;
+        map.put(key, node);
+        
+        doubleLinkedList.removeNode(node);
+        doubleLinkedList.addHead(node);
+    } else {
+        if (map.size() == cacheSize)  //坑位满了
+        {
+            Node&lt;Integer, Integer&gt; lastNode = doubleLinkedList.getLast();
+            map.remove(lastNode.key);
+            doubleLinkedList.removeNode(lastNode);
+        }
+
+        //新增一个
+        Node&lt;Integer, Integer&gt; newNode = new Node&lt;&gt;(key, value);
+        map.put(key, newNode);
+        doubleLinkedList.addHead(newNode);
+
+    }
+}
+</code></pre></li><li><p>测试 <code>LRUCacheDemo</code></p><pre><code>public static void main(String[] args) {
+
+    LRUCacheDemo lruCacheDemo = new LRUCacheDemo(3);
+
+    lruCacheDemo.put(1, 1);
+    lruCacheDemo.put(2, 2);
+    lruCacheDemo.put(3, 3);
+    System.out.println(lruCacheDemo.map.keySet());
+
+    lruCacheDemo.put(4, 1);
+    System.out.println(lruCacheDemo.map.keySet());
+
+    lruCacheDemo.put(3, 1);
+    System.out.println(lruCacheDemo.map.keySet());
+    lruCacheDemo.put(3, 1);
+    System.out.println(lruCacheDemo.map.keySet());
+    lruCacheDemo.put(3, 1);
+    System.out.println(lruCacheDemo.map.keySet());
+    lruCacheDemo.put(5, 1);
+    System.out.println(lruCacheDemo.map.keySet());
+
+}
+</code></pre></li><li><p>测试结果：这个顺序是不对滴，因为这是 <code>HashMap</code> 中 <code>key</code> 的顺序，并不是 <code>DoubleLinkedList</code> 中 <code>key</code> 的顺序，但至少可以说明最近最少使用的数据已经被删除了~~~</p><figure><img src="/assets/img/ab423b570f2556aae42047dc30031fef.e3af4bbc.png" alt="image-20210207220552698" tabindex="0" loading="lazy"><figcaption>image-20210207220552698</figcaption></figure></li></ol><hr><p><strong>全部代码</strong></p><pre><code>public class LRUCacheDemo {
+
+    // map 负责查找，构建一个虚拟的双向链表，它里面装的就是一个个 Node 节点，作为数据载体
+
+    // 1.构造一个node节点作为数据载体
+    class Node&lt;K, V&gt; {
+        K key;
+        V value;
+        Node&lt;K, V&gt; prev;
+        Node&lt;K, V&gt; next;
+
+        public Node() {
+            this.prev = this.next = null;
+        }
+
+        public Node(K key, V value) {
+            this.key = key;
+            this.value = value;
+            this.prev = this.next = null;
+        }
+    }
+
+    // 2.构建一个虚拟的双向链表,,里面安放的就是我们的Node
+    class DoubleLinkedList&lt;K, V&gt; {
+        Node&lt;K, V&gt; head;
+        Node&lt;K, V&gt; tail;
+
+        public DoubleLinkedList() {
+            head = new Node&lt;&gt;();
+            tail = new Node&lt;&gt;();
+            head.next = tail;
+            tail.prev = head;
+        }
+
+        // 3.添加到头
+        public void addHead(Node&lt;K, V&gt; node) {
+            node.next = head.next;
+            node.prev = head;
+            head.next.prev = node;
+            head.next = node;
+        }
+
+        // 4.删除节点
+        public void removeNode(Node&lt;K, V&gt; node) {
+            node.next.prev = node.prev;
+            node.prev.next = node.next;
+            node.prev = null;
+            node.next = null;
+        }
+
+        // 5.获得最后一个节点
+        public Node getLast() {
+            return tail.prev;
+        }
+    }
+
+    private int cacheSize;
+    Map&lt;Integer, Node&lt;Integer, Integer&gt;&gt; map;
+    DoubleLinkedList&lt;Integer, Integer&gt; doubleLinkedList;
+
+    public LRUCacheDemo(int cacheSize) {
+        this.cacheSize = cacheSize;//坑位
+        map = new HashMap&lt;&gt;();//查找
+        doubleLinkedList = new DoubleLinkedList&lt;&gt;();
+    }
+
+    public int get(int key) {
+        if (!map.containsKey(key)) {
+            return -1;
+        }
+
+        Node&lt;Integer, Integer&gt; node = map.get(key);
+        doubleLinkedList.removeNode(node);
+        doubleLinkedList.addHead(node);
+
+        return node.value;
+    }
+
+    public void put(int key, int value) {
+        if (map.containsKey(key)) {  //update
+            Node&lt;Integer, Integer&gt; node = map.get(key);
+            node.value = value;
+            map.put(key, node);
+
+            doubleLinkedList.removeNode(node);
+            doubleLinkedList.addHead(node);
+        } else {
+            if (map.size() == cacheSize)  //坑位满了
+            {
+                Node&lt;Integer, Integer&gt; lastNode = doubleLinkedList.getLast();
+                map.remove(lastNode.key);
+                doubleLinkedList.removeNode(lastNode);
+            }
+
+            //新增一个
+            Node&lt;Integer, Integer&gt; newNode = new Node&lt;&gt;(key, value);
+            map.put(key, newNode);
+            doubleLinkedList.addHead(newNode);
+
+        }
+    }
+
+    public static void main(String[] args) {
+
+        LRUCacheDemo lruCacheDemo = new LRUCacheDemo(3);
+
+        lruCacheDemo.put(1, 1);
+        lruCacheDemo.put(2, 2);
+        lruCacheDemo.put(3, 3);
+        System.out.println(lruCacheDemo.map.keySet());
+
+        lruCacheDemo.put(4, 1);
+        System.out.println(lruCacheDemo.map.keySet());
+
+        lruCacheDemo.put(3, 1);
+        System.out.println(lruCacheDemo.map.keySet());
+        lruCacheDemo.put(3, 1);
+        System.out.println(lruCacheDemo.map.keySet());
+        lruCacheDemo.put(3, 1);
+        System.out.println(lruCacheDemo.map.keySet());
+        lruCacheDemo.put(5, 1);
+        System.out.println(lruCacheDemo.map.keySet());
+
+    }
+}
+</code></pre><hr><p><strong>图解双向队列</strong></p><ol><li><p><code>DoubleLinkedList</code> 双向链表的初始化</p><figure><img src="/assets/img/2ca45a630c105106f1052e5fdf1a8aa2.b60b50ce.png" alt="image-20210207220712585" tabindex="0" loading="lazy"><figcaption>image-20210207220712585</figcaption></figure></li><li><p>双向链表插入节点</p><figure><img src="/assets/img/3543591488da5c26a2dd6aa1abf82ae1.1402e94d.png" alt="image-20210207220859295" tabindex="0" loading="lazy"><figcaption>image-20210207220859295</figcaption></figure></li><li><p>双向链表删除节点</p><p><img src="/assets/img/151c954021cb888f15e299ddb20346df.c9e1cbfa.png" alt="image-20210207221116712" loading="lazy">## 目标</p></li></ol><h3 id="原理" tabindex="-1"><a class="header-anchor" href="#原理"><span>原理</span></a></h3></div><!----><footer class="vp-page-meta"><div class="vp-meta-item edit-link"><a class="auto-link external-link vp-meta-label" href="https://github.com/vuepress-theme-hope/vuepress-theme-hope/edit/main/src/study-notes/shangguigu-three/Redis/README.md" aria-label="在 GitHub 上编辑此页" rel="noopener noreferrer" target="_blank"><!--[--><svg xmlns="http://www.w3.org/2000/svg" class="icon edit-icon" viewBox="0 0 1024 1024" fill="currentColor" aria-label="edit icon" name="edit"><path d="M430.818 653.65a60.46 60.46 0 0 1-50.96-93.281l71.69-114.012 7.773-10.365L816.038 80.138A60.46 60.46 0 0 1 859.225 62a60.46 60.46 0 0 1 43.186 18.138l43.186 43.186a60.46 60.46 0 0 1 0 86.373L588.879 565.55l-8.637 8.637-117.466 68.234a60.46 60.46 0 0 1-31.958 11.229z"></path><path d="M728.802 962H252.891A190.883 190.883 0 0 1 62.008 771.98V296.934a190.883 190.883 0 0 1 190.883-192.61h267.754a60.46 60.46 0 0 1 0 120.92H252.891a69.962 69.962 0 0 0-69.098 69.099V771.98a69.962 69.962 0 0 0 69.098 69.098h475.911A69.962 69.962 0 0 0 797.9 771.98V503.363a60.46 60.46 0 1 1 120.922 0V771.98A190.883 190.883 0 0 1 728.802 962z"></path></svg><!--]-->在 GitHub 上编辑此页<!----></a></div><div class="vp-meta-item git-info"><div class="update-time"><span class="vp-meta-label">上次编辑于: </span><!----></div><div class="contributors"><span class="vp-meta-label">贡献者: </span><!--[--><!--[--><span class="vp-meta-info" title="email: 948742327@qq.com">jiang</span><!--]--><!--]--></div></div></footer><nav class="vp-page-nav"><a class="route-link auto-link prev" href="/study-notes/shangguigu-three/Spring/" aria-label="Spring"><div class="hint"><span class="arrow start"></span>上一页</div><div class="link"><!---->Spring</div></a><a class="route-link auto-link next" href="/study-notes/shangguigu-three/UUID/" aria-label="集群高并发情况下如何保证分布式唯一全局Id生成"><div class="hint">下一页<span class="arrow end"></span></div><div class="link">集群高并发情况下如何保证分布式唯一全局Id生成<!----></div></a></nav><!----><!----><!--]--></main><!--]--><footer class="vp-footer-wrapper"><div class="vp-footer">子在川上曰：“逝者如斯夫，不舍昼夜。</div><div class="vp-copyright">Copyright © 2024 樱宁 </div></footer></div><!--]--><!--[--><!----><!--]--><!--]--></div>
+    <script src="/assets/js/runtime~app.5b72abc4.js" defer></script><script src="/assets/js/4438.2d872995.js" defer></script><script src="/assets/js/app.fca90c02.js" defer></script>
+  </body>
+</html>
