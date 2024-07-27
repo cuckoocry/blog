@@ -4,7 +4,6 @@ import { sidebar } from "vuepress-theme-hope";
 import { aboutTheBlogs } from "./sidebar/about-the-blogs";
 // @ts-ignore
 import {interviewRelated} from "./sidebar/interview-related";
-import {penToSquare} from "./sidebar/pen-to-square.js";
 
 
 //  侧边栏
@@ -14,7 +13,7 @@ export default sidebar({
   //"/study-notes/": learnNote,
   "/about-the-blogs/":aboutTheBlogs,
 
-  "/post/":penToSquare,
+  "/post/":"structure",
   "/interview-related/":"structure",
   //  也可以这样自动生成目录  默认的README.md 就不要了 否则无法生成目录页
   //"/interview-related/":"structure",
@@ -24,7 +23,7 @@ export default sidebar({
   //
   // "/posts/": posts,
   // "/other/": other,
-  // "/problem-record/": problemRecord,
+  "/problem-record/": "structure",
   // "/learning-practice/": learningPractice,
   // "/knowledge-accumulation/": knowledgeAccumulation,
   // // 一个文件夹下面全为md文件

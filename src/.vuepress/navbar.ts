@@ -18,7 +18,7 @@ export default navbar([
 
   {
     text: 'Vue系列',
-    icon: 'vue',
+    icon: 'VSue',
     link: '/vue/'
   },
 

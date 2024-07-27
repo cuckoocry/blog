@@ -38,7 +38,12 @@ projects:
     name: 陌溪的学习笔记
     desc: 陌溪的学习笔记
     link: http://moxi159753.gitee.io/learningnotes/#/
-
+    
+  - icon: note
+    name: csview
+    desc: 一个互联网面试内容汇总和八股文学习的网站，让互联网面试不再成为困难~
+    link: https://www.csview.cn/introduction
+  
 footer: 子在川上曰：“逝者如斯夫，不舍昼夜。”
 ---
 
