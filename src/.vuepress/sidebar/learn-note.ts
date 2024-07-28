@@ -72,7 +72,7 @@ export const learnNote = [
   },
   {
     text: "大厂面试第三季",
-    icon: "edit",
+    // icon: "edit",
     prefix: "shangguigu-three/",
     collapsible: true,
     children: [
@@ -210,7 +210,7 @@ export const learnNote = [
   },
   {
     text: "SpringBoot",
-    icon: "edit",
+    // icon: "edit",
     prefix: "spring-boot/",
     collapsible: true,
     children: [
