@@ -187,6 +187,20 @@ export const learnNote = [
 
     ]
   },
+
+  {
+    text: "黑马面试宝典（细致）",
+    prefix: "heima-baodian/",
+    collapsible: true,
+    children:[
+      "",
+      {
+        text: "基础",
+        // icon: "stack",
+        link: "base/",
+      }]
+  },
+
   {
     text: "JVM",
     // icon: "edit",
