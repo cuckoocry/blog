@@ -1,6 +1,7 @@
 ---
 title: 黑马宝典 - 基础篇
-category: 黑马
+category: 
+   - 黑马
 
 ---
 > ***基础篇要点：算法、数据结构、基础设计模式***
@@ -580,11 +581,7 @@ Fail-Fast 与 Fail-Safe
 * 1.7 数组 + 链表
 * 1.8 数组 + （链表 | 红黑树）
 
-> 更形象的演示，见资料中的 hash-demo.jar，运行需要 jdk14 以上环境，进入 jar 包目录，执行下面命令
->
-> ```
-> java -jar --add-exports java.base/jdk.internal.misc=ALL-UNNAMED hash-demo.jar
-> ```
+TODO
 
 ### 2）树化与退化
 

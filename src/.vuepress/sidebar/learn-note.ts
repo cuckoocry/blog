@@ -189,7 +189,7 @@ export const learnNote = [
   },
 
   {
-    text: "黑马面试宝典（细致）",
+    text: "黑马面试宝典",
     prefix: "heima-baodian/",
     collapsible: true,
     children:[
@@ -198,7 +198,25 @@ export const learnNote = [
         text: "基础",
         // icon: "stack",
         link: "base/",
-      }]
+      },
+      {
+        text: "并发",
+        // icon: "stack",
+        link: "concurrency/",
+      },
+      {
+        text: "虚拟机",
+        // icon: "stack",
+        link: "jvm/",
+      },
+      {
+        text: "框架",
+        // icon: "stack",
+        link: "framework/",
+      }
+
+
+      ]
   },
 
   {

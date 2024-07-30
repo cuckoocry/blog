@@ -36,6 +36,29 @@ order: 1
 
 ### 你负责项目的时候遇到了哪些比较棘手的问题
 
+模版方法模式 + 策略模式
+
+模版方法模式：规定了基本步骤，和一些通用的事项
+策略模式：选择不同的策略去实现
+
+
+背景是，当时有几个流程总是出问题，而且后续还会加流程。还得根据不同的规则走不通的流程。
+
+流程处理抽象类：实现策略接口
+
+打印，核稿，签章，盖章，纠错，排版等操作  都是都是相同的流程，发起流程，修改状态。流程回调回调，文件转换，状态修改，以及其他逻辑处理等。
+
+用模版方法规定其几个步骤和流程，同时处理公共逻辑部分。
+
+```java
+
+  @PostConstruct
+    private void init() {
+        Map<String, AbstractWslcHandle> beans = appContext.getBeansOfType(AbstractWslcHandle.class);
+        beans.values().forEach(bean -> OPTIONS.put(bean.initName(), bean));
+    }
+
+```
 **注重准备这个**
 （1、设计模式）
 （文书中心改造）
