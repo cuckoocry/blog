@@ -15,11 +15,8 @@ export default navbar([
 
   { text: "杂记", icon: "eye",  link: "/problem-record/" },
   { text: "笔记总结", icon: "eye",  link: "/note-record/" },
-  {
-    text: 'Vue系列',
-    icon: 'fire',
-    link: '/vue/'
-  },
+  {text: 'web3系列', icon: 'fire', link: '/web3/'},
+  {text: 'Vue系列', icon: 'fire', link: '/vue/'},
   {text: "博客相关", icon: "blog", link: "/about-the-blogs/"},
 
 ]);
