@@ -18,6 +18,7 @@ export default sidebar({
 
   "/post/":"structure",
   "/interview-related/":"structure",
+  "/web3/": "structure",
   //  也可以这样自动生成目录  默认的README.md 就不要了 否则无法生成目录页
   //"/interview-related/":"structure",
 

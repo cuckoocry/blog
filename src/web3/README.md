@@ -1,8 +1,19 @@
 ---
-title: web3
-category: web3
+title: web3.0 总览
+category: 
+  - web3
+tag:
+    - web3
+    
+order: 0
 ---
 
+
+::: tip
+   该篇主要是收集web3的一些学习方法和途径，比较凌乱。后面再梳理清晰的学习步骤。
+
+   该篇主要作用，制定学习计划。
+:::
 
 ## 1、推荐的学习路径
 
