@@ -130,12 +130,7 @@ export const learnNote = [
       {
         text: "微服务",
         // icon: "SpringCloud",
-        prefix: "Microservices/",
-        collapsible: true,
-        children:[
-          "",
-          "more"
-        ]
+        link: "Microservices/"
       },
       {
         text: "消息中间件",
