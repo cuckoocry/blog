@@ -83,7 +83,6 @@ export const learnNote = [
       "LockSupport/",
       "WaitNotify/",
       "await-signal",
-      "LockSupport/",
       "AQS/",
       "Spring/",
       "Redis/",
