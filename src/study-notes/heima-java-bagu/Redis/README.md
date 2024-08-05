@@ -115,19 +115,24 @@ Redis更多详细整体知识：https://www.bilibili.com/video/BV1cr4y1671t/?spm
 
 2. 延迟双删（先删除缓存，还是先删除数据库？**都不对**）
 都会造成脏数据：
+
 ![img_9.png](images/img_9.png)
 
 解决方法：
 1. 采用分布式锁（读写锁）。【强一致性，性能差】
+
 ![img_8.png](images/img_8.png)
 代码：
+
  ![img_11.png](images/img_11.png)
 
 2. 异步通知
 （1） MQ
+
 ![img_12.png](images/img_12.png)
 
 （2） 基于Canal的异步通知。【无代码嵌入】
+
 ![img_13.png](images/img_13.png)
 
 总结：
@@ -264,6 +269,7 @@ Redis支持8中不同策略来选择需要删除的key：
    利用**hash结构**记录**线程id**和**重入次数**。
 
 3. redisson实现的分布式锁-主从一致性
+
 ![img_24.png](images/img_24.png)
 
 总结：
@@ -357,9 +363,11 @@ Redis支持8中不同策略来选择需要删除的key：
 ### 12、Redis 的集群方案 - 分片集群模式
 
 分片集群结构：
+
 ![img_31.png](images/img_31.png)
 
 分片集群结构 - 数据读写（数据读写流程）：
+
 ![img_32.png](images/img_32.png)
 
 总结：
