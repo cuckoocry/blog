@@ -57,3 +57,5 @@ MySQL  锁
 
 MQ高并发
 
+AOP   spring加在Bean   三级缓存
+
