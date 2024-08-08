@@ -65,6 +65,7 @@ Redis更多详细整体知识：https://www.bilibili.com/video/BV1cr4y1671t/?spm
 
 2、解决方案：
 互斥锁、逻辑过期
+
 ![img_2.png](images/img_2.png)
 1. 互斥锁
 **强一致性、性能差**
