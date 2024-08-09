@@ -221,7 +221,7 @@ export const learnNote = [
   {
     text: "计算机网络",
     // icon: "network",
-    prefix: "计算机网络/",
+    prefix: "Internet/",
     collapsible: true,
     children: [
       "",
