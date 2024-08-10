@@ -106,3 +106,9 @@ MQ高并发
 Broker在启动的时候去向所有的NameServer注册，并保持长连接，每30s发送一次心跳
 Producer在发送消息的时候从NameServer获取Broker服务器地址，根据负载均衡算法选择一台服务器来发送消息
 Conusmer消费消息的时候同样从NameServer获取Broker地址，然后主动拉取消息来消费
+
+
+1、现场环境查看JVM运行情况
+2、快速排序
+3、JVM调优
+4、现场遇到的问题排查
