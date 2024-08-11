@@ -1,9 +1,6 @@
 ---
 title: JVM 运行时参数
 date: 2023-03-18
-tags:
- - JVM
-
 ---
 
 ## 4.1. JVM 参数选项

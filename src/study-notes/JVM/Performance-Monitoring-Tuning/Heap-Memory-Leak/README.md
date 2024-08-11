@@ -1,9 +1,6 @@
 ---
 title: 浅堆深堆与内存泄露
 date: 2023-03-18
-tags:
- - JVM
-
 ---
 
 ## 1. 浅堆（Shallow Heap）

@@ -1,9 +1,6 @@
 ---
 title: 垃圾回收相关概念
 date: 2023-03-18
-tags:
- - JVM
-
 ---
 
 ## System.gc()的理解

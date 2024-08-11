@@ -1,9 +1,6 @@
 ---
 title: 使用 OQL 语言查询对象信息
 date: 2023-03-18
-tags:
- - JVM
-
 ---
 
 MAT 支持一种类似于 SQL 的查询语言 OQL（Object Query Language）。OQL 使用类 SQL 语法，可以在堆中进行对象的查找和筛选。
