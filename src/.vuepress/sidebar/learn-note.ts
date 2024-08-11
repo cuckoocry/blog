@@ -210,68 +210,68 @@ export const learnNote = [
       }]
   },
 
-  // {
-  //   text: "JVM",
-  //   icon: "edit",
-  //   prefix: "JVM/",
-  //   collapsible: true,
-  //   children: [
-  //     "",
-  //     {
-  //       text: "内存与垃圾回收篇",
-  //       prefix: "Memory-GC/",
-  //       collapsible: true,
-  //       children:[
-  //         "",
-  //         "Java-Architecture/",
-  //         "Clas-Loading-Subsystem/",
-  //         "JVM-RuntimeDataAreas/",
-  //         "PCounter-Register/",
-  //         "JVM-Stack/",
-  //         "Native-Stack/",
-  //         "Heap/",
-  //         "Method-Area/",
-  //         "Object-Instantiation/",
-  //         "Direct-Memory/",
-  //         "Execution-Engine/",
-  //         "StringTable/",
-  //         "GC-Overview/",
-  //         "GC-Relevant-Algorithms/",
-  //         "GC-Relevant-Overview/",
-  //         "GC-Period/",
-  //       ]
-  //     },
-  //     {
-  //       text: "字节码与类的加载篇",
-  //       icon: "edit",
-  //       prefix: "Bytecode-ClassLoading/",
-  //       collapsible: true,
-  //       children:[
-  //         "",
-  //         "Class-File-Structure/",
-  //         "Bytecode-Instruction-Set/",
-  //         "Class-Lifecycle/",
-  //         "Class-Lifecycle2/",
-  //       ]
-  //     },
-  //     {
-  //       text: "性能监控与调优篇",
-  //       icon: "edit",
-  //       prefix: "Performance-Monitoring-Tuning/",
-  //       collapsible: true,
-  //       children:[
-  //         "JVM-Overview/",
-  //         "JVM-Monitoring-Diagnostic-Tools/",
-  //         "JVM-Monitoring-Diagnostic-Tools-GUI/",
-  //         "JVM-Runtime-Parameters/",
-  //         "GC-Log/",
-  //         "OQL/",
-  //         "Heap-Memory-Leak/"
-  //       ]
-  //     },
-  //   ],
-  //
-  // },
+  {
+    text: "JVM",
+    icon: "edit",
+    prefix: "JVM/",
+    collapsible: true,
+    children: [
+      "",
+      {
+        text: "内存与垃圾回收篇",
+        prefix: "Memory-GC/",
+        collapsible: true,
+        children:[
+          "",
+          "Java-Architecture/",
+          "Clas-Loading-Subsystem/",
+          "JVM-RuntimeDataAreas/",
+          "PCounter-Register/",
+          "JVM-Stack/",
+          "Native-Stack/",
+          "Heap/",
+          "Method-Area/",
+          "Object-Instantiation/",
+          "Direct-Memory/",
+          "Execution-Engine/",
+          "StringTable/",
+          "GC-Overview/",
+          "GC-Relevant-Algorithms/",
+          "GC-Relevant-Overview/",
+          "GC-Period/",
+        ]
+      },
+      {
+        text: "字节码与类的加载篇",
+        icon: "edit",
+        prefix: "Bytecode-ClassLoading/",
+        collapsible: true,
+        children:[
+          "",
+          "Class-File-Structure/",
+          "Bytecode-Instruction-Set/",
+          "Class-Lifecycle/",
+          "Class-Lifecycle2/",
+        ]
+      },
+      {
+        text: "性能监控与调优篇",
+        icon: "edit",
+        prefix: "Performance-Monitoring-Tuning/",
+        collapsible: true,
+        children:[
+          "JVM-Overview/",
+          "JVM-Monitoring-Diagnostic-Tools/",
+          "JVM-Monitoring-Diagnostic-Tools-GUI/",
+          "JVM-Runtime-Parameters/",
+          "GC-Log/",
+          "OQL/",
+          "Heap-Memory-Leak/"
+        ]
+      },
+    ],
+
+  },
   {
     text: "计算机网络",
     // icon: "network",
