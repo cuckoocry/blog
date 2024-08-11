@@ -3,8 +3,7 @@ title: 集群高并发情况下如何保证分布式唯一全局Id生成
 date: 2023-03-11
 tags:
  - redis
-category:
- - 学习笔记
+
 ---
 ## 问题
 

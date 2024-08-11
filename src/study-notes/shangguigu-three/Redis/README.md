@@ -3,8 +3,7 @@ title: Redis
 date: 2023-03-11
 tags:
  - redis
-category:
- - 学习笔记
+
 ---
 
 ## 1、Redis 6.0.8

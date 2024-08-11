@@ -3,8 +3,7 @@ title: JVM
 date: 2023-03-18
 tags:
  - JVM
-category:
- - 学习笔记
+
 ---
 
 ## 介绍
@@ -13,6 +12,7 @@ category:
 该文章包含JVM基础入门篇全部内容以及宋红康老师JVM教程全套笔记。
 来源Bilibili尚硅谷宋红康老师JVM教程：[硅谷2020最新版宋红康JVM教程](https://www.bilibili.com/video/BV1PJ411n7xZ)  
 笔记补充：https://gitee.com/vectorx/NOTE_JVM/tree/main , https://www.yuque.com/u21195183/jvm  
+
 最细致的JVM讲解（更多可参考书籍）  
 
 基础入门视频：https://www.bilibili.com/video/BV1jJ411t71s?p=1&vd_source=7138dfc78c49f602f8d3ed8cfbf0513d
@@ -23,38 +23,37 @@ category:
 
 ### 内存与垃圾回收篇
 
-- [JVM与Java体系结构](1_内存与垃圾回收篇/1_JVM与Java体系结构/README.md)
-- [类加载子系统](1_内存与垃圾回收篇/2_类加载子系统/README.md)
-- [运行时数据区概述及线程](1_内存与垃圾回收篇/3_运行时数据区概述及线程/README.md)
-- [程序计数器](1_内存与垃圾回收篇/4_程序计数器/README.md)
-- [虚拟机栈](1_内存与垃圾回收篇/5_虚拟机栈/README.md)
-- [本地方法接口](1_内存与垃圾回收篇/6_本地方法接口/README.md)
-- [本地方法栈](1_内存与垃圾回收篇/7_本地方法栈/README.md)
-- [堆](1_内存与垃圾回收篇/8_堆/README.md)
-- [方法区](1_内存与垃圾回收篇/9_方法区/README.md)
-- [对象实例化内存布局与访问定位](1_内存与垃圾回收篇/10_对象实例化内存布局与访问定位/README.md)
-- [直接内存](1_内存与垃圾回收篇/11_直接内存/README.md)
-- [执行引擎](1_内存与垃圾回收篇/12_执行引擎/README.md)
-- [StringTable](1_内存与垃圾回收篇/13_StringTable/README.md)
-- [垃圾回收概述](1_内存与垃圾回收篇/14_垃圾回收概述/README.md)
-- [垃圾回收相关算法](1_内存与垃圾回收篇/15_垃圾回收相关算法/README.md)
-- [垃圾回收相关概念](1_内存与垃圾回收篇/16_垃圾回收相关概念/README.md)
-- [垃圾回收器](1_内存与垃圾回收篇/17_垃圾回收器/README.md)
+- [JVM与Java体系结构](Memory-GC/Java-Architecture/README.md)
+- [类加载子系统](Memory-GC/Clas-Loading-Subsystem/README.md)
+- [运行时数据区概述及线程](Memory-GC/JVM-RuntimeDataAreas/README.md)
+- [程序计数器](Memory-GC/PCounter-Register/README.md)
+- [虚拟机栈](Memory-GC/JVM-Stack/README.md)
+- [本地方法接口和本地方法栈](Memory-GC/Native-Stack/README.md)
+- [堆](Memory-GC/Heap/README.md)
+- [方法区](Memory-GC/Method-Area/README.md)
+- [对象实例化内存布局与访问定位](Memory-GC/Object-Instantiation/README.md)
+- [直接内存](Memory-GC/Direct-Memory/README.md)
+- [执行引擎](Memory-GC/Execution-Engine/README.md)
+- [StringTable](Memory-GC/StringTable/README.md)
+- [垃圾回收概述](Memory-GC/GC-Overview/README.md)
+- [垃圾回收相关算法](Memory-GC/GC-Relevant-Algorithms/README.md)
+- [垃圾回收相关概念](Memory-GC/GC-Relevant-Overview/README.md)
+- [垃圾回收器](Memory-GC/GC-Period/README.md)
 
 ## 字节码与类的加载篇
-- [class文件结构](2_字节码与类的加载篇/01-class文件结构/README.md)
-- [字节码指令集](2_字节码与类的加载篇/02-字节码指令集/README.md)
-- [类的加载过程（类的生命周期）详解](2_字节码与类的加载篇/03-类的加载过程（类的生命周期）详解/README.md)
-- [再谈类的加载器](2_字节码与类的加载篇/04-再谈类的加载器/README.md)
+- [class文件结构](Bytecode-ClassLoading/Class-File-Structure/README.md)
+- [字节码指令集](Bytecode-ClassLoading/Bytecode-Instruction-Set/README.md)
+- [类的加载过程（类的生命周期）详解](Bytecode-ClassLoading/Class-Lifecycle/README.md)
+- [再谈类的加载器](Bytecode-ClassLoading/Class-Lifecycle2/README.md)
 
 ## 性能监控与调优篇
-- [概述](3_性能监控与调优篇/01-概述篇/README.md)
-- [JVM监控及诊断工具-命令行篇](3_性能监控与调优篇/02-JVM监控及诊断工具-命令行篇/README.md)
-- [JVM监控及诊断工具-GUI篇](3_性能监控与调优篇/03-JVM监控及诊断工具-GUI篇/README.md)
-- [JVM运行时参数](3_性能监控与调优篇/04-JVM运行时参数/README.md)
-- [分析GC日志](3_性能监控与调优篇/05-分析GC日志/README.md)
-- [使用OQL语言查询对象信息](3_性能监控与调优篇/补充：使用OQL语言查询对象信息/README.md)
-- [浅堆深堆与内存泄露](3_性能监控与调优篇/补充：浅堆深堆与内存泄露/README.md)
+- [概述](Performance-Monitoring-Tuning/JVM-Overview/README.md)
+- [JVM监控及诊断工具-命令行篇](Performance-Monitoring-Tuning/JVM-Monitoring-Diagnostic-Tools/README.md)
+- [JVM监控及诊断工具-GUI篇](Performance-Monitoring-Tuning/JVM-Monitoring-Diagnostic-Tools-GUI/README.md)
+- [JVM运行时参数](Performance-Monitoring-Tuning/JVM-Runtime-Parameters/README.md)
+- [分析GC日志](Performance-Monitoring-Tuning/GC-Log/README.md)
+- [使用OQL语言查询对象信息](Performance-Monitoring-Tuning/OQL/README.md)
+- [浅堆深堆与内存泄露](Performance-Monitoring-Tuning/Heap-Memory-Leak/README.md)
 
 
 # 以下为基础入门篇
