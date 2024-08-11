@@ -212,7 +212,6 @@ export const learnNote = [
 
   {
     text: "JVM",
-    icon: "edit",
     prefix: "JVM/",
     collapsible: true,
     children: [
