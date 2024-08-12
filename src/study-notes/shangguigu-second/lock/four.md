@@ -3,8 +3,7 @@ title: Java锁之自旋锁
 date: 2023-03-18
 tags:
  - 锁
-category:
- - 学习笔记
+
 ---
 自旋锁：spinlock，是指尝试获取锁的线程不会立即阻塞，而是<font color="red">采用循环的方式去尝试获取锁</font>，这样的好处是减少线程上下文切换的消耗，缺点是循环会消耗CPU
 

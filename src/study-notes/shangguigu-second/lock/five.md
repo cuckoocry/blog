@@ -3,8 +3,7 @@ title: 为什么Synchronized无法禁止指令重排，却能保证有序性
 date: 2023-03-18
 tags:
  - 锁
-category:
- - 学习笔记
+
 ---
 
 ## 前言
