@@ -4,12 +4,12 @@ import { defineUserConfig } from "vuepress";
 import theme from "./theme.js";
 
 export default defineUserConfig({
-  base: "/",
+  base: "/blog",
 
   lang: "zh-CN",
   title: "撄宁的博客",
   description: "撄宁的博客",
-  port:8099,
+  //port:8099,
   theme,
 
   // 注意：Algolia DocSearch 是一个免费服务，但您需要通过官方渠道申请以获得应用 ID、API 密钥和索引名称。申请成功后，您才能使用 @vuepress/plugin-docsearch 插件。
