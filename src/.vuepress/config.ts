@@ -8,7 +8,8 @@ import theme from "./theme.js";
 const __dirname = getDirname(import.meta.url);
 
 export default defineUserConfig({
-  base: "/blog/",
+
+  base: "/",
 
   lang: "zh-CN",
   title: "撄宁的博客",
