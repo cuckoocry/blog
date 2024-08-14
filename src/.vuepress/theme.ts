@@ -242,4 +242,8 @@ export default hopeTheme({
     //   },
     // },
   },
-});
+},
+    // 必应背景图
+    { custom: true },
+
+);

@@ -19,7 +19,6 @@ tags:
 - [程序计数器](PCounter-Register/README.md)
 - [虚拟机栈](JVM-Stack/README.md)
 - [本地方法接口](Native-Stack/README.md)
-- [本地方法栈](7_本地方法栈/README.md)
 - [堆](Heap/README.md)
 - [方法区](Method-Area/README.md)
 - [对象实例化内存布局与访问定位](Object-Instantiation/README.md)

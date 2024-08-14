@@ -46,7 +46,6 @@ projects:
   
 footer: 子在川上曰：“逝者如斯夫，不舍昼夜。”
 ---
-
 这是一个博客主页的案例。
 
 要使用此布局，你应该在页面前端设置 `layout: BlogHome` 和 `home: true`。
