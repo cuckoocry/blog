@@ -28,7 +28,7 @@ export default sidebar({
   // "/posts/": posts,
   // "/other/": other,
   "/problem-record/": "structure",
-  "/note-record/": noteRecord,
+  "/note-record/": "structure"
 
   // "/learning-practice/": learningPractice,
   // "/knowledge-accumulation/": knowledgeAccumulation,

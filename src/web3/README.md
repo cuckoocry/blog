@@ -17,12 +17,12 @@ order: 0
 
 ## 1、推荐的学习路径
 
-https://learnblockchain.cn/article/7074
+[Web3.0 推荐的学习路径](https://learnblockchain.cn/article/7074)
 
 
 ## 2、招聘网站
 
-https://eleduck.com/
+[招聘网站:https://eleduck.com/](https://eleduck.com/)
 
 
 ## 3、GPT一些回答
