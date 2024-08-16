@@ -101,3 +101,19 @@ order: 1
 3、遇到过的问题
 4、文书的制作流程
 5、基础知识加固
+
+
+##  自我提醒
+
+要做的事情，要学的事情太多了，一件一件来吧。忘了就继续。。。
+
+关注国际机会。
+
+## 其他渠道
+
+Java远程
+https://eleduck.com/posts/0Xf4X1
+
+## 动态关注
+
+[猎云网（Lieyunwang）](https://lieyunpro.com/archives/494119)
