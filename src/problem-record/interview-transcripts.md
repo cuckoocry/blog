@@ -90,3 +90,14 @@ order: 1
 
 （数据结构、（何时树化）链表过长解决办法、红黑树的意义、何时退化为链表）
 
+
+
+## 针对简历内容
+
+接下来要做的准备：
+
+1、工作流  Activiti   Flowable   https://github.com/henryyan/activiti-in-action-codes
+2、项目功能的描述
+3、遇到过的问题
+4、文书的制作流程
+5、基础知识加固
