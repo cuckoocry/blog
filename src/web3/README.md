@@ -19,6 +19,7 @@ order: 0
 
 [Web3.0 推荐的学习路径](https://learnblockchain.cn/article/7074)
 
+https://learnblockchain.cn/docs/solidity/
 
 ## 2、招聘网站
 
@@ -243,3 +244,12 @@ Solidity是一种面向智能合约的高级编程语言，主要用于在以太
 Web3.0领域发展迅速，保持学习新技术和工具的热情。定期参与社区讨论、阅读技术博客和参与线上研讨会，以保持技术的前沿性。
 
 通过这个系统的学习计划，你可以从零开始逐步掌握Web3.0技术，并为进入这一新兴领域做好准备。
+
+
+## 其他
+
+
+https://fi1tqn67p7p.feishu.cn/wiki/Mdo3wTKpAifCTqkSHmac7Eq3nng
+
+
+https://discord.com/channels/1232259364753117264/1232283716467036240
