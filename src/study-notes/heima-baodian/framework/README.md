@@ -179,13 +179,13 @@ refresh 是 AbstractApplicationContext 中的一个方法，负责初始化 Appl
 
 bean 的生命周期从调用 beanFactory 的 getBean 开始，到这个 bean 被销毁，可以总结为以下七个阶段：
 
-1. 处理名称，检查缓存
-2. 处理父子容器
-3. 处理 dependsOn
-4. 选择 scope 策略
-5. 创建 bean
-6. 类型转换处理
-7. 销毁 bean
+- 1. 处理名称，检查缓存
+- 2. 处理父子容器
+- 3. 处理 dependsOn
+- 4. 选择 scope 策略
+- 5. 创建 bean
+- 6. 类型转换处理
+- 7. 销毁 bean
 
 > ***注意***
 >

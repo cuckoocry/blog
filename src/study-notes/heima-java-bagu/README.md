@@ -9,11 +9,12 @@ category: 黑马
 视频来源：
 [新版Java面试专题视频教程，java八股文面试全套真题+深度详解（含大厂高频面试真题）](https://www.bilibili.com/video/BV1yT411H7YK/?vd_source=7138dfc78c49f602f8d3ed8cfbf0513d)
 
-2023新版Java面试
-在线观看：
-https://www.bilibili.com/video/BV1yT411H7YK/
+2023新版Java面试 在线观看：
+[https://www.bilibili.com/video/BV1yT411H7YK/](https://www.bilibili.com/video/BV1yT411H7YK/)
+
 资料链接：
-https://pan.baidu.com/s/1NQZDW-9_VCnEUXcXp_G-bA?pwd=9987
+[https://pan.baidu.com/s/1NQZDW-9_VCnEUXcXp_G-bA?pwd=9987](https://pan.baidu.com/s/1NQZDW-9_VCnEUXcXp_G-bA?pwd=9987)
+
 提取码：9987
 
 Java面试教程

@@ -211,6 +211,17 @@ Ribbon负载均衡策略:轮询、权重、随机、区域敏感
 3. Bean 初始化
 4. 销毁 Bean
 
+① 通过 BeanDefinition 获取 bean 的定义信息
+② 调用构造函数实例化 bean
+③ bean 的依赖注入
+④ 处理 Aware 接口 (BeanNameAware 、 BeanFactoryAware 、 ApplicationContextAware)
+⑤ Bean 的后置处理器 BeanPostProcessor- 前置
+⑥ 初始化方法 (InitializingBean 、 init-method)
+⑦ Bean 的后置处理器 BeanPostProcessor- 后置
+⑧ 销毁 bean
+
+
+
 ### Spring 怎么解决循环依赖的呢
 
 单例 Bean 初始化完成，要经历三步： 实例化、属性赋值、初始化。
@@ -229,7 +240,7 @@ Ribbon负载均衡策略:轮询、权重、随机、区域敏感
 
 ### 说说什么是 AOP
 
-面向切面编程。简单说，就是把一些业务逻辑中的相同的代码抽取到一个独立的模块中，让业务逻辑更加清爽。
+面向切面编程。简单说，就是把一些业务逻辑中的相同的代码抽取到一个独立的模块中，让业务逻辑更加清爽。降低耦合。
 
 ### 说说 JDK 动态代理和 CGLIB 代理
 
@@ -279,7 +290,7 @@ SpringBoot 开启自动配置的注解是`@EnableAutoConfiguration` ，启动类
 
 
 
-MySQL  锁
+## MySQL 锁
 
 当然，MySQL中的锁是数据库管理系统用来保证数据一致性和完整性的重要机制。以下是MySQL中常见的几种锁类型：
 1. **乐观锁（Optimistic Locking）**：这种锁不是MySQL内置的，而是通过应用程序来实现。乐观锁假设多个事务并发访问同一数据时，不会发生冲突，因此在大多数情况下不会对数据进行锁定。它通常通过版本号或时间戳来实现。
@@ -303,23 +314,11 @@ MySQL  锁
 
 https://tobebetterjavaer.com/sidebar/sanfene/rocketmq.html#_7-roctetmq%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84%E4%BA%86%E8%A7%A3%E5%90%97
 
-- AOP  
-  面向切面编程，用于将那些与业务无关，但却对多个对象产生影响的公共行为和逻辑，抽取公共模块复用，降低耦合。
-
-- spring Bean 的生命周期
-  ① 通过 BeanDefinition 获取 bean 的定义信息 
-  ② 调用构造函数实例化 bean 
-  ③ bean 的依赖注入 
-  ④ 处理 Aware 接口 (BeanNameAware 、 BeanFactoryAware 、 ApplicationContextAware) 
-  ⑤ Bean 的后置处理器 BeanPostProcessor- 前置 
-  ⑥ 初始化方法 (InitializingBean 、 init-method) 
-  ⑦ Bean 的后置处理器 BeanPostProcessor- 后置 
-  ⑧ 销毁 bean
-  
 
 
-- 三级缓存 
-    ABA
+## 三级缓存 
+三级缓存
+   ABA
     A加载A，A放在三级缓存，创建B也放在三级缓存，B请求注入A，Spring容器从三级缓存中获取A的工厂对象，放在二级缓存，返回给B。
     B，完成后放在一级缓存。
     A在直接加载B
@@ -327,17 +326,20 @@ https://tobebetterjavaer.com/sidebar/sanfene/rocketmq.html#_7-roctetmq%E5%9F%BA%
 - 线上服务CPU彪高：
     top  ->   top  -Hp  ID     ->   printf "%x\n" PID (把线程 ID 转换为 16 进制)  -> jstack PID 打印出进程的所有线程信息  -> 最后根据线程的堆栈信息定位到具体业务方法,从代码逻辑中找到问题所在。
 
+## 网络
 - 三次握手
   客户端–发送带有 SYN 标志的数据包–一次握手–服务端
   服务端–发送带有 SYN/ACK 标志的数据包–二次握手–客户端
   客户端–发送带有带有 ACK 标志的数据包–三次握手–服务端
 
-- RocketMQ的整体工作流程？
+## RocketMQ的整体工作流程？
 Broker在启动的时候去向所有的NameServer注册，并保持长连接，每30s发送一次心跳
 Producer在发送消息的时候从NameServer获取Broker服务器地址，根据负载均衡算法选择一台服务器来发送消息
 Conusmer消费消息的时候同样从NameServer获取Broker地址，然后主动拉取消息来消费
-排查问题
-CPU  过高
+
+
+
+## CPU  过高
 
 top 列出系统各个进程的资源占用情况。
 top -Hp 进程 ID 列出对应进程里面的线程占用资源情况
@@ -346,14 +348,45 @@ jstack PID 打印出进程的所有线程信息，从打印出来的线程信息
 最后根据线程的堆栈信息定位到具体业务方法,从代码逻辑中找到问题所在。
 
 
-MQ高并发
+## 总结
 
-- RocketMQ
-  发布-订阅模型   ，生产者、消费者和主题
-  RocketMQ 一共有四个部分组成：NameServer(和Broker 结点保持长连接、维护 Topic 的路由信息)，Broker(消息存储和中转角色，负责存储和转发消息)，Producer 生产者，Consumer 消费者，它们对应了：发现、发、存、收，为了保证高可用，一般每一部分都是集群部署的。
+> 一些重要知识点，重点和难点。
 
 
-1、现场环境查看JVM运行情况
-2、快速排序
-3、JVM调优
-4、现场遇到的问题排查
+1、基础
+2、JVM 以及问题排查
+3、并发
+4、集合框架
+5、spring、springboot
+- Bean的加载
+- 三级缓存
+- 事务
+- IOC、AOP
+- Springboot的自动装配
+6、网络
+- 网络模型
+- http、https、1、2
+7、MySQL
+- 慢SQL定位
+- 索引、索引时效
+- 锁
+- 事务
+- 主从同步
+- 分库分表
+8、Redis
+- 基础数据结构
+- 应用场景
+- 集群方案
+9、MQ
+- 基础概念
+- 重复消费
+- 常见问题，消费幂等、堆积、重复消费等
+10、springCloud
+- 包含组件
+- CAP & BASE理论详解
+- API网关
+- 分布式锁
+- 分布式事务
+11、高可用
+- 限流算法
+- 

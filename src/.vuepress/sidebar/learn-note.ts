@@ -332,11 +332,6 @@ export const learnNote = [
       ""
     ],
 
-  },
-  {
-    text: "Redis",
-    // icon: "edit",
-    link: "Redis/"
-  },
+  }
 
 ];
