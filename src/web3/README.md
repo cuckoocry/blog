@@ -248,6 +248,9 @@ Web3.0领域发展迅速，保持学习新技术和工具的热情。定期参�
 
 ## 其他
 
+AI工具：  https://www.cursor.com/
+
+
 
 https://fi1tqn67p7p.feishu.cn/wiki/Mdo3wTKpAifCTqkSHmac7Eq3nng
 
