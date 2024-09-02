@@ -48,6 +48,7 @@ long_query_time=2
 mysql自带的执行计划explain来去查看这条sql的执行情况。具体执行计划操作如下：
 
 1. explain执行计划操作
+
 ![img_6.png](images/img_6.png)
 
 2. explain执行计划分析
@@ -254,7 +255,8 @@ MySQL的默认的存储引擎InnoDB采用的B+树的数据结构来存储索引�
 锁：排他锁(如一个事务获取了一个数据行的排他锁，其他事务就不能再获取该行的其他锁)。
 MVCC：多版本并发控制。
 
-1、解释一下 MVCC
+1. 解释一下 MVCC
+  
 ![img_18.png](images/img_18.png)
 
 2. MVCC 实现原理
