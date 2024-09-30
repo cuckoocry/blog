@@ -437,4 +437,4 @@ Merkle Tree 的一个重要好处是可以进行 Merkle Proof。Merkle Proof 是
 ## 第五讲：比特币系统的实现
 
 区块链是一个去中心化的账本，比特币采用了 **基于交易的账本模式 (`transaction-based ledger`)**。
-然而，系统中并无显示记录账户包含比特币数，实际上其需要通过交易记录进行推算。在比特币系统中，全节点需要维护一个名为**`UTXO`(`Unspent Transaction Output`尚未被花掉的交易输出)的数据结构**。
+然而，系统中并无显示记录账户包含比特币数，实际上其需要通过交易记录进行推算。在比特币系统中，全节点需要维护一个名为 **`UTXO`(`Unspent Transaction Output`尚未被花掉的交易输出)的数据结构**。

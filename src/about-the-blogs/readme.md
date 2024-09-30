@@ -19,12 +19,6 @@ leojiang9601@gmail.com
 leo-jiang@outlook.com   微软的
 
 
-## 开源框架
-
-若依集成Activiti  
-
-https://blog.csdn.net/abc_ABC123A/article/details/118421800
-
 
 
 
