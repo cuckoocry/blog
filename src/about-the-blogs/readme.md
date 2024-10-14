@@ -23,6 +23,10 @@ leo-jiang@outlook.com   微软的
 
 
 
+## 想法
+
+打算每天写点东西
+
 
 
 
