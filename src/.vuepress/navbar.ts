@@ -12,6 +12,7 @@ export default navbar([
     link: "/interview-related/"
   },
 
+  { text: "前端", icon: "front",  link: "/front/" },
 
   { text: "杂记", icon: "eye",  link: "/problem-record/" },
   { text: "笔记总结", icon: "eye",  link: "/note-record/" },

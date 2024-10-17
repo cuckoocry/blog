@@ -1,27 +1,27 @@
 ---
-title: React 入门
+title: React - 实践中学习
 category:
   - 前端
 tag:
   - React
 ---
 
-::: notice
+::: info 
+
 跟着教程一步一步来，以下是精简的重要笔记。
 
-[中文官网](https://zh-hans.react.dev/learn/importing-and-exporting-components)
 
-> 官网也有详尽的使用例子
+官网有详尽的教程：[中文官网：https://zh-hans.react.dev/learn/importing-and-exporting-components](https://zh-hans.react.dev/learn/importing-and-exporting-components)
 
-[学习教程](https://developer.mozilla.org/zh-CN/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started)
+[学习教程：https://developer.mozilla.org/zh-CN/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started](https://developer.mozilla.org/zh-CN/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started)
 
-[代码：（GitHub）](https://github.com/cuckoocry/moz-todo-react)
+[代码：（GitHub）：https://github.com/cuckoocry/moz-todo-react](https://github.com/cuckoocry/moz-todo-react)
 
-> 第四章开始没有中文翻译
+从一个待办清单功能开始学习`react`。
 
 :::
 
-## 开始一个react项目
+## 1、开始一个react项目
 
 
 前提条件：已经安装好`Node.js`
@@ -101,46 +101,189 @@ reportWebVitals();
 ```
 
 
-## 开始我们的 React 待办清单
+## 2、开始我们的 React 待办清单
 
-> 任务：是在 React 中创建一个概念验证——一个允许用户添加、编辑和删除他们想做的任务的应用程序，并且在不删除任务的情况下将其标记为完成。
+::: tip
+任务：是在 React 中创建一个概念验证——一个允许用户添加、编辑和删除他们想做的任务的应用程序，并且在不删除任务的情况下将其标记为完成。
 
+功能：
+- 读取任务清单。
+- 使用鼠标或键盘，添加一个任务。
+- 使用鼠标或键盘，将任何任务标记为已完成。
+- 使用鼠标或键盘，删除任何任务。
+- 使用鼠标或键盘，编辑任何任务。
+- 查看一个特定的任务子集：所有的任务、仅活动中的任务，或只有已完成的任务。
+:::
 
+### App.js
 
-## 组件化我们的`React App`
+复制以下片段到你的剪贴板，然后粘贴到 App.js 中，使其取代现有的 App() 函数：
 
-- 如果它在程序里看起来是个明显的“块”，那它可能是个组件。
-- 如果它在程序里经常会被复用，那它可能是个组件。
-
-> 记住，组件要么是明显的 UI 片段，要么是重复使用的 UI 片段，或者两者都是
-
-
-总结：如何拆解一个组件。
-
-1. 在自定义文件夹下面新建一个js文件。`Todo.js`
 ```js
-import React from "react";
 
-export default function Todo() {
+function App(props) {
   return (
-    // …内容
+    <div className="todoapp stack-large">
+      <h1>TodoMatic</h1>
+      <form>
+        <h2 className="label-wrapper">
+          <label htmlFor="new-todo-input" className="label__lg">
+            What needs to be done?
+          </label>
+        </h2>
+        <input
+          type="text"
+          id="new-todo-input"
+          className="input input__lg"
+          name="text"
+          autoComplete="off"
+        />
+        <button type="submit" className="btn btn__primary btn__lg">
+          Add
+        </button>
+      </form>
+      <div className="filters btn-group stack-exception">
+        <button type="button" className="btn toggle-btn" aria-pressed="true">
+          <span className="visually-hidden">Show </span>
+          <span>all</span>
+          <span className="visually-hidden"> tasks</span>
+        </button>
+        <button type="button" className="btn toggle-btn" aria-pressed="false">
+          <span className="visually-hidden">Show </span>
+          <span>Active</span>
+          <span className="visually-hidden"> tasks</span>
+        </button>
+        <button type="button" className="btn toggle-btn" aria-pressed="false">
+          <span className="visually-hidden">Show </span>
+          <span>Completed</span>
+          <span className="visually-hidden"> tasks</span>
+        </button>
+      </div>
+      <h2 id="list-heading">3 tasks remaining</h2>
+      <ul
+        role="list"
+        className="todo-list stack-large stack-exception"
+        aria-labelledby="list-heading">
+        <li className="todo stack-small">
+          <div className="c-cb">
+            <input id="todo-0" type="checkbox" defaultChecked={true} />
+            <label className="todo-label" htmlFor="todo-0">
+              Eat
+            </label>
+          </div>
+          <div className="btn-group">
+            <button type="button" className="btn">
+              Edit <span className="visually-hidden">Eat</span>
+            </button>
+            <button type="button" className="btn btn__danger">
+              Delete <span className="visually-hidden">Eat</span>
+            </button>
+          </div>
+        </li>
+        <li className="todo stack-small">
+          <div className="c-cb">
+            <input id="todo-1" type="checkbox" />
+            <label className="todo-label" htmlFor="todo-1">
+              Sleep
+            </label>
+          </div>
+          <div className="btn-group">
+            <button type="button" className="btn">
+              Edit <span className="visually-hidden">Sleep</span>
+            </button>
+            <button type="button" className="btn btn__danger">
+              Delete <span className="visually-hidden">Sleep</span>
+            </button>
+          </div>
+        </li>
+        <li className="todo stack-small">
+          <div className="c-cb">
+            <input id="todo-2" type="checkbox" />
+            <label className="todo-label" htmlFor="todo-2">
+              Repeat
+            </label>
+          </div>
+          <div className="btn-group">
+            <button type="button" className="btn">
+              Edit <span className="visually-hidden">Repeat</span>
+            </button>
+            <button type="button" className="btn btn__danger">
+              Delete <span className="visually-hidden">Repeat</span>
+            </button>
+          </div>
+        </li>
+      </ul>
+    </div>
   );
 }
 
 ```
-2. 使用：在`App.js`文件中将组件引用进来。然后需要用到组件的地方直接放进去。
+
+## 组件化我们的`React App`
+
+::: tip
+ 上面已经实现一个建议的样式页面
+:::
+
+但是会发现很多是可以组件化的，比如表单，待办清单的`li`，切换标签。
+
+### 什么是组件？
+
+- 如果它在程序里看起来是个明显的“块”，那它可能是个组件。
+- 如果它在程序里经常会被复用，那它可能是个组件。
+
+> 记住，组件要么是明显的 `UI` 片段，要么是重复使用的 `UI` 片段，或者两者都是
+
+
+
+
+1. 在自定义文件夹`components`下面新建一个js文件`Todo.js`,然后从无序列表中复制第一个` <li>` 并将其粘贴到 `Todo.js`，
+代码看起来像这样：
 
 ```js
-import Todo from "./components/Todo";
 
+import React from "react";
 
-// 使用
+export default function Todo() {
+ return (
+         <li className="todo stack-small">
+          <div className="c-cb">
+           <input id="todo-0" type="checkbox" defaultChecked={true} />
+           <label className="todo-label" htmlFor="todo-0">
+            Eat
+           </label>
+          </div>
+          <div className="btn-group">
+           <button type="button" className="btn">
+            Edit <span className="visually-hidden">Eat</span>
+           </button>
+           <button type="button" className="btn btn__danger">
+            Delete <span className="visually-hidden">Eat</span>
+           </button>
+          </div>
+         </li>
+ );
+}
 
-<Todo />
 
 ```
+2. 使用：在`App.js`文件中将组件引用进来。导入组件之后，你可以调用 `<Todo /> `组件来替换 `App.js` 中的所有 `<li>`。你的 `<ul>` 看起来应该像这样：
+
+```js
+<ul
+        role="list"
+        className="todo-list stack-large stack-exception"
+        aria-labelledby="list-heading">
+ <Todo />
+ <Todo />
+ <Todo />
+</ul>
+
+```
+> 当然，此时是重复的三个清单。所以需要制作不同的 `<Todo /> `。
 
 3. 参数传递
+
 发送方：在组件直接定义参数
 
 > 布尔值需要用`{}`包起来，否则就是字符串
@@ -153,6 +296,7 @@ import Todo from "./components/Todo";
 export default function Todo(props) {
     console.log(props)
     return (
+        <div></div>
         // …内容
     );
 }

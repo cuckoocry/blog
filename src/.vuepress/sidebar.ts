@@ -28,11 +28,11 @@ export default sidebar({
   // "/posts/": posts,
   // "/other/": other,
   "/problem-record/": "structure",
-  "/note-record/": "structure"
+  "/note-record/": "structure",
 
   // "/learning-practice/": learningPractice,
   // "/knowledge-accumulation/": knowledgeAccumulation,
   // // 一个文件夹下面全为md文件
   // "/vue/": "structure",
-
+  "/front/":"structure"
 });

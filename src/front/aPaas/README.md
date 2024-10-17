@@ -1,6 +1,14 @@
-
+---
+title: 低代码学习
+category:
+  - 前端
+tag:
+  - aPaas
+---
 
 > https://mp.weixin.qq.com/s/9g3GOqrViMxtfJABSi5D5A
+
+
 ## 1、什么是aPaaS
 
 PaaS平台本质上是一种平台化的技术实现，以云服务形式提供平台化的服务，aPaaS是其中的一个方向，侧重于application，application platform as a service, 提供平台化的自定义应用的能力，aPaaS平台配置出的产物即是SaaS应用。
