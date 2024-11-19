@@ -1,8 +1,7 @@
 ---
 title: 区块链技术与应用
 date: 2024-09-02
-category:
-  - web3
+category: web3
 tag:
   - web3
   - 区块链

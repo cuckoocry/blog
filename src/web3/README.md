@@ -1,7 +1,6 @@
 ---
 title: web3.0 总览
-category: 
-  - web3
+category: web3
 tag:
     - web3
     
