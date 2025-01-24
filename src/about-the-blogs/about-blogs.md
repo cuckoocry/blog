@@ -17,3 +17,15 @@ https://theme-hope.vuejs.press/zh/guide/customize/presets.html
 
 1、图标地址
 https://fontawesome.com/search?o=r&m=free
+
+
+###  初始化
+
+``` shell
+
+npm  install
+ 
+npm  run  docs:dev
+
+```
+
