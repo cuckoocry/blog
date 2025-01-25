@@ -1,7 +1,6 @@
 ---
-title: web3.0
-category: 
-  - web3
+title: web3.0 学习地址收集
+category:  web3
 tag:
     - web3
     
