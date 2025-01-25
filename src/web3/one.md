@@ -20,9 +20,9 @@ tag:
 :::
 
 一些笔记：
-1、 https://blog.nowcoder.net/n/30cbdb37108b4d93b3a5a93b8226ae31
-2、 https://cn.leapwhale.com/zh/article/me0uzckk
-
+1. [https://blog.nowcoder.net/n/30cbdb37108b4d93b3a5a93b8226ae31](https://blog.nowcoder.net/n/30cbdb37108b4d93b3a5a93b8226ae31)
+2. [https://cn.leapwhale.com/zh/article/me0uzckk](https://cn.leapwhale.com/zh/article/me0uzckk)
+3. https://zhangli1.gitbooks.io/dummies-for-blockchain/content/
 
 ## 课程大纲
 
@@ -437,4 +437,15 @@ Merkle Tree 的一个重要好处是可以进行 Merkle Proof。Merkle Proof 是
 ## 第五讲：比特币系统的实现
 
 区块链是一个去中心化的账本，比特币采用了 **基于交易的账本模式 (`transaction-based ledger`)**。
-然而，系统中并无显示记录账户包含比特币数，实际上其需要通过交易记录进行推算。在比特币系统中，全节点需要维护一个名为 **`UTXO`(`Unspent Transaction Output`尚未被花掉的交易输出)的数据结构**。
+然而，系统中并无显示记录账户包含比特币数，实际上其需要通过交易记录进行推算。在比特币系统中，全节点需要维护一个名为 **`UTXO`（`Unspent Transaction Output` 尚未被花掉的交易输出）的数据结构**。
+
+::: info
+
+如图，A转给B五个BTC，转给C3个BTC，B将5个BTC花掉，则该交易记录不保存在UTXO中，C没有花掉，则该交易记录保存在UTXO中。
+
+![img_8.png](images/img_8.png)
+
+::: 
+
+UTXO集合中每个元素要给出产生这个输出的交易的哈希值，以及其在交易中是第几个输出。通过这两个信息，便可以定位到UTXO中的输出。
+
