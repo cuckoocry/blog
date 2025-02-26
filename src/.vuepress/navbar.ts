@@ -12,11 +12,12 @@ export default navbar([
     link: "/interview-related/"
   },
 
-  { text: "前端", icon: "front",  link: "/front/" },
+  { text: "前端", icon: "fire",  link: "/front/" },
 
   { text: "杂记", icon: "eye",  link: "/problem-record/" },
   { text: "笔记总结", icon: "eye",  link: "/note-record/" },
   {text: 'web3系列', icon: 'fire', link: '/web3/'},
+  {text: 'AI学习路径', icon: 'fire', link: '/AI/'},
   {text: 'Vue系列', icon: 'fire', link: '/vue/'},
   {text: "博客相关", icon: "blog", link: "/about-the-blogs/"},
 
