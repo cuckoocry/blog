@@ -25,7 +25,7 @@ https://fontawesome.com/search?o=r&m=free
 
 npm  install
  
-npm  run  docs:dev
+npm  run docs:dev
 
 ```
 
