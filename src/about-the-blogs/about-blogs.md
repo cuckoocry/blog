@@ -15,9 +15,12 @@ category: 博客
 
 https://theme-hope.vuejs.press/zh/guide/customize/presets.html
 
-1、图标地址
+1. 图标地址
 https://fontawesome.com/search?o=r&m=free
 
+
+2. 使用指南
+https://theme-hope.vuejs.press/zh/guide/markdown/grammar/math.html#%E6%A0%BC%E5%BC%8F
 
 ###  初始化
 
