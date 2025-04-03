@@ -19,11 +19,15 @@ order: 3
 
 笔记内容主要是根据老师课程来，笔记内容也博采众长，加上自己的理解和总结。
 
-:::
+本篇笔记主要来源：[https://blog.nowcoder.net/n/30cbdb37108b4d93b3a5a93b8226ae31](https://blog.nowcoder.net/n/30cbdb37108b4d93b3a5a93b8226ae31)
 
 一些笔记：
 - 1、 [https://blog.nowcoder.net/n/30cbdb37108b4d93b3a5a93b8226ae31](https://blog.nowcoder.net/n/30cbdb37108b4d93b3a5a93b8226ae31)
 - 2、 [https://cn.leapwhale.com/zh/article/me0uzckk](https://cn.leapwhale.com/zh/article/me0uzckk)
+
+
+:::
+
 
 
 ## 课程大纲
