@@ -26,6 +26,8 @@ Substrate Playground（在线开发环境）👉 [https://playground.substrate.d
 Substrate Developer Hub 👉 [https://substrate.dev/](https://substrate.dev/)
 
 
+[加密鲸拓博客](https://leapwhale.com/category/web3-basics)
+
 
 :::
 
@@ -34,16 +36,16 @@ Substrate Developer Hub 👉 [https://substrate.dev/](https://substrate.dev/)
 
 [Web3.0 推荐的学习路径](https://learnblockchain.cn/article/7074)
 
-https://learnblockchain.cn/docs/solidity/
+[solidity中文官网](https://learnblockchain.cn/docs/solidity/)
 
 ## 2、招聘网站
 
 [招聘网站:https://eleduck.com/](https://eleduck.com/)
 
 
-## 3、
+## 3、以太坊
 
-https://ethereum.org/zh/learn/
+[以太坊官网](https://ethereum.org/zh/learn/)
 
 
 
