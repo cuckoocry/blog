@@ -40,4 +40,4 @@ AI编程助手：插件 Fitten Code
 
 ### 2. 笔记
 
-基础语法：https://www.runoob.com/python3/python3-basic-syntax.html
+[基础语法](https://www.runoob.com/python3/python3-basic-syntax.html)
