@@ -17,6 +17,8 @@ order: 0
 1. [Python 官方文档（系统学习）](https://docs.python.org/zh-cn/3/tutorial/index.html)
 2. [菜鸟教程 Python（中文入门）](https://www.runoob.com/python3/python3-tutorial.html)
 3. [PythonTutor（代码可视化）](https://pythontutor.com/python-compiler.html#mode=edit)
+4. [书籍推荐](https://zhuanlan.zhihu.com/p/1907107699314913909)
+5. [https://zhuanlan.zhihu.com/p/371679656](https://zhuanlan.zhihu.com/p/371679656)
 
 📚 推荐书籍：
 
