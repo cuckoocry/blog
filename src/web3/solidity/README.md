@@ -16,6 +16,10 @@ order: 2
 - 交互式学习：[CryptoZombies](https://cryptozombies.io/)
 
 - 文档：[Solidity中文文档](https://solidity-cn.readthedocs.io/zh/develop/)
+- 
+- https://learnblockchain.cn/docs/solidity/
+- 
+- [w3cschool教程](https://www.w3cschool.cn/solidity/smart-contracts-simple.html)
 
 :::
 
