@@ -23,5 +23,4 @@ order: 2
 
 :::
 
-### 1.使用使用IDEA创建一个Solidity项目
 
