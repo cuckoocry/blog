@@ -3,10 +3,10 @@ import { sidebar } from "vuepress-theme-hope";
 // @ts-ignore
 import { aboutTheBlogs } from "./sidebar/about-the-blogs";
 // @ts-ignore
-import {interviewRelated} from "./sidebar/interview-related";
+//import {interviewRelated} from "./sidebar/interview-related";
 // @ts-ignore
 import { learnNote } from "./sidebar/learn-note";
-import {noteRecord} from "./sidebar/note-record.js";
+//import {noteRecord} from "./sidebar/note-record.js";
 
 
 //  侧边栏
