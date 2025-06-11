@@ -1,5 +1,5 @@
 ---
-title: Solidity
+title: 3.Solidity
 category: Solidity
 tag:
     - Solidity
@@ -17,7 +17,7 @@ order: 2
 
 - 文档：[Solidity中文文档](https://solidity-cn.readthedocs.io/zh/develop/)
 - 
-- https://learnblockchain.cn/docs/solidity/
+- [https://learnblockchain.cn/docs/solidity/](https://learnblockchain.cn/docs/solidity/)
 - 
 - [w3cschool教程](https://www.w3cschool.cn/solidity/smart-contracts-simple.html)
 

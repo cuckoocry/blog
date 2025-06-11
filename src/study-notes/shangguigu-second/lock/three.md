@@ -233,6 +233,7 @@ t4	 set Lock
 
 **当我们在getLock方法加两把锁，但是只解一把锁会出现什么情况呢？**
 
+```
     public void getLock() {
         lock.lock();
         lock.lock();
@@ -241,9 +242,10 @@ t4	 set Lock
             setLock();
         } finally {
             lock.unlock();
-            lock.unlock();
         }
     }
+```
+
 得到结果
 
 ```
