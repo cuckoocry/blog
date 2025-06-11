@@ -25,11 +25,19 @@ Callable接口，是一种让线程执行完成后，能够返回结果的
 /**
  * 实现Runnable接口
  */
-class MyThread implements Runnable {
-
+class MyRunnable implements Runnable {
     @Override
     public void run() {
+        // 线程执行的代码
+        System.out.println("线程运行中: " + Thread.currentThread().getName());
+    }
+}
 
+// 使用方式
+public class Main {
+    public static void main(String[] args) {
+        Thread thread = new Thread(new MyRunnable());
+        thread.start();  // 启动线程
     }
 }
 ```
@@ -39,17 +47,25 @@ class MyThread implements Runnable {
 同理，我们实现Callable接口，也需要实现`call`方法，但是这个时候我们还需要有返回值，这个Callable接口的应用场景一般就在于批处理业务，比如转账的时候，需要给一会返回结果的状态码回来，代表本次操作成功还是失败。
 
 ```
-/**
- * Callable有返回值
- * 批量处理的时候，需要带返回值的接口（例如支付失败的时候，需要返回错误状态）
- *
- */
-class MyThread2 implements Callable<Integer> {
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 
+class MyCallable implements Callable<String> {
     @Override
-    public Integer call() throws Exception {
-        System.out.println("come in Callable");
-        return 1024;
+    public String call() throws Exception {
+        // 线程执行的代码
+        return "线程执行结果: " + Thread.currentThread().getName();
+    }
+}
+
+// 使用方式
+public class Main {
+    public static void main(String[] args) throws Exception {
+        FutureTask<String> futureTask = new FutureTask<>(new MyCallable());
+        Thread thread = new Thread(futureTask);
+        thread.start();
+        
+        System.out.println(futureTask.get());  // 获取返回值
     }
 }
 ```
