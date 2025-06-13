@@ -8,12 +8,18 @@ category:
 ---
 
 
+::: info 说明
+
+此章为大概，详情跳转：[JVM专题](../../JVM/README.md)
+
 JVM前提学习视频：
-https://www.bilibili.com/video/BV1TJ411R75F/?spm_id_from=333.337.search-card.all.click&vd_source=7138dfc78c49f602f8d3ed8cfbf0513d（没了）  
-https://www.bilibili.com/video/BV1jJ411t71s/?spm_id_from=333.788.recommend_more_video.4&vd_source=7138dfc78c49f602f8d3ed8cfbf0513d    
-相应笔记： https://blog.csdn.net/q961250375/article/details/107499173
+- [视频：](https://www.bilibili.com/video/BV1jJ411t71s/?spm_id_from=333.788.recommend_more_video.4&vd_source=7138dfc78c49f602f8d3ed8cfbf0513d   )
+- [相应笔记:](https://blog.csdn.net/q961250375/article/details/107499173)
 
 > 相关友链（pdai）：https://www.pdai.tech/md/java/jvm/java-jvm-x-overview.html
+
+:::
+
 
 ## 概览
 
