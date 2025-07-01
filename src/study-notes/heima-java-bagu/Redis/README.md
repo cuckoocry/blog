@@ -8,7 +8,7 @@ category: 面试
 
 视频来源：[新版Java面试专题视频教程，java八股文面试全套真题+深度详解（含大厂高频面试真题）](https://www.bilibili.com/video/BV1yT411H7YK/?vd_source=7138dfc78c49f602f8d3ed8cfbf0513d)
 
-Redis更多详细整体知识：https://www.bilibili.com/video/BV1cr4y1671t/?spm_id_from=333.337.search-card.all.click
+Redis更多详细整体知识：[https://www.bilibili.com/video/BV1cr4y1671t/?spm_id_from=333.337.search-card.all.click](https://www.bilibili.com/video/BV1cr4y1671t/?spm_id_from=333.337.search-card.all.click)
 
 :::
 
@@ -312,6 +312,7 @@ Redis支持8中不同策略来选择需要删除的key：
 2. 主从数据同步原理：
 
 - 主从**全量同步**
+
 ![img_26.png](images/img_26.png)
 
 - 主从**增量同步**（slave重启或者后期数据变化）
@@ -321,7 +322,7 @@ Redis支持8中不同策略来选择需要删除的key：
 总结：
 
 1、 介绍一下redis的主从同步
-单节点Redis的并发能力是有上限的，要进一步提高Redis的并发能力，就需要搭建主从集群，实现读写分离.般都是一主多从，主节点负责写数据，从节点负责读数据
+单节点Redis的并发能力是有上限的，要进一步提高Redis的并发能力，就需要搭建主从集群，实现读写分离。一般都是一主多从，主节点负责写数据，从节点负责读数据
 
 2、 能说一下，主从同步数据的流程吗？
 

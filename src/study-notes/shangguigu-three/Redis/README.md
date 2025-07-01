@@ -6,204 +6,8 @@ tags:
 
 ---
 
-## 1、Redis 6.0.8
-> 笔记参考：https://blog.csdn.net/oneby1314/article/details/113789412
 
-### 1.1、Redis 6.0.8 版本
-
-> **官网地址**
-
-1.  官网地址：[https://redis.io/](https://redis.io/)
-    
-2.  中文官网地址：[http://www.redis.cn/](http://www.redis.cn/)
-    
-> TODO 图片太多，后期替换删掉
-> **为什么要使用 Redis 6.0.8**
-
-Redis突然发布了紧急版本 6.0.8 ，之前消息称 6.0.7 被称作最后一个 6.x 版本，但 Redis 团队表示 6.0.8 版本升级迫切性等级为高：任何将 Redis 6.0.7 与 [Sentinel](https://so.csdn.net/so/search?q=Sentinel&spm=1001.2101.3001.7020) 或 CONFIG REWRITE 命令配合使用的人都会受到影响，应尽快升级。
-
-![image-20210126163514224](./images/24afba3710eecc8f2225fdec39063d40.png)
-
-* * *
-
-从官方给出的信息来看，估计是出现了Bug，具体更新的内容如下：
-
-**1、Bug修复**
-
-1.  CONFIG REWRITE在通过CONFIG设置**oom-score-adj-values**后，可以通过CONFIG设置或从配置文件中加载，会生成一个损坏的配置文件。将会导致Redis无法启动
-2.  修正MacOS上redis-cli --pipe的问题。
-3.  在不存在的密钥上，修复HKEYS/HVALS的RESP3响应。
-4.  各种小的错误修复
-
-**2、新功能**
-
-1.  当设置为madvise时，移除THP警告。
-2.  允许在群集中只读副本上使用读命令进行EXEC。
-3.  在redis-cli-cluster调用命令中增加master/replicas选项。
-
-**3、模块化API**
-
-添加RedisModule_ThreadSafeContextTryLock。
-
-### 1.2、安装 Redis 6.0.8
-
-> **参考资料**
-
-1.  [Centos7安装Redis](https://www.cnblogs.com/heqiuyong/p/10463334.html)
-2.  [CentOS7.3环境下安装Redis 6.0.8 编译报错](https://blog.csdn.net/qq_42021376/article/details/109260130)
-
-> **在 Linux 下安装 Redis 6.0.8 版本**
-
-**1、查看 gcc 版本**
-
-由于 redis 是用 C 语言开发，安装之前必先确认是否安装 gcc 环境（`gcc -v`），如果没有安装，执行以下命令进行安装，我本机版本为 4.8.5，很明显不符合 redis 6.0.8 版本的要求
-
-**注意**：当你下载redis最新版本6.0.8的时候会发现`make`的时候会报错，简单来说就是最新版的redis用到了c11 ，你的系统gcc版本低了，系统自带gcc版本是4.8.5，只需要更新下gcc到5.4以上即可，同时编译redis时带上gcc版本的使用参数，不影响系统自带gcc！
-
-    [heygo@localhost redis-6.0.8]$ gcc -v
-    使用内建 specs。
-    COLLECT_GCC=gcc
-    COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-redhat-linux/4.8.5/lto-wrapper
-    目标：x86_64-redhat-linux
-    配置为：../configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=http://bugzilla.redhat.com/bugzilla --enable-bootstrap --enable-shared --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-linker-build-id --with-linker-hash-style=gnu --enable-languages=c,c++,objc,obj-c++,java,fortran,ada,go,lto --enable-plugin --enable-initfini-array --disable-libgcj --with-isl=/builddir/build/BUILD/gcc-4.8.5-20150702/obj-x86_64-redhat-linux/isl-install --with-cloog=/builddir/build/BUILD/gcc-4.8.5-20150702/obj-x86_64-redhat-linux/cloog-install --enable-gnu-indirect-function --with-tune=generic --with-arch_32=x86-64 --build=x86_64-redhat-linux
-    线程模型：posix
-    gcc 版本 4.8.5 20150623 (Red Hat 4.8.5-44) (GCC) 
-    
-
-* * *
-
-**2、安装 gcc 环境**
-
-使用 yum 更新 gcc，依次执行如下指令即可
-
-    yum -y install centos-release-scl
-    yum -y install devtoolset-9-gcc devtoolset-9-gcc-c++ devtoolset-9-binutils
-    scl enable devtoolset-9 bash
-    
-
-安装后再次使用 `gcc -v` 查看本机 gcc 版本
-
-    [heygo@localhost redis-6.0.8]$ gcc -v
-    Using built-in specs.
-    COLLECT_GCC=gcc
-    COLLECT_LTO_WRAPPER=/opt/rh/devtoolset-9/root/usr/libexec/gcc/x86_64-redhat-linux/9/lto-wrapper
-    Target: x86_64-redhat-linux
-    Configured with: ../configure --enable-bootstrap --enable-languages=c,c++,fortran,lto --prefix=/opt/rh/devtoolset-9/root/usr --mandir=/opt/rh/devtoolset-9/root/usr/share/man --infodir=/opt/rh/devtoolset-9/root/usr/share/info --with-bugurl=http://bugzilla.redhat.com/bugzilla --enable-shared --enable-threads=posix --enable-checking=release --enable-multilib --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-linker-build-id --with-gcc-major-version-only --with-linker-hash-style=gnu --with-default-libstdcxx-abi=gcc4-compatible --enable-plugin --enable-initfini-array --with-isl=/builddir/build/BUILD/gcc-9.3.1-20200408/obj-x86_64-redhat-linux/isl-install --disable-libmpx --enable-gnu-indirect-function --with-tune=generic --with-arch_32=x86-64 --build=x86_64-redhat-linux
-    Thread model: posix
-    gcc version 9.3.1 20200408 (Red Hat 9.3.1-2) (GCC) 
-    
-
-* * *
-
-**3、下载并解压安装包**
-
-使用 `wget` 命令下载 `.tar.gz` 压缩包（我的天，太慢了，下次找镜像），并使用 `tar` 指令将其解压
-
-    wget http://download.redis.io/releases/redis-6.0.8.tar.gz
-    tar -zxvf redis-6.0.8.tar.gz
-    
-
-**4、执行编译**
-
-下载以及解压的 Redis 安装包位置如图所示
-
-`cd` 切换到 redis 解压目录下，执行编译
-
-    cd redis-6.0.8/
-    make
-    
-
-**5、安装 redis**
-
-将 redis 安装到指定目录
-
-    make install PREFIX=/usr/local/redis
-    
-
-> **测试安装是否成功**
-
-切换到 redis 安装目录下
-
-    cd /usr/local/redis/bin/
-    
-
-启动 redis 服务端
-
-    ./redis-server
-    
-
-通过 redis 客户端连接 redis 服务端
-
-    ./redis-cli -h 127.0.0.1 -p 6379
-    
-
-能够通过客户端连接工具连接上 redis 服务器，则说明安装成功
-
-![image-20210124234956650](./images/a5baa77a4b087e96a406f2bea5295e5c.png)
-
-> **查看 redis 版本**
-
-1、在 Linux 命令行下：在 redis 安装目录下执行 `redis-server -version` 命令
-
-![image-20210124235611841](./images/b16aa21090e64bd6ccdbab58e78db6f5.png)
-
-2、在 redis 命令行下：执行 `info` 命令
-
-![image-20210124235228022](./images/59dbaf6cd24c579ea268a2c59e9c55e6.png)
-
-### 1.3、安装后的配置
-
-> **设置 redis 服务后台运行**
-
-从 redis 的源码目录中复制 redis.conf 到 redis 的安装目录
-
-    cp redis-6.0.8/redis.conf /usr/local/redis/bin/
-    
-
-使用 vim 编辑器编辑 redis.conf 配置文件
-
-    vim /usr/local/redis/bin/redis.conf
-    
-
-修改 redis.conf 文件，把 `daemonize no` 改为 `daemonize yes`
-
-![image-20210124233439884](./images/8edb107c6732977f40d1c6cf45cf1b11.png)
-
-> **设置 redis 开机自启动**
-
-使用 vim 编辑 `/etc/systemd/system/redis.service` 配置文件
-
-    vim /etc/systemd/system/redis.service
-    
-
-添加如下配置：
-
-    [Unit]
-    Description=redis-server
-    After=network.target
-    
-    [Service]
-    Type=forking
-    ExecStart=/usr/local/redis/bin/redis-server /usr/local/redis/bin/redis.conf
-    PrivateTmp=true
-    
-    [Install]
-    WantedBy=multi-user.target
-
-
-> 我是docker安装的，访问入下：
-```shell
-#1、进入redis容器：
-docker exec -it [pid] bash
-
-#2、选择连接的redis ip和端口：
-redis-cli -h 127.0.0.1 -p 6379
-
-#3、输入 
-auth [redis密码]
-```
-
-### 1.4、Redis 命令大全
+## 1、Redis 命令大全
 
 > **[官网命令大全](http://www.redis.cn/commands.html)**
 
@@ -213,7 +17,7 @@ auth [redis密码]
 
 **注**：命令不区分大小写，而key是区分大小写的，可使用 `help @类型名词` 查看
 
-2、Redis 基本数据类型
+## 2、Redis 基本数据类型
 --------------
 
 ### 2.1、8 大类型
@@ -770,105 +574,110 @@ ens33 网卡对应的配置文件为 ifcfg-ens33
 > **boot_redis01 工程**
 
 1.  修改 pom.xnl 文件
-    
-        <?xml version="1.0" encoding="UTF-8"?>
-        <project xmlns="http://maven.apache.org/POM/4.0.0"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-            <parent>
+
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.3.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.oneby</groupId>
+    <artifactId>boot_redis01</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-actuator -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-pool2 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.redisson/redisson -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.13.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-parent</artifactId>
-                <version>2.3.3.RELEASE</version>
-                <relativePath/> <!-- lookup parent from repository -->
-            </parent>
-            <modelVersion>4.0.0</modelVersion>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+``` 
         
-            <groupId>com.oneby</groupId>
-            <artifactId>boot_redis01</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        
-            <properties>
-                <java.version>1.8</java.version>
-            </properties>
-        
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-web</artifactId>
-                </dependency>
-        
-                <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-actuator -->
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-actuator</artifactId>
-                </dependency>
-        
-                <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis -->
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-data-redis</artifactId>
-                </dependency>
-        
-                <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-pool2 -->
-                <dependency>
-                    <groupId>org.apache.commons</groupId>
-                    <artifactId>commons-pool2</artifactId>
-                </dependency>
-        
-                <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
-                <dependency>
-                    <groupId>redis.clients</groupId>
-                    <artifactId>jedis</artifactId>
-                    <version>3.1.0</version>
-                </dependency>
-        
-                <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop -->
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-aop</artifactId>
-                </dependency>
-        
-                <!-- https://mvnrepository.com/artifact/org.redisson/redisson -->
-                <dependency>
-                    <groupId>org.redisson</groupId>
-                    <artifactId>redisson</artifactId>
-                    <version>3.13.4</version>
-                </dependency>
-        
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-devtools</artifactId>
-                    <scope>runtime</scope>
-                    <optional>true</optional>
-                </dependency>
-        
-                <dependency>
-                    <groupId>org.projectlombok</groupId>
-                    <artifactId>lombok</artifactId>
-                    <optional>true</optional>
-                </dependency>
-        
-                <dependency>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
-                    <version>4.12</version>
-                </dependency>
-            </dependencies>
-        
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-        
-        </project>
         
     
 2.  新建 application.properties 配置文件
-    
+
+```properties
         server.port=1111
         
         spring.redis.database=0
@@ -882,11 +691,12 @@ ens33 网卡对应的配置文件为 ifcfg-ens33
         spring.redis.lettuce.pool.max-idle=8
         #连接池中的最小空闲连接默认0
         spring.redis.lettuce.pool.min-idle=0
-        
+ ```       
     
 3.  新建 `BootRedis01Application` 主启动类
-    
-        /**
+
+```java
+ /**
          * @ClassName BootRedis01Application
          * @Description TODO
          * @Author Oneby
@@ -900,9 +710,12 @@ ens33 网卡对应的配置文件为 ifcfg-ens33
             }
         }
         
+
+```   
+       
     
 4.  新建 `RedisConfig` 配置类，用于获取 `RedisTemplate` 对象
-    
+    ```java
         /**
          * @ClassName RedisConfig
          * @Description TODO
@@ -928,10 +741,10 @@ ens33 网卡对应的配置文件为 ifcfg-ens33
             }
         
         }
-        
+    ```
     
 5.  新建 `GoodController` 业务类，用于贩卖商品
-    
+    ```java
         /**
          * @ClassName GoodController
          * @Description TODO
@@ -969,7 +782,7 @@ ens33 网卡对应的配置文件为 ifcfg-ens33
         
         }
         
-    
+    ```
 
 > **boot_redis02 工程**
 

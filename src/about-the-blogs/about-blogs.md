@@ -24,11 +24,13 @@ https://theme-hope.vuejs.press/zh/guide/markdown/grammar/math.html#%E6%A0%BC%E5%
 
 ###  初始化
 
+> node 版本 20+
+
 ``` shell
 
-npm  install
+npm install
  
-npm  run docs:dev
+npm run docs:dev
 
 ```
 
